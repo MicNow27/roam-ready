@@ -1,0 +1,35 @@
+<nav class="flex items-center justify-between w-screen py-2 bg-bg border-b-[0.1rem] border-b-line-gray">
+  <a routerLink="/home">
+    <button
+      aria-label="Return to home page"
+      class="flex">
+      <img
+        alt="Roam Ready logo"
+        class="m-2 h-9 pointer-events:auto transition-transform duration-200 transform-gpu hover:scale-105 active:scale-105"
+        src="assets/images/header-logo.png">
+    </button>
+  </a>
+  <a
+    [nzDropdownMenu]="menu"
+    class="m-3 flex items-center justify-center text-[1rem] text-icon gap-3 rounded-2xl border-line-gray border-[0.075rem] px-4 py-2 hover:text-icon shadow-shadow-normal hover:shadow-shadow-focus"
+    nz-dropdown>
+    <span nz-icon nzType="menu"></span>
+    <span nz-icon nzType="user"></span>
+  </a>
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <ul class="font-poppins text-left rounded-md w-40 px-1 py-3" nz-menu nzSelectable>
+      <li
+        *ngIf="!(authenticated$ | async)"
+        class="text-[0.75rem] text-icon tracking-widest" nz-menu-item
+      ><a routerLink="/auth">
+        Login | Sign up</a>
+      </li>
+      <li
+        *ngIf="(authenticated$ | async)"
+        class="text-[0.75rem] text-icon tracking-widest" nz-menu-item
+      ><a (click)="onLogout()">
+        Logout</a>
+      </li>
+    </ul>
+  </nz-dropdown-menu>
+</nav>

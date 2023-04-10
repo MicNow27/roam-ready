@@ -1,0 +1,59 @@
+<div class="flex flex-col flex-grow">
+  <app-alert
+    (close)="onHandleError()"
+    *ngIf="error"
+    [message]="error"
+  ></app-alert>
+  <div *ngIf="isLoading"
+       class="text-center w-full flex items-center justify-center h-full pt-[6rem]">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+  <div
+    *ngIf="!isLoading"
+    class="w-full flex items-center justify-center h-full pt-[3rem] px-[3rem]"
+  >
+    <form
+      #authForm="ngForm"
+      (ngSubmit)="onSubmit(authForm)"
+      class="flex flex-col flex-grow justify-center gap-6 py-12 px-10 shadow-shadow-focus font-poppins tracking-[0.1em] rounded-lg">
+      <div class="flex flex-col gap-1 text-icon text-[0.8rem]">
+        <label for="email">E-mail</label>
+        <input
+          class="h-[2rem] pl-3 rounded-md shadow-shadow-normal focus:outline-none focus:shadow-shadow-focus"
+          email
+          id="email"
+          name="email"
+          ngModel
+          required
+          type="email"
+        />
+      </div>
+      <div class="flex flex-col gap-1 text-icon text-[0.8rem]">
+        <label for="password">Password</label>
+        <input
+          class="h-[2rem] pl-3 rounded-md shadow-shadow-normal focus:outline-none focus:shadow-shadow-focus"
+          id="password"
+          minlength="6"
+          name="password"
+          ngModel
+          required
+          type="password"
+        />
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2">
+        <button
+          [disabled]="authForm.invalid"
+          class="flex justify-center items-center cursor-pointer text-bg bg-accent tracking-[0.2em] w-48 text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[none] font-poppins hover:bg-accent-shade active:bg-accent-shade hover:shadow-shadow-focus active:shadow-shadow-focus"
+          type="submit"
+        >{{ isLoginMode ? 'Login' : 'Sign up' }}
+        </button>
+        <button
+          (click)="onSwitchMode()"
+          class="flex justify-center items-center cursor-pointer text-icon bg-line-gray tracking-[0.2em] w-48 text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[none] font-poppins hover:bg-line-gray-shade hover:shadow-shadow-focus"
+          type="button"
+        >Switch to {{ isLoginMode ? 'sign up' : 'login' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
