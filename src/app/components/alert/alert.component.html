@@ -1,1 +1,17 @@
-<p>alert works!</p>
+<div
+  (click)="onClose()"
+  class="fixed w-screen h-screen z-100 left-0 top-0 bg-bg-blur flex justify-center pt-[9rem]"
+>
+  <div
+    class="fixed flex flex-col items-center gap-4 z-[100] shadow-shadow-on-blur m-4 p-8 rounded-md bg-bg">
+    <p
+      class="font-poppins tracking-[0.1em] text-icon">{{ message }}</p>
+    <button
+      (click)="onClose()"
+      class="flex justify-center items-center cursor-pointer text-bg bg-accent tracking-[0.2em] w-48 text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[none] font-poppins hover:bg-accent-shade active:bg-accent-shade hover:shadow-shadow-focus active:shadow-shadow-focus"
+    >Close
+    </button>
+  </div>
+</div>
+
+

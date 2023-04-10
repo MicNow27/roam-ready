@@ -36,6 +36,8 @@ import { AuthComponent } from './components/auth/auth.component';
 import { HomeComponent } from './components/home/home.component';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { AlertComponent } from './components/alert/alert.component';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
+import { TripsComponent } from './components/trips/trips.component';
 
 registerLocaleData(en);
 
@@ -47,7 +49,15 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(
 );
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, AuthComponent, HomeComponent, AlertComponent],
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    AuthComponent,
+    HomeComponent,
+    AlertComponent,
+    LoadingSpinnerComponent,
+    TripsComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

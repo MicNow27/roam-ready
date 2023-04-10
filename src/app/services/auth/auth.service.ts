@@ -11,7 +11,8 @@ import {
   UserCredential,
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { AuthResponseData } from '../../models/auth-response.data';
+import { UserData } from '../../models/user.data';
+import { FirestoreService } from '../firestore/firestore.service';
 
 @Injectable({
   providedIn: 'root',
@@ -25,12 +26,16 @@ export class AuthService {
   authState$ = authState(this.auth);
   idToken$ = idToken(this.auth);
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private firestoreService: FirestoreService
+  ) {
     // TODO: THESE MUST BE UNSUBSCRIBED FROM (see docs OnDestroy in component)!!!!
 
     this.userSubscription = this.user$.subscribe((aUser: User | null) => {
       console.log('User in userSubscription is: ' + aUser); // TODO: remove later
       if (!aUser) {
+        // this.router.navigate(['/home']);
         this.router.navigate(['/auth']);
       }
     });
@@ -39,6 +44,7 @@ export class AuthService {
       (aUser: User | null) => {
         console.log('User in authStateSubscription is: ' + aUser); // TODO: remove later
         if (!aUser) {
+          // this.router.navigate(['/home']);
           this.router.navigate(['/auth']);
         }
       }
@@ -48,18 +54,19 @@ export class AuthService {
       (token: string | null) => {
         console.log('Token in idTokenSubscription is: ' + token); // TODO: remove later
         if (!token) {
+          // this.router.navigate(['/home']);
           this.router.navigate(['/auth']);
         }
       }
     );
   }
 
-  signUp(email: string, password: string): Observable<AuthResponseData> {
+  signUp(email: string, password: string): Observable<UserData> {
     return from(
       createUserWithEmailAndPassword(this.auth, email, password)
     ).pipe(
       switchMap(
-        async (userCredential) => await this.setAuthResponseData(userCredential)
+        async (userCredential) => await this.setUserData(userCredential)
       ),
       catchError((error) => {
         throw this.handleError(error);
@@ -67,10 +74,10 @@ export class AuthService {
     );
   }
 
-  signIn(email: string, password: string): Observable<AuthResponseData> {
+  signIn(email: string, password: string): Observable<UserData> {
     return from(signInWithEmailAndPassword(this.auth, email, password)).pipe(
       switchMap(async (userCredential) => {
-        return await this.setAuthResponseData(userCredential);
+        return await this.setUserData(userCredential);
       }),
       catchError((error) => {
         throw this.handleError(error);
@@ -86,18 +93,17 @@ export class AuthService {
     // TODO: unsubscribe from subscriptions here?
   }
 
-  private async setAuthResponseData(userCredential: UserCredential) {
+  private async setUserData(userCredential: UserCredential) {
     const user = userCredential.user;
-    const authData: AuthResponseData = {
-      providerId: user.providerId,
+    const userData: UserData = {
       idToken: await user.getIdToken(),
       email: user.email,
-      refreshToken: user.refreshToken,
       expiresIn: (await user.getIdTokenResult()).expirationTime,
-      localId: user.uid,
-      registered: true,
+      userId: user.uid,
+      trips: [],
     };
-    return authData;
+    this.firestoreService.addUser(userData); // TODO: change to feature state
+    return userData;
   }
 
   private handleError(error: any) {
