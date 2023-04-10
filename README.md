@@ -40,6 +40,8 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## References
 
+- [Udemy: Angular - The Complete Guide (2023 Edition)](https://www.udemy.com/course/the-complete-guide-to-angular-2/)
+
 - **Firebase setup:**
   - https://www.youtube.com/watch?v=HXSqKW4JCr4
   - https://www.youtube.com/watch?v=BFboztcUj74
@@ -51,4 +53,5 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
   - queries: https://github.com/tdkehoe/Using-Firebase-with-Angular-and-AngularFire#read-data-from-firestore 
 
 - **Firebase Auth:**
-  - **...**
+  - https://github.com/angular/angularfire/blob/master/docs/auth.md
+  - https://firebase.google.com/docs/auth/web/start?hl=en&authuser=0
