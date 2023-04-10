@@ -40,7 +40,15 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## References
 
+- **Firebase setup:**
+  - https://www.youtube.com/watch?v=HXSqKW4JCr4
+  - https://www.youtube.com/watch?v=BFboztcUj74
+
+- **Angular Fire:** 
+  - https://github.com/angular/angularfire
+
 - **Firestore:**
-  - ...
+  - queries: https://github.com/tdkehoe/Using-Firebase-with-Angular-and-AngularFire#read-data-from-firestore 
+
 - **Firebase Auth:**
-- **...**
+  - **...**
