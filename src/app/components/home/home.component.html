@@ -1,1 +1,16 @@
-<p>home works!</p>
+<div class="flex flex-col items-center justify-center flex-grow bg-bg py-10 gap-10">
+  <h2
+    class="ml-10 font-poppins text-accent text-[2rem] font-bold tracking-[0.1em]"
+  >Plan your adventure ...</h2>
+  <div class="w-[18rem] h-[18rem] flex content-center justify-items-center rounded-lg shadow-shadow-focus">
+    <nz-carousel [nzEffect]="effect">
+      <div *ngFor="let index of array"
+           class="flex items-center justify-center"
+           nz-carousel-content>
+        <img alt="Tourism destination"
+             class="w-[18rem] h-[18rem] object-cover rounded-lg"
+             src="{{index}}">
+      </div>
+    </nz-carousel>
+  </div>
+</div>

@@ -19,7 +19,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'auth', //TODO change to 'home'
+    redirectTo: 'home',
     pathMatch: 'full',
   },
 ];
