@@ -66,3 +66,8 @@ skiing: [Matthieu Pétiard](https://unsplash.com/@mattpunsplash?utm_source=unspl
 - **Firebase Auth:**
   - https://github.com/angular/angularfire/blob/master/docs/auth.md
   - https://firebase.google.com/docs/auth/web/start?hl=en&authuser=0
+
+## Still To Do
+
+- [ ] Error handling for empty fields in login / signup form
+- [ ] Sort out routing with home page vs landing page 
