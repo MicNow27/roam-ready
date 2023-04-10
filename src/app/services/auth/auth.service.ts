@@ -35,8 +35,7 @@ export class AuthService {
     this.userSubscription = this.user$.subscribe((aUser: User | null) => {
       console.log('User in userSubscription is: ' + aUser); // TODO: remove later
       if (!aUser) {
-        // this.router.navigate(['/home']);
-        this.router.navigate(['/auth']);
+        this.router.navigate(['/home']);
       }
     });
 
@@ -44,8 +43,7 @@ export class AuthService {
       (aUser: User | null) => {
         console.log('User in authStateSubscription is: ' + aUser); // TODO: remove later
         if (!aUser) {
-          // this.router.navigate(['/home']);
-          this.router.navigate(['/auth']);
+          this.router.navigate(['/home']);
         }
       }
     );
@@ -54,8 +52,7 @@ export class AuthService {
       (token: string | null) => {
         console.log('Token in idTokenSubscription is: ' + token); // TODO: remove later
         if (!token) {
-          // this.router.navigate(['/home']);
-          this.router.navigate(['/auth']);
+          this.router.navigate(['/home']);
         }
       }
     );

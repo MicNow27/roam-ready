@@ -38,6 +38,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { AlertComponent } from './components/alert/alert.component';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { TripsComponent } from './components/trips/trips.component';
+import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 
 registerLocaleData(en);
 
@@ -76,6 +77,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(
     provideRemoteConfig(() => getRemoteConfig()),
     provideStorage(() => getStorage()),
     NzDropDownModule,
+    NzCarouselModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
