@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "roam-ready": {
+      "hosting": {
+        "roam-ready": [
+          "roam-ready"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "roam-ready"
+  }
+}
