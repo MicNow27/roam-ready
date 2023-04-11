@@ -15,13 +15,14 @@ export interface Trip {
 }
 
 export interface Activity {
-  name: string;
+  tripName: string;
+  activityName: string;
   description?: string;
   tag: string;
   notes?: string;
-  price: string;
-  startDate: string;
-  endDate: string;
-  startLocation?: string;
-  endLocation?: string;
+  price: string; // type may change
+  startDate: string; // type may change
+  endDate: string; // type may change
+  startLocation?: string; // type may change
+  endLocation?: string; // type may change
 }

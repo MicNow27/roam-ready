@@ -1,10 +1,35 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Trip } from '../../models/user.data';
+import { Subscription } from 'rxjs';
+import { TripsService } from '../../services/trips/trips.service';
 
 @Component({
   selector: 'app-trips',
   templateUrl: './trips.component.html',
-  styleUrls: ['./trips.component.scss']
+  styleUrls: ['./trips.component.scss'],
 })
-export class TripsComponent {
+export class TripsComponent implements OnInit {
+  trips: Trip[] = [];
+  tripsSubscription: Subscription | undefined;
 
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private tripsService: TripsService
+  ) {}
+
+  ngOnInit() {
+    this.tripsSubscription = this.tripsService.tripsChanged.subscribe(
+      (trips: Trip[]) => {
+        this.trips = trips;
+      }
+    );
+    this.trips = this.tripsService.getTrips();
+  }
+
+  onBeginClick() {
+    console.log('onBeginClick');
+    this.router.navigate(['new'], { relativeTo: this.route });
+  }
 }

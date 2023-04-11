@@ -1,0 +1,104 @@
+<div class="flex flex-col flex-grow bg-bg py-5 px-5 gap-[1.5rem]">
+  <h2
+    class="font-poppins text-accent text-[1rem] font-bold tracking-[0.1em]"
+  >Add a new adventure ...</h2>
+  <form (ngSubmit)="onSubmit()" [formGroup]="tripForm"
+        class="flex flex-col flex-grow justify-center gap-6 mx-3 py-6 px-6 shadow-shadow-focus font-poppins tracking-[0.1em] rounded-lg"
+  >
+    <div class="flex flex-col flex-grow gap-6">
+      <div class="flex flex-col gap-1 text-icon text-[0.8rem]">
+        <label for="tripName">Trip name</label>
+        <input
+          class="h-[2rem] pl-3 rounded-md shadow-shadow-normal focus:outline-none focus:shadow-shadow-focus"
+          formControlName="tripName"
+          id="tripName"
+          type="text">
+      </div>
+      <div class="flex flex-col gap-1 text-icon text-[0.8rem]">
+        <label for="tripDescription">Trip description</label>
+        <input
+          class="h-[2rem] pl-3 rounded-md shadow-shadow-normal focus:outline-none focus:shadow-shadow-focus"
+          formControlName="tripDescription"
+          id="tripDescription"
+          type="text">
+      </div>
+    </div>
+
+    <div class="flex justify-center gap-4">
+      <button
+        *ngIf=""
+        class="cursor-pointer text-accent bg-bg tracking-[0.2em] w-40 text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[0.01rem] border-solid border-line-gray font-poppins hover:bg-banner-gray active:bg-banner-gray hover:shadow-shadow-focus active:shadow-shadow-focus"
+        type="button"
+      >Go to activities
+      </button>
+      <button
+        class="cursor-pointer text-accent bg-bg tracking-[0.2em] w-40 text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[0.01rem] border-solid border-line-gray font-poppins hover:bg-banner-gray active:bg-banner-gray hover:shadow-shadow-focus active:shadow-shadow-focus"
+        type="button"
+      >Add an activity
+      </button>
+    </div>
+
+
+    <!-- Activities form -->
+    <div class="">
+      <div class="" formArrayName="activities">
+        <div
+          *ngFor="let activityCtrl of activitiesControls; let i = index"
+          [formGroupName]="i"
+          class="">
+
+          <!-- Activity inputs -->
+          <div class="col-xs-8">
+            <input
+              class="form-control"
+              formControlName="name"
+              type="text">
+          </div>
+          <div class="col-xs-2">
+            <input
+              class="form-control"
+              formControlName="amount"
+              type="number">
+          </div>
+
+          <!-- Activity submission -->
+          <div class="flex items-center justify-center gap-4">
+            <button
+              (click)="onSaveActivity()"
+              [disabled]="!tripForm.valid"
+              class="cursor-pointer text-bg bg-accent tracking-[0.2em] w-28 text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[none] font-poppins hover:bg-accent-shade active:bg-accent-shade hover:shadow-shadow-focus active:shadow-shadow-focus"
+              type="button"
+            >Save activity
+            </button>
+            <button
+              (click)="onDeleteActivity()"
+              class="cursor-pointer text-accent-shade bg-line-gray tracking-[0.2em] w-28 text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[none] font-poppins hover:bg-line-gray-shade hover:shadow-shadow-focus"
+              type="button"
+            >Delete activity
+            </button>
+          </div>
+
+        </div>
+
+
+      </div>
+    </div>
+
+    <!-- Trip submission -->
+    <div class="flex items-center justify-center gap-4">
+      <button
+        [disabled]="!tripForm.valid"
+        class="cursor-pointer text-bg bg-accent tracking-[0.2em] w-28 text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[none] font-poppins hover:bg-accent-shade active:bg-accent-shade hover:shadow-shadow-focus active:shadow-shadow-focus"
+        type="submit"
+      >Save
+      </button>
+      <button
+        (click)="onCancel()"
+        class="cursor-pointer text-accent-shade bg-line-gray tracking-[0.2em] w-28 text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[none] font-poppins hover:bg-line-gray-shade hover:shadow-shadow-focus"
+        type="button"
+      >Cancel
+      </button>
+    </div>
+
+  </form>
+</div>

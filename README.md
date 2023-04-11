@@ -70,4 +70,8 @@ skiing: [Matthieu Pétiard](https://unsplash.com/@mattpunsplash?utm_source=unspl
 ## Still To Do
 
 - [ ] Error handling for empty fields in login / signup form
-- [ ] Sort out routing with home page vs landing page 
+- [ ] Sort out routing with home page vs landing page
+- [ ] NG-Zorro drop down items are blue on hover
+- [ ] Add location to activity form
+- [ ] Alert box for cancelling form
+- [ ] Add a calendar

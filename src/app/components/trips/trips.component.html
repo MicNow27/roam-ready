@@ -1,1 +1,16 @@
-<p>trips works!</p>
+<ng-container *ngIf="trips.length == 0; else hasTrips">
+  <div class="flex flex-col items-center justify-center flex-grow bg-bg py-10 gap-[6rem]">
+    <h2
+      class="ml-10 font-poppins text-accent text-[2rem] font-bold tracking-[0.1em]"
+    >Plan your first trip ...</h2>
+    <button
+      (click)="onBeginClick()"
+      class="flex justify-center items-center cursor-pointer text-bg bg-accent tracking-[0.2em] w-48 text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[none] font-poppins hover:bg-accent-shade active:bg-accent-shade hover:shadow-shadow-focus active:shadow-shadow-focus"
+    >Begin
+    </button>
+  </div>
+</ng-container>
+
+<ng-template #hasTrips>
+  <!--  TODO: styling for this  -->
+</ng-template>

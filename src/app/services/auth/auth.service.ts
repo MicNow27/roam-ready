@@ -92,15 +92,7 @@ export class AuthService {
 
   private async setUserData(userCredential: UserCredential) {
     const user = userCredential.user;
-    const userData: UserData = {
-      idToken: await user.getIdToken(),
-      email: user.email,
-      expiresIn: (await user.getIdTokenResult()).expirationTime,
-      userId: user.uid,
-      trips: [],
-    };
-    this.firestoreService.addUser(userData); // TODO: change to feature state
-    return userData;
+    return await this.firestoreService.handleLoginSignup(user);
   }
 
   private handleError(error: any) {
