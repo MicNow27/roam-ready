@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { UserData } from '../../models/user.data';
-import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-auth',
@@ -16,11 +15,7 @@ export class AuthComponent {
   isLoading = false;
   error: string | null = '';
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private userService: UserService
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;

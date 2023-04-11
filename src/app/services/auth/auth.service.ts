@@ -74,9 +74,20 @@ export class AuthService {
   signIn(email: string, password: string): Observable<UserData> {
     return from(signInWithEmailAndPassword(this.auth, email, password)).pipe(
       switchMap(async (userCredential) => {
-        return await this.setUserData(userCredential);
+        console.log('sign in');
+        const userData = await this.setUserData(userCredential);
+        console.log(
+          'userData***: ',
+          userData.userId,
+          userData.trips.length,
+          userData.email,
+          userData.expiresIn,
+          userData.idToken
+        );
+        return userData;
       }),
       catchError((error) => {
+        console.log('sign in ERROR');
         throw this.handleError(error);
       })
     );
@@ -91,12 +102,13 @@ export class AuthService {
   }
 
   private async setUserData(userCredential: UserCredential) {
+    console.log('setUserData');
     const user = userCredential.user;
     return await this.firestoreService.handleLoginSignup(user);
   }
 
   private handleError(error: any) {
-    console.log('Error CODE: ' + error.code);
+    console.log('Error CODE: ' + error.code); // TODO: remove later
     let errorMessage = 'An unknown error occurred!';
     switch (error.code) {
       case 'auth/email-already-in-use':

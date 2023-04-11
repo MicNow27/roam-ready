@@ -1,6 +1,6 @@
 export interface UserData {
   idToken: string;
-  email: string | null;
+  email: string;
   expiresIn: string;
   userId: string;
   trips: Trip[];
@@ -9,9 +9,9 @@ export interface UserData {
 export interface Trip {
   name: string;
   description?: string;
-  startDate: string;
-  endDate: string;
-  activities: Activity[];
+  startDate?: string;
+  endDate?: string;
+  activities?: Activity[];
 }
 
 export interface Activity {
