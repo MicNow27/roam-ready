@@ -5,6 +5,7 @@ import { HomeComponent } from './components/home/home.component';
 import { TripsComponent } from './components/trips/trips.component';
 import { TripEditComponent } from './components/trip-edit/trip-edit.component';
 import { AuthGuard } from './guards/auth/auth.guard';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,10 @@ const routes: Routes = [
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',
+  },
+  {
+    path: '**',
+    component: NotFoundComponent,
   },
 ];
 

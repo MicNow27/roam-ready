@@ -40,6 +40,7 @@ import { LoadingSpinnerComponent } from './components/loading-spinner/loading-sp
 import { TripsComponent } from './components/trips/trips.component';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { TripEditComponent } from './components/trip-edit/trip-edit.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 registerLocaleData(en);
 
@@ -60,6 +61,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(
     LoadingSpinnerComponent,
     TripsComponent,
     TripEditComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
