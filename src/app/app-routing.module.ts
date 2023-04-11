@@ -4,6 +4,7 @@ import { AuthComponent } from './components/auth/auth.component';
 import { HomeComponent } from './components/home/home.component';
 import { TripsComponent } from './components/trips/trips.component';
 import { TripEditComponent } from './components/trip-edit/trip-edit.component';
+import { AuthGuard } from './guards/auth/auth.guard';
 
 const routes: Routes = [
   {
@@ -13,6 +14,7 @@ const routes: Routes = [
   {
     path: 'trips',
     component: TripsComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'auth',

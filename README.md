@@ -75,3 +75,4 @@ skiing: [Matthieu Pétiard](https://unsplash.com/@mattpunsplash?utm_source=unspl
 - [ ] Add location to activity form
 - [ ] Alert box for cancelling form
 - [ ] Add a calendar
+- [ ] Add resolvers
