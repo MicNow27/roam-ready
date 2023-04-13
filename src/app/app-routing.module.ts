@@ -6,8 +6,8 @@ import { TripsComponent } from './components/trips/trips.component';
 import { TripEditComponent } from './components/trip-edit/trip-edit.component';
 import { AuthGuard } from './guards/auth/auth.guard';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { TripComponent } from './components/trip/trip.component';
 import { TripsResolver } from './resolvers/trips/trips.resolver';
+import { TripComponent } from './components/trip/trip.component';
 
 const routes: Routes = [
   {

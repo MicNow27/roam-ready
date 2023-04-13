@@ -95,7 +95,6 @@ export class FirestoreService {
       trips: [],
     };
     const docRef = await addDoc(this.usersCollection, userData);
-    console.log('Document written with ID: ', docRef.id);
     return docRef.id;
   }
 }

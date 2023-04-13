@@ -91,12 +91,6 @@ export class AuthService {
     // TODO: unsubscribe from subscriptions here?
   }
 
-  // private async setUserData(userCredential: UserCredential) {
-  //   console.log('setUserData');
-  //   const user = userCredential.user;
-  //   return await this.firestoreService.handleLoginSignup(user);
-  // }
-
   private async setAuthResponseData(userCredential: UserCredential) {
     const user = userCredential.user;
     const authData: AuthResponseData = {
@@ -112,7 +106,6 @@ export class AuthService {
   }
 
   private handleError(error: any) {
-    console.log('Error CODE: ' + error.code); // TODO: remove later
     let errorMessage = 'An unknown error occurred!';
     switch (error.code) {
       case 'auth/email-already-in-use':

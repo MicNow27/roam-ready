@@ -28,10 +28,16 @@ export class TripsComponent implements OnInit {
     this.trips = this.tripsService.getTrips();
   }
 
-  tripName = (index: number, trip: { name: string }) => trip.name;
+  tripName = (index: number, trip: { tripName: string }) => trip.tripName;
+
+  routeName = (trip: { tripName: string }) =>
+    trip.tripName.toLowerCase().replace(/ /g, '-');
 
   onBeginClick() {
-    console.log('onBeginClick');
+    this.onAddTrip();
+  }
+
+  onAddTrip() {
     this.router.navigate(['edit/new'], { relativeTo: this.route });
   }
 }

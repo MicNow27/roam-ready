@@ -6,7 +6,7 @@ import { Activity, Trip } from '../../models/user.data';
 import { FirestoreService } from '../../services/firestore/firestore.service';
 
 @Component({
-  selector: 'app-trip-edit',
+  selector: 'app-trip-item-edit',
   templateUrl: './trip-edit.component.html',
   styleUrls: ['./trip-edit.component.scss'],
 })
@@ -55,11 +55,9 @@ export class TripEditComponent implements OnInit {
 
   onAddActivity() {
     if (this.tripForm.dirty && !this.denied) {
-      console.log('denied: ' + this.denied);
       this.error = 'Do you want to proceed without saving?';
     }
     if (this.denied) {
-      console.log('add activity');
       // TODO: route to activities new
       this.denied = false;
     }
@@ -78,7 +76,6 @@ export class TripEditComponent implements OnInit {
   onHandleError() {
     this.error = null;
     this.denied = true;
-    console.log('denied: ' + this.denied);
   }
 
   private initForm() {
@@ -86,8 +83,8 @@ export class TripEditComponent implements OnInit {
     let tripDescription = '';
 
     if (this.editMode && this.oldTrip) {
-      tripName = this.oldTrip.name;
-      tripDescription = this.oldTrip.description || '';
+      tripName = this.oldTrip.tripName;
+      tripDescription = this.oldTrip.tripDescription || '';
     }
 
     this.tripForm = new FormGroup({

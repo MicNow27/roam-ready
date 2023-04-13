@@ -17,12 +17,12 @@ export class TripsService {
   }
 
   getTrip(tripName: string) {
-    return this.trips.find((trip) => trip.name === tripName);
+    return this.trips.find((trip) => trip.tripName === tripName);
   }
 
   updateTrip(oldTrip: Trip, newTrip: Trip) {
     const tripIndex = this.trips.findIndex(
-      (trip) => trip.name === oldTrip.name
+      (trip) => trip.tripName === oldTrip.tripName
     );
     if (tripIndex >= 0) {
       this.trips[tripIndex] = newTrip;

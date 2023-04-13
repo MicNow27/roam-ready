@@ -78,7 +78,12 @@ skiing: [Matthieu Pétiard](https://unsplash.com/@mattpunsplash?utm_source=unspl
 - [ ] Alert box for cancelling form
 - [ ] Add a calendar (https://medium.com/allenhwkim/angular-build-a-calendar-in-50-lines-f813f0a04c3b)
 - [ ] Add resolvers
+- [ ] Disable home button when on home / landing page
 
 ## Bugs
 
-- login: form --> loading spinner --> form --> landing page
+- when logging in: loading spinner -> login form -> home page
+  - ~~if still present after implementing state, try move loading spinner to trips component~~
+    - can't cos, resolver...
+
+

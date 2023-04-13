@@ -4,9 +4,11 @@
   [message]="error"
 ></app-alert>
 <div class="flex flex-col flex-grow bg-bg py-5 px-5 gap-[1.5rem]">
-  <h2
-    class="font-poppins text-accent text-[1rem] font-bold tracking-[0.1em]"
-  >Add a new trip ...</h2>
+  <div class="flex w-full">
+    <h2
+      class="font-poppins text-icon text-[1.25rem] font-bold tracking-[0.1em] my-2"
+    >Add a new trip ...</h2>
+  </div>
   <form
     (ngSubmit)="onSubmit()"
     [formGroup]="tripForm"

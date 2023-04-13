@@ -19,24 +19,4 @@ export class ActivitiesService {
     this.activities.push(...activities);
     this.activitiesChanged.next(this.activities.slice());
   }
-
-  calcTripStart() {
-    let tripStart = new Date(this.activities[0].startDate);
-    this.activities.forEach((activity) => {
-      if (activity.startDate < tripStart) {
-        tripStart = activity.startDate;
-      }
-    });
-    return tripStart;
-  }
-
-  calcTripEnd() {
-    let tripEnd = new Date(this.activities[0].endDate);
-    this.activities.forEach((activity) => {
-      if (activity.endDate > tripEnd) {
-        tripEnd = activity.endDate;
-      }
-    });
-    return tripEnd;
-  }
 }

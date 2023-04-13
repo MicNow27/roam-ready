@@ -44,7 +44,6 @@ export class AuthComponent {
     }
     auth$.subscribe(
       (result) => {
-        console.log('RESULT: ' + JSON.stringify(result)); // TODO: remove later
         this.router.navigate(['/trips']);
         this.isLoading = false;
       },
