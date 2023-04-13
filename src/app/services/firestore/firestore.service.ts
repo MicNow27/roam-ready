@@ -54,8 +54,8 @@ export class FirestoreService {
       };
       await this.addUser(userData);
     }
-    this.tripsService.setUser(userData);
-    this.tripsService.setTrips(userData.trips);
+    // this.tripsService.setUser(userData);
+    // this.tripsService.setTrips(userData.trips);
     console.log(
       'userData: ',
       userData.userId,
@@ -79,6 +79,8 @@ export class FirestoreService {
     querySnapshot.forEach((docElement: any) => {
       trips = docElement.data().trips;
     });
+
+    this.tripsService.setTrips(trips);
 
     return trips;
   }

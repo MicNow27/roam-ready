@@ -1,3 +1,5 @@
+// TODO: put in separate files
+
 export interface UserData {
   idToken: string;
   email: string;
@@ -9,8 +11,8 @@ export interface UserData {
 export interface Trip {
   name: string;
   description?: string;
-  startDate?: string;
-  endDate?: string;
+  startDate?: Date;
+  endDate?: Date;
   activities?: Activity[];
 }
 
@@ -21,8 +23,8 @@ export interface Activity {
   tag: string;
   notes?: string;
   price: string; // type may change
-  startDate: string; // type may change
-  endDate: string; // type may change
+  startDate: Date; // type may change
+  endDate: Date; // type may change
   startLocation?: string; // type may change
   endLocation?: string; // type may change
 }

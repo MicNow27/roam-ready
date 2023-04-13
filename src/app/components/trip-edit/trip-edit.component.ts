@@ -12,7 +12,7 @@ import { FirestoreService } from '../../services/firestore/firestore.service';
 })
 export class TripEditComponent implements OnInit {
   oldTrip: Trip | undefined;
-  tripName: string = '';
+  routeName: string = '';
   editMode = false;
   tripForm: FormGroup = new FormGroup({});
   activities: Activity[] = [];
@@ -30,9 +30,9 @@ export class TripEditComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
-      this.tripName = params['tripName'];
-      if (this.tripName)
-        this.oldTrip = this.tripsService.getTrip(this.tripName);
+      this.routeName = params['tripName'];
+      if (this.routeName)
+        this.oldTrip = this.tripsService.getTrip(this.routeName);
       else this.editMode = true;
       this.initForm();
     });
@@ -66,7 +66,7 @@ export class TripEditComponent implements OnInit {
   }
 
   onCancel() {
-    this.router.navigate(['../'], { relativeTo: this.route });
+    this.router.navigate(['../../'], { relativeTo: this.route });
   }
 
   onAddActivity() {

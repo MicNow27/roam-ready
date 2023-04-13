@@ -43,6 +43,8 @@ the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
 **Logos:** [My Free Logo Maker](https://myfreelogomaker.com/)
 
+**Loading spinner:** [Loading.io](https://loading.io/)
+
 **Images:**
 
 castle: [Tim Rebkavets](https://unsplash.com/pt-br/@timreb9?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
@@ -74,5 +76,5 @@ skiing: [Matthieu Pétiard](https://unsplash.com/@mattpunsplash?utm_source=unspl
 - [ ] NG-Zorro drop down items are blue on hover
 - [ ] Add location to activity form
 - [ ] Alert box for cancelling form
-- [ ] Add a calendar
+- [ ] Add a calendar (https://medium.com/allenhwkim/angular-build-a-calendar-in-50-lines-f813f0a04c3b)
 - [ ] Add resolvers

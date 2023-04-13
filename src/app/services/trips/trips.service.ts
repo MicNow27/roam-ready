@@ -14,11 +14,11 @@ export class TripsService {
 
   constructor(private activitiesService: ActivitiesService) {}
 
-  setUser(user: UserData) {
-    console.log('setUser called');
-    this.user = user;
-    this.userChanged.next(this.user);
-  }
+  // setUser(user: UserData) {
+  //   console.log('setUser called');
+  //   this.user = user;
+  //   this.userChanged.next(this.user);
+  // }
 
   getUser() {
     return this.user;

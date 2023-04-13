@@ -44,6 +44,10 @@ export class AuthService {
         console.log('User in authStateSubscription is: ' + aUser); // TODO: remove later
         if (!aUser) {
           this.router.navigate(['/home']);
+          return null;
+        } else {
+          console.log('CHECKING ID: ' + aUser?.uid); // TODO: remove later
+          return aUser;
         }
       }
     );

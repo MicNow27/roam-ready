@@ -26,10 +26,13 @@ export class TripsComponent implements OnInit {
       }
     );
     this.trips = this.tripsService.getTrips();
+    console.log('trips length: ' + this.trips.length);
   }
+
+  tripName = (index: number, trip: { name: string }) => trip.name;
 
   onBeginClick() {
     console.log('onBeginClick');
-    this.router.navigate(['new'], { relativeTo: this.route });
+    this.router.navigate(['edit/new'], { relativeTo: this.route });
   }
 }

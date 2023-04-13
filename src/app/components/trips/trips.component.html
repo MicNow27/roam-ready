@@ -12,5 +12,11 @@
 </ng-container>
 
 <ng-template #hasTrips>
-  <p>Has Trips</p>
+  <div class="flex flex-col items-center justify-center flex-grow bg-bg p-4">
+    <app-trip
+      *ngFor="let trip of trips; trackBy: tripName"
+      [routeName]="trip.name"
+      [trip]="trip"
+    ></app-trip>
+  </div>
 </ng-template>
