@@ -6,7 +6,7 @@
 <div class="flex flex-col flex-grow bg-bg py-5 px-5 gap-[1.5rem]">
   <h2
     class="font-poppins text-accent text-[1rem] font-bold tracking-[0.1em]"
-  >Add a new adventure ...</h2>
+  >Add a new trip ...</h2>
   <form
     (ngSubmit)="onSubmit()"
     [formGroup]="tripForm"
@@ -32,7 +32,7 @@
     <div class="flex justify-center gap-4">
       <button
         (click)="onGoToActivities()"
-        *ngIf="activities.length > 0"
+        *ngIf="activities"
         [disabled]="!tripForm.valid"
         class="cursor-pointer text-accent bg-bg tracking-[0.2em] w-40 text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[0.01rem] border-solid border-line-gray font-poppins hover:bg-banner-gray active:bg-banner-gray hover:shadow-shadow-focus active:shadow-shadow-focus"
         type="button"

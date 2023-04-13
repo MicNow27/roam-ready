@@ -78,3 +78,7 @@ skiing: [Matthieu Pétiard](https://unsplash.com/@mattpunsplash?utm_source=unspl
 - [ ] Alert box for cancelling form
 - [ ] Add a calendar (https://medium.com/allenhwkim/angular-build-a-calendar-in-50-lines-f813f0a04c3b)
 - [ ] Add resolvers
+
+## Bugs
+
+- login: form --> loading spinner --> form --> landing page

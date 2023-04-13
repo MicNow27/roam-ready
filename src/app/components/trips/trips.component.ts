@@ -26,7 +26,6 @@ export class TripsComponent implements OnInit {
       }
     );
     this.trips = this.tripsService.getTrips();
-    console.log('trips length: ' + this.trips.length);
   }
 
   tripName = (index: number, trip: { name: string }) => trip.name;

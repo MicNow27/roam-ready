@@ -1,10 +1,10 @@
 // TODO: put in separate files
 
 export interface UserData {
-  idToken: string;
-  email: string;
-  expiresIn: string;
-  userId: string;
+  // idToken: string;
+  // email: string;
+  // expiresIn: string;
+  authUserId: string; // User UID
   trips: Trip[];
 }
 

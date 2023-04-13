@@ -11,10 +11,10 @@ import {
   updateDoc,
   where,
 } from '@angular/fire/firestore';
-import { from, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Trip, UserData } from '../../models/user.data';
-import { User } from '@angular/fire/auth';
 import { TripsService } from '../trips/trips.service';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -25,56 +25,30 @@ export class FirestoreService {
 
   private firestore: Firestore = inject(Firestore);
 
-  constructor(private tripsService: TripsService) {
+  constructor(
+    private authService: AuthService,
+    private tripsService: TripsService
+  ) {
     this.usersCollection = collection(this.firestore, 'users');
     this.users$ = collectionData(this.usersCollection) as Observable<
       UserData[]
     >;
   }
 
-  async handleLoginSignup(user: User) {
-    console.log('handleLoginSignup called');
-    const userId = user.uid;
-    const querySnapShot = await getDocs(
-      query(this.usersCollection, where('userId', '==', userId))
-    );
-
-    let userData: UserData | undefined;
-    querySnapShot.forEach((docElement) => {
-      userData = docElement.data() as UserData;
-    });
-
-    if (!userData) {
-      userData = {
-        idToken: await user.getIdToken(),
-        email: user.email ?? '',
-        expiresIn: (await user.getIdTokenResult()).expirationTime,
-        userId: user.uid,
-        trips: [],
-      };
-      await this.addUser(userData);
-    }
-    // this.tripsService.setUser(userData);
-    // this.tripsService.setTrips(userData.trips);
-    console.log(
-      'userData: ',
-      userData.userId,
-      userData.trips.length,
-      userData.email,
-      userData.expiresIn,
-      userData.idToken
-    );
-    return userData;
-  }
-
   async getTrips(): Promise<Trip[]> {
-    const user = this.tripsService.getUser()!;
-    const userCollId = await this.getUserCollId(user);
+    // Get this user's UID.
+    const authUserId = this.authService.getAuthUserId();
+    if (!authUserId) return []; // Should never be the case.
 
-    const querySnapshot = await getDocs(
-      query(this.usersCollection, where('userId', '==', user.userId))
-    );
+    // Check if the user exists in the Firestore collection.
+    // If not, create a new user document.
+    if ((await this.getUserCollId(authUserId)) === '')
+      await this.addUser(authUserId);
 
+    // Get the document in the users Firestore collection containing authUserId.
+    const querySnapshot = await this.getQuerySnapshot(authUserId);
+
+    // Get the trips array from the document.
     let trips: Trip[] = [];
     querySnapshot.forEach((docElement: any) => {
       trips = docElement.data().trips;
@@ -85,39 +59,43 @@ export class FirestoreService {
     return trips;
   }
 
-  async updateTrips(user: UserData, trips: Trip[]) {
-    console.log('updateTrips called');
-    console.log('trips: ', trips.length);
+  async updateTrips(trips: Trip[]) {
+    const authUserId = this.authService.getAuthUserId();
+    if (!authUserId) return; // Should never be the case.
 
-    const userCollId = await this.getUserCollId(user);
-    console.log('userCollId: ', userCollId);
+    const userCollId = await this.getUserCollId(authUserId);
+    if (userCollId === '') return; // Should never be the case.
 
     await updateDoc(doc(this.firestore, 'users', userCollId), {
-      idToken: user.idToken,
-      email: user.email,
-      expiresIn: user.expiresIn,
-      userId: user.userId,
+      authUserId: authUserId,
       trips: trips,
     });
   }
 
-  private async getUserCollId(user: UserData): Promise<string> {
-    const querySnapshot = await getDocs(
-      query(this.usersCollection, where('userId', '==', user.userId))
-    );
+  private async getUserCollId(authUserId: string) {
+    const querySnapshot = await this.getQuerySnapshot(authUserId);
 
     let userCollId = '';
     querySnapshot.forEach((docElement: any) => {
       userCollId = docElement.id;
     });
-    console.log('userCollId: ', userCollId);
 
     return userCollId;
   }
 
-  private addUser(userData: UserData) {
-    return from(
-      addDoc(this.usersCollection, userData).then((docRef) => docRef.id)
+  private async getQuerySnapshot(authUserId: string) {
+    return await getDocs(
+      query(this.usersCollection, where('authUserId', '==', authUserId))
     );
+  }
+
+  private async addUser(authUserId: string) {
+    const userData: UserData = {
+      authUserId: authUserId,
+      trips: [],
+    };
+    const docRef = await addDoc(this.usersCollection, userData);
+    console.log('Document written with ID: ', docRef.id);
+    return docRef.id;
   }
 }

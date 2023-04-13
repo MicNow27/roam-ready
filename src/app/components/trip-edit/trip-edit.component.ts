@@ -12,14 +12,12 @@ import { FirestoreService } from '../../services/firestore/firestore.service';
 })
 export class TripEditComponent implements OnInit {
   oldTrip: Trip | undefined;
-  routeName: string = '';
+  routeName = '';
   editMode = false;
   tripForm: FormGroup = new FormGroup({});
-  activities: Activity[] = [];
+  activities: Activity[] | undefined;
   error: string | null = '';
   denied = false;
-
-  // activitiesSubscription: Subscription | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,38 +28,24 @@ export class TripEditComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
-      this.routeName = params['tripName'];
-      if (this.routeName)
+      this.routeName = params['routeName'];
+      if (this.routeName != null) {
         this.oldTrip = this.tripsService.getTrip(this.routeName);
-      else this.editMode = true;
+        if (this.oldTrip) this.activities = this.oldTrip.activities;
+        this.editMode = true;
+      }
       this.initForm();
     });
-
-    // this.activitiesSubscription =
-    //   this.activitiesService.activitiesChanged.subscribe(
-    //     (activities: Activity[]) => {
-    //       this.activities = this.activitiesService.getActivitiesByTrip(
-    //         this.tripName
-    //       ); // TODO: Eh?
-    //     }
-    //   );
-    // this.activities = this.activitiesService.getActivitiesByTrip(this.tripName);
   }
 
   async onSubmit() {
-    console.log(this.tripForm.value + ' save clicked');
     if (this.editMode && this.oldTrip) {
       this.tripsService.updateTrip(this.oldTrip, this.tripForm.value);
     } else {
       this.tripsService.addTrip(this.tripForm.value);
     }
+    await this.firestoreService.updateTrips(this.tripsService.getTrips());
 
-    if (!this.tripsService.getUser()) return;
-    console.log('userId: ' + this.tripsService.getUser()?.userId);
-    await this.firestoreService.updateTrips(
-      this.tripsService.getUser()!,
-      this.tripsService.getTrips()
-    );
     this.onCancel();
   }
 
@@ -70,7 +54,7 @@ export class TripEditComponent implements OnInit {
   }
 
   onAddActivity() {
-    if (this.editMode && this.tripForm.dirty && !this.denied) {
+    if (this.tripForm.dirty && !this.denied) {
       console.log('denied: ' + this.denied);
       this.error = 'Do you want to proceed without saving?';
     }
@@ -82,7 +66,7 @@ export class TripEditComponent implements OnInit {
   }
 
   onGoToActivities() {
-    if (this.editMode && this.tripForm.dirty && !this.denied) {
+    if (this.tripForm.dirty && !this.denied) {
       this.error = 'Do you want to proceed without saving?';
     }
     if (this.denied) {
