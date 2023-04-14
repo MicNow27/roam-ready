@@ -3,7 +3,7 @@ import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { UserData } from '../../models/user.data';
+import { AuthResponseData } from '../../models/auth-response.data';
 
 @Component({
   selector: 'app-auth',
@@ -30,7 +30,7 @@ export class AuthComponent {
 
     this.isLoading = true;
 
-    let auth$: Observable<UserData>;
+    let auth$: Observable<AuthResponseData>;
     if (this.isLoginMode) {
       auth$ = this.authService.signIn(
         authForm.value.email,
@@ -44,9 +44,8 @@ export class AuthComponent {
     }
     auth$.subscribe(
       (result) => {
-        console.log('RESULT: ' + JSON.stringify(result)); // TODO: remove later
-        this.isLoading = false;
         this.router.navigate(['/trips']);
+        this.isLoading = false;
       },
       (errorMessage) => {
         this.error = errorMessage;

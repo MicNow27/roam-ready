@@ -11,8 +11,7 @@ import {
   UserCredential,
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { UserData } from '../../models/user.data';
-import { FirestoreService } from '../firestore/firestore.service';
+import { AuthResponseData } from '../../models/auth-response.data';
 
 @Injectable({
   providedIn: 'root',
@@ -26,10 +25,7 @@ export class AuthService {
   authState$ = authState(this.auth);
   idToken$ = idToken(this.auth);
 
-  constructor(
-    private router: Router,
-    private firestoreService: FirestoreService
-  ) {
+  constructor(private router: Router) {
     // TODO: THESE MUST BE UNSUBSCRIBED FROM (see docs OnDestroy in component)!!!!
 
     this.userSubscription = this.user$.subscribe((aUser: User | null) => {
@@ -58,12 +54,16 @@ export class AuthService {
     );
   }
 
-  signUp(email: string, password: string): Observable<UserData> {
+  getAuthUserId() {
+    return this.auth.currentUser?.uid;
+  }
+
+  signUp(email: string, password: string): Observable<AuthResponseData> {
     return from(
       createUserWithEmailAndPassword(this.auth, email, password)
     ).pipe(
       switchMap(
-        async (userCredential) => await this.setUserData(userCredential)
+        async (userCredential) => await this.setAuthResponseData(userCredential)
       ),
       catchError((error) => {
         throw this.handleError(error);
@@ -71,12 +71,13 @@ export class AuthService {
     );
   }
 
-  signIn(email: string, password: string): Observable<UserData> {
+  signIn(email: string, password: string): Observable<AuthResponseData> {
     return from(signInWithEmailAndPassword(this.auth, email, password)).pipe(
-      switchMap(async (userCredential) => {
-        return await this.setUserData(userCredential);
-      }),
+      switchMap(
+        async (userCredential) => await this.setAuthResponseData(userCredential)
+      ),
       catchError((error) => {
+        console.log('sign in ERROR');
         throw this.handleError(error);
       })
     );
@@ -90,21 +91,21 @@ export class AuthService {
     // TODO: unsubscribe from subscriptions here?
   }
 
-  private async setUserData(userCredential: UserCredential) {
+  private async setAuthResponseData(userCredential: UserCredential) {
     const user = userCredential.user;
-    const userData: UserData = {
+    const authData: AuthResponseData = {
+      providerId: user.providerId,
       idToken: await user.getIdToken(),
       email: user.email,
+      refreshToken: user.refreshToken,
       expiresIn: (await user.getIdTokenResult()).expirationTime,
-      userId: user.uid,
-      trips: [],
+      localId: user.uid,
+      registered: true,
     };
-    this.firestoreService.addUser(userData); // TODO: change to feature state
-    return userData;
+    return authData;
   }
 
   private handleError(error: any) {
-    console.log('Error CODE: ' + error.code);
     let errorMessage = 'An unknown error occurred!';
     switch (error.code) {
       case 'auth/email-already-in-use':

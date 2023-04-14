@@ -1,27 +1,25 @@
+// TODO: put in separate files
+
 export interface UserData {
-  idToken: string;
-  email: string | null;
-  expiresIn: string;
-  userId: string;
+  authUserId: string; // User UID
   trips: Trip[];
 }
 
 export interface Trip {
-  name: string;
-  description?: string;
-  startDate: string;
-  endDate: string;
-  activities: Activity[];
+  tripName: string;
+  tripDescription?: string;
+  activities?: Activity[];
 }
 
 export interface Activity {
-  name: string;
-  description?: string;
+  tripName: string;
+  activityName: string;
+  activityDescription?: string;
   tag: string;
   notes?: string;
-  price: string;
-  startDate: string;
-  endDate: string;
-  startLocation?: string;
-  endLocation?: string;
+  price: string; // type may change
+  startDate: Date; // type may change
+  endDate: Date; // type may change
+  startLocation?: string; // type may change
+  endLocation?: string; // type may change
 }

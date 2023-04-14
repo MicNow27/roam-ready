@@ -43,6 +43,8 @@ the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
 **Logos:** [My Free Logo Maker](https://myfreelogomaker.com/)
 
+**Loading spinner:** [Loading.io](https://loading.io/)
+
 **Images:**
 
 castle: [Tim Rebkavets](https://unsplash.com/pt-br/@timreb9?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
@@ -66,3 +68,22 @@ skiing: [Matthieu Pétiard](https://unsplash.com/@mattpunsplash?utm_source=unspl
 - **Firebase Auth:**
   - https://github.com/angular/angularfire/blob/master/docs/auth.md
   - https://firebase.google.com/docs/auth/web/start?hl=en&authuser=0
+
+## Still To Do
+
+- [ ] Error handling for empty fields in login / signup form
+- [ ] Sort out routing with home page vs landing page
+- [ ] NG-Zorro drop down items are blue on hover
+- [ ] Add location to activity form
+- [ ] Alert box for cancelling form
+- [ ] Add a calendar (https://medium.com/allenhwkim/angular-build-a-calendar-in-50-lines-f813f0a04c3b)
+- [ ] Add resolvers
+- [ ] Disable home button when on home / landing page
+
+## Bugs
+
+- when logging in: loading spinner -> login form -> home page
+  - ~~if still present after implementing state, try move loading spinner to trips component~~
+    - can't cos, resolver...
+
+

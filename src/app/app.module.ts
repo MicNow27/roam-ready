@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { en_US, NZ_I18N } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NZ_ICONS, NzIconModule } from 'ng-zorro-antd/icon';
@@ -39,6 +39,11 @@ import { AlertComponent } from './components/alert/alert.component';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { TripsComponent } from './components/trips/trips.component';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
+import { TripEditComponent } from './components/trip-edit/trip-edit.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { TripItemComponent } from './components/trip-item/trip-item.component';
+import { TripComponent } from './components/trip/trip.component';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 
 registerLocaleData(en);
 
@@ -58,11 +63,16 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(
     AlertComponent,
     LoadingSpinnerComponent,
     TripsComponent,
+    TripEditComponent,
+    NotFoundComponent,
+    TripItemComponent,
+    TripComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
     NzIconModule,
@@ -78,6 +88,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(
     provideStorage(() => getStorage()),
     NzDropDownModule,
     NzCarouselModule,
+    NzButtonModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
