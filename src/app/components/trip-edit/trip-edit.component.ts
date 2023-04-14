@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TripsService } from '../../services/trips/trips.service';
 import { Activity, Trip } from '../../models/user.data';
 import { FirestoreService } from '../../services/firestore/firestore.service';
@@ -27,15 +27,23 @@ export class TripEditComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.params.subscribe((params: Params) => {
-      this.routeName = params['routeName'];
-      if (this.routeName != null) {
-        this.oldTrip = this.tripsService.getTrip(this.routeName);
-        if (this.oldTrip) this.activities = this.oldTrip.activities;
-        this.editMode = true;
-      }
-      this.initForm();
-    });
+    const tripName = this.route.snapshot.queryParamMap.get('tripName');
+    if (tripName) {
+      this.oldTrip = this.tripsService.getTrip(tripName);
+      if (this.oldTrip) this.activities = this.oldTrip.activities;
+      this.editMode = true;
+    }
+
+    this.initForm();
+    // this.route.params.subscribe((params: Params) => {
+    //   this.routeName = params['routeName'];
+    //   if (this.routeName != null) {
+    //     // this.oldTrip = this.tripsService.getTrip(this.routeName);
+    //     if (this.oldTrip) this.activities = this.oldTrip.activities;
+    //     this.editMode = true;
+    //   }
+    //   this.initForm();
+    // });
   }
 
   async onSubmit() {
@@ -50,7 +58,9 @@ export class TripEditComponent implements OnInit {
   }
 
   onCancel() {
-    this.router.navigate(['../../'], { relativeTo: this.route });
+    if (this.editMode)
+      this.router.navigate(['../'], { relativeTo: this.route });
+    else this.router.navigate(['../../'], { relativeTo: this.route });
   }
 
   onAddActivity() {

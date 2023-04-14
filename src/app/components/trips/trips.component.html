@@ -28,7 +28,7 @@
     </div>
     <app-trip-item
       *ngFor="let trip of trips; trackBy: tripName"
-      [tripNameRoute]="routeName(trip)"
+      [tripNameRoute]="tripNameRoute(trip)"
       [trip]="trip"
       class="w-full"
     ></app-trip-item>

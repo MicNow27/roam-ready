@@ -4,6 +4,7 @@ import { Activity, Trip } from '../../models/user.data';
 import { TripsService } from '../../services/trips/trips.service';
 import { Subscription } from 'rxjs';
 import { ActivitiesService } from '../../services/activities/activities.service';
+import { activityNameRoute, tripNameRoute } from '../../../utils/routeNames';
 
 @Component({
   selector: 'app-trip',
@@ -20,11 +21,13 @@ export class TripComponent implements OnInit {
       tag: 'tourism',
       notes: `We'll spend the day at the museum and have lunch somewhere nearby.`,
       price: 5.0,
-      startDate: new Date('2020-01-01 08:00:00'),
-      endDate: new Date('2020-01-01 17:00:00'),
+      startDate: new Date('2020-01-01 08:00:00').getTime(),
+      endDate: new Date('2020-01-01 17:00:00').getTime(),
     },
   ];
   activitiesSubscription: Subscription | undefined;
+  activityNameRoute = activityNameRoute;
+  tripNameRoute = tripNameRoute;
 
   constructor(
     private router: Router,
@@ -53,11 +56,12 @@ export class TripComponent implements OnInit {
   activityName = (index: number, activity: { activityName: string }) =>
     activity.activityName;
 
-  routeName = (activity: { activityName: string }) =>
-    activity.activityName.toLowerCase().replace(/ /g, '-');
-
   onEditTrip() {
-    // TODO
+    if (!this.trip) return;
+    const tripNameRoute = this.tripNameRoute(this.trip);
+    this.router.navigate(['/trips/edit', tripNameRoute], {
+      queryParams: { tripName: this.trip.tripName },
+    });
   }
 
   onAddActivity() {

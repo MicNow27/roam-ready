@@ -21,6 +21,5 @@ export class ActivityComponent implements OnInit {
     const activityName = this.route.snapshot.queryParamMap.get('activityName');
     if (activityName)
       this.activity = this.activitiesService.getActivity(activityName);
-    console.log(this.activity?.activityName);
   }
 }

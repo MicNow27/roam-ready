@@ -19,8 +19,8 @@ export class ActivitiesService {
       tag: 'tourism',
       notes: `We'll spend the day at the museum and have lunch somewhere nearby.`,
       price: 5.0,
-      startDate: new Date('2020-01-01 08:00:00'),
-      endDate: new Date('2020-01-01 17:00:00'),
+      startDate: new Date('2020-01-01 08:00:00').getTime(),
+      endDate: new Date('2020-01-01 17:00:00').getTime(),
     };
     return activity;
     // return this.activities.find(
