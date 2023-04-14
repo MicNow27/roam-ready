@@ -22,4 +22,6 @@ export class ActivityComponent implements OnInit {
     if (activityName)
       this.activity = this.activitiesService.getActivity(activityName);
   }
+
+  onEditActivity() {}
 }

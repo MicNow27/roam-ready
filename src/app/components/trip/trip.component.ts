@@ -65,6 +65,9 @@ export class TripComponent implements OnInit {
   }
 
   onAddActivity() {
-    // TODO
+    this.router.navigate(['edit/new'], {
+      relativeTo: this.route,
+      queryParams: { tripName: this.trip?.tripName },
+    });
   }
 }
