@@ -69,9 +69,7 @@ skiing: [Matthieu Pétiard](https://unsplash.com/@mattpunsplash?utm_source=unspl
   - https://github.com/angular/angularfire/blob/master/docs/auth.md
   - https://firebase.google.com/docs/auth/web/start?hl=en&authuser=0
 
-## Assumptions:
-
-### (for now...)
+## Assumptions (for now...):
 
 - uniqueness of trip names and activity names
 
@@ -85,7 +83,8 @@ skiing: [Matthieu Pétiard](https://unsplash.com/@mattpunsplash?utm_source=unspl
 - [ ] Add resolvers
 - [ ] Disable home button when on home / landing page
 - [ ] Remove user feedback for disabled buttons
-- [ ] Move dual button groups to their own components?
+- [ ] Merge trip-item and activity-item components
+- [ ] Item components' bg --> forms' bg
 
 ## Bugs
 

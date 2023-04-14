@@ -47,6 +47,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { ActivityItemComponent } from './components/activity-item/activity-item.component';
 import { ActivityComponent } from './components/activity/activity.component';
+import { ActivityEditComponent } from './components/activity-edit/activity-edit.component';
 
 registerLocaleData(en);
 
@@ -72,6 +73,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(
     TripComponent,
     ActivityItemComponent,
     ActivityComponent,
+    ActivityEditComponent,
   ],
   imports: [
     BrowserModule,

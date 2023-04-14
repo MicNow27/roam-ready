@@ -12,7 +12,6 @@ import { FirestoreService } from '../../services/firestore/firestore.service';
 })
 export class TripEditComponent implements OnInit {
   oldTrip: Trip | undefined;
-  routeName = '';
   editMode = false;
   tripForm: FormGroup = new FormGroup({});
   activities: Activity[] | undefined;
@@ -30,20 +29,23 @@ export class TripEditComponent implements OnInit {
     const tripName = this.route.snapshot.queryParamMap.get('tripName');
     if (tripName) {
       this.oldTrip = this.tripsService.getTrip(tripName);
-      if (this.oldTrip) this.activities = this.oldTrip.activities;
+      // if (this.oldTrip) this.activities = this.oldTrip.activities;
+      this.activities = [
+        {
+          tripName: 'Paris',
+          activityName: 'Louvre',
+          activityDescription: 'Day at the Louvre Museum',
+          tag: 'tourism',
+          notes: `We'll spend the day at the museum and have lunch somewhere nearby.`,
+          price: 5.0,
+          startDate: new Date('2020-01-01 08:00:00').getTime(),
+          endDate: new Date('2020-01-01 17:00:00').getTime(),
+        },
+      ];
       this.editMode = true;
     }
 
     this.initForm();
-    // this.route.params.subscribe((params: Params) => {
-    //   this.routeName = params['routeName'];
-    //   if (this.routeName != null) {
-    //     // this.oldTrip = this.tripsService.getTrip(this.routeName);
-    //     if (this.oldTrip) this.activities = this.oldTrip.activities;
-    //     this.editMode = true;
-    //   }
-    //   this.initForm();
-    // });
   }
 
   async onSubmit() {
@@ -63,25 +65,19 @@ export class TripEditComponent implements OnInit {
     else this.router.navigate(['../../'], { relativeTo: this.route });
   }
 
-  onAddActivity() {
-    if (this.tripForm.dirty && !this.denied) {
-      this.error = 'Do you want to proceed without saving?';
-    }
-    if (this.denied) {
-      // TODO: route to activities new
-      this.denied = false;
-    }
-  }
-
-  onGoToActivities() {
-    if (this.tripForm.dirty && !this.denied) {
-      this.error = 'Do you want to proceed without saving?';
-    }
-    if (this.denied) {
-      // TODO: route to activities
-      this.denied = false;
-    }
-  }
+  // onToActivities() {
+  //   if (this.tripForm.dirty && !this.denied) {
+  //     this.error = 'Do you want to proceed without saving?';
+  //   }
+  //   if (!this.tripForm.dirty || this.denied) {
+  //     if (this.activities) {
+  //       this.router.navigate(['../'], { relativeTo: this.route });
+  //     } else {
+  //       // TODO route to activity form
+  //     }
+  //     this.denied = false;
+  //   }
+  // }
 
   onHandleError() {
     this.error = null;

@@ -9,19 +9,28 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { TripsResolver } from './resolvers/trips/trips.resolver';
 import { TripComponent } from './components/trip/trip.component';
 import { ActivityComponent } from './components/activity/activity.component';
+import { ActivityEditComponent } from './components/activity-edit/activity-edit.component';
 
 const routes: Routes = [
   {
-    path: 'trips/edit/new',
-    component: TripEditComponent,
+    path: 'trips/:tripNameRoute/edit/new',
+    component: ActivityEditComponent,
+  },
+  {
+    path: 'trips/:tripNameRoute/edit/:activityNameRoute',
+    component: ActivityEditComponent,
+  },
+  {
+    path: 'trips/:tripNameRoute/:activityNameRoute',
+    component: ActivityComponent,
   },
   {
     path: 'trips/edit/:tripNameRoute',
     component: TripEditComponent,
   },
   {
-    path: 'trips/:tripNameRoute/:activityNameRoute',
-    component: ActivityComponent,
+    path: 'trips/edit/new',
+    component: TripEditComponent,
   },
   {
     path: 'trips/:tripNameRoute',
