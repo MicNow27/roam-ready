@@ -44,6 +44,9 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { TripItemComponent } from './components/trip-item/trip-item.component';
 import { TripComponent } from './components/trip/trip.component';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { ActivityItemComponent } from './components/activity-item/activity-item.component';
+import { ActivityComponent } from './components/activity/activity.component';
 
 registerLocaleData(en);
 
@@ -67,6 +70,8 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(
     NotFoundComponent,
     TripItemComponent,
     TripComponent,
+    ActivityItemComponent,
+    ActivityComponent,
   ],
   imports: [
     BrowserModule,
@@ -89,6 +94,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(
     NzDropDownModule,
     NzCarouselModule,
     NzButtonModule,
+    NzPopoverModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },

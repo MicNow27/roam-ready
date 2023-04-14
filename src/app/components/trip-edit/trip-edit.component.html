@@ -36,14 +36,14 @@
         (click)="onGoToActivities()"
         *ngIf="activities"
         [disabled]="!tripForm.valid"
-        class="cursor-pointer text-accent bg-bg tracking-[0.2em] w-40 text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[0.01rem] border-solid border-line-gray font-poppins hover:bg-banner-gray active:bg-banner-gray hover:shadow-shadow-focus active:shadow-shadow-focus"
+        class="cursor-pointer text-bg bg-icon tracking-[0.2em] w-40 text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[0.01rem] font-poppins hover:shadow-shadow-focus active:shadow-shadow-focus"
         type="button"
       >{{editMode ? 'Edit activities' : 'Go to activities'}}
       </button>
       <button
         (click)="onAddActivity()"
         [disabled]="!tripForm.valid"
-        class="cursor-pointer text-accent bg-bg tracking-[0.2em] w-40 text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[0.01rem] border-solid border-line-gray font-poppins hover:bg-banner-gray active:bg-banner-gray hover:shadow-shadow-focus active:shadow-shadow-focus"
+        class="cursor-pointer text-bg bg-icon tracking-[0.2em] w-40 text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[0.01rem] font-poppins hover:shadow-shadow-focus active:shadow-shadow-focus"
         type="button"
       >Add an activity
       </button>

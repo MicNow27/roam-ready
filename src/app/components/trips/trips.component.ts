@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Trip } from '../../models/user.data';
 import { Subscription } from 'rxjs';
 import { TripsService } from '../../services/trips/trips.service';
+import { tripNameRoute } from '../../../utils/routeNames';
 
 @Component({
   selector: 'app-trips',
@@ -12,6 +13,7 @@ import { TripsService } from '../../services/trips/trips.service';
 export class TripsComponent implements OnInit {
   trips: Trip[] = [];
   tripsSubscription: Subscription | undefined;
+  tripNameRoute = tripNameRoute;
 
   constructor(
     private router: Router,
@@ -29,9 +31,6 @@ export class TripsComponent implements OnInit {
   }
 
   tripName = (index: number, trip: { tripName: string }) => trip.tripName;
-
-  routeName = (trip: { tripName: string }) =>
-    trip.tripName.toLowerCase().replace(/ /g, '-');
 
   onBeginClick() {
     this.onAddTrip();

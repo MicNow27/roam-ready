@@ -1,13 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { catchError, from, Observable, Subscription, switchMap } from 'rxjs';
+import { catchError, from, Observable, switchMap } from 'rxjs';
 import {
   Auth,
   authState,
   createUserWithEmailAndPassword,
-  idToken,
   signInWithEmailAndPassword,
-  user,
-  User,
   UserCredential,
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
@@ -17,42 +14,10 @@ import { AuthResponseData } from '../../models/auth-response.data';
   providedIn: 'root',
 })
 export class AuthService {
-  userSubscription: Subscription;
-  authStateSubscription: Subscription;
-  idTokenSubscription: Subscription;
   private auth: Auth = inject(Auth);
-  user$ = user(this.auth);
   authState$ = authState(this.auth);
-  idToken$ = idToken(this.auth);
 
-  constructor(private router: Router) {
-    // TODO: THESE MUST BE UNSUBSCRIBED FROM (see docs OnDestroy in component)!!!!
-
-    this.userSubscription = this.user$.subscribe((aUser: User | null) => {
-      console.log('User in userSubscription is: ' + aUser); // TODO: remove later
-      if (!aUser) {
-        this.router.navigate(['/home']);
-      }
-    });
-
-    this.authStateSubscription = this.authState$.subscribe(
-      (aUser: User | null) => {
-        console.log('User in authStateSubscription is: ' + aUser); // TODO: remove later
-        if (!aUser) {
-          this.router.navigate(['/home']);
-        }
-      }
-    );
-
-    this.idTokenSubscription = this.idToken$.subscribe(
-      (token: string | null) => {
-        console.log('Token in idTokenSubscription is: ' + token); // TODO: remove later
-        if (!token) {
-          this.router.navigate(['/home']);
-        }
-      }
-    );
-  }
+  constructor(private router: Router) {}
 
   getAuthUserId() {
     return this.auth.currentUser?.uid;
@@ -77,7 +42,6 @@ export class AuthService {
         async (userCredential) => await this.setAuthResponseData(userCredential)
       ),
       catchError((error) => {
-        console.log('sign in ERROR');
         throw this.handleError(error);
       })
     );
@@ -85,10 +49,8 @@ export class AuthService {
 
   signOut() {
     this.auth.signOut().then(() => {
-      console.log('Signed out'); // TODO: remove later
+      this.router.navigate(['/home']);
     });
-    this.router.navigate(['/auth']);
-    // TODO: unsubscribe from subscriptions here?
   }
 
   private async setAuthResponseData(userCredential: UserCredential) {

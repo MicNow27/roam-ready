@@ -15,11 +15,11 @@ export interface Activity {
   tripName: string;
   activityName: string;
   activityDescription?: string;
-  tag: string;
+  tag: 'travel' | 'accommodation' | 'tourism' | 'food';
   notes?: string;
-  price: string; // type may change
-  startDate: Date; // type may change
-  endDate: Date; // type may change
+  price: number; // type may change
+  startDate: number; // type may change
+  endDate: number; // type may change
   startLocation?: string; // type may change
   endLocation?: string; // type may change
 }
