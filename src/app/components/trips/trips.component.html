@@ -16,6 +16,8 @@
     <button
       (click)="onAddTrip()"
       class="absolute z-50 fixed right-4 top-4 flex justify-center items-center cursor-pointer bg-accent shadow-shadow-normal transition-all duration-[0.3s] p-3 rounded-full border-[none] font-poppins hover:bg-accent-shade active:bg-accent-shade hover:shadow-shadow-focus active:shadow-shadow-focus"
+      nz-popover
+      nzPopoverContent="Add a new trip"
       type="button"
     ><span class="text-bg text-[1.5rem]" nz-icon nzType="plus"></span>
     </button>
@@ -26,7 +28,7 @@
     </div>
     <app-trip-item
       *ngFor="let trip of trips; trackBy: tripName"
-      [routeName]="routeName(trip)"
+      [tripNameRoute]="routeName(trip)"
       [trip]="trip"
       class="w-full"
     ></app-trip-item>

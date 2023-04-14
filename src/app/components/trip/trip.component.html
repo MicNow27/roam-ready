@@ -1,1 +1,31 @@
-<p>{{trip?.tripName}}!</p>
+<div class="flex flex-col items-center justify-center flex-grow bg-bg px-7 py-3 gap-6">
+  <div class="flex flex-col w-full">
+    <h2
+      class="font-poppins text-icon text-[1.75rem] font-semibold tracking-[0.15em] mb-[-0.25rem]"
+    >{{trip?.tripName}}</h2>
+    <p class="text-text-gray text-[1rem] tracking-[0.2em] italic"
+    >{{trip?.tripDescription}}</p>
+  </div>
+  <div class="flex justify-center gap-4">
+    <button
+      (click)="onEditTrip()"
+      class="cursor-pointer text-bg bg-accent tracking-[0.2em] w-40 text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[0.01rem] font-poppins hover:bg-accent-shade active:bg-accent-shade hover:shadow-shadow-focus active:shadow-shadow-focus"
+      type="button"
+    >Edit trip
+    </button>
+    <button
+      (click)="onAddActivity()"
+      class="cursor-pointer text-bg bg-icon tracking-[0.2em] w-40 text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[0.01rem] font-poppins hover:shadow-shadow-focus active:shadow-shadow-focus"
+      type="button"
+    >Add an activity
+    </button>
+  </div>
+  <div class="flex flex-col flex-grow w-full">
+    <app-activity-item
+      *ngFor="let activity of activities; trackBy: activityName"
+      [activityNameRoute]="routeName(activity)"
+      [activity]="activity"
+      class="w-full"
+    ></app-activity-item>
+  </div>
+</div>

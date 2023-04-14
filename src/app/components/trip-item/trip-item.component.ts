@@ -9,13 +9,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class TripItemComponent {
   @Input() trip: Trip | undefined;
-  @Input() routeName = '';
+  @Input() tripNameRoute = '';
 
   constructor(private router: Router, private route: ActivatedRoute) {}
 
   onTripClick() {
     if (!this.trip) return;
-    this.router.navigate([this.routeName], {
+    this.router.navigate([this.tripNameRoute], {
       relativeTo: this.route,
       queryParams: { tripName: this.trip.tripName },
     });
