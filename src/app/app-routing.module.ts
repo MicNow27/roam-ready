@@ -21,16 +21,16 @@ const routes: Routes = [
     component: ActivityEditComponent,
   },
   {
-    path: 'trips/:tripNameRoute/:activityNameRoute',
-    component: ActivityComponent,
+    path: 'trips/edit/new',
+    component: TripEditComponent,
   },
   {
     path: 'trips/edit/:tripNameRoute',
     component: TripEditComponent,
   },
   {
-    path: 'trips/edit/new',
-    component: TripEditComponent,
+    path: 'trips/:tripNameRoute/:activityNameRoute',
+    component: ActivityComponent,
   },
   {
     path: 'trips/:tripNameRoute',

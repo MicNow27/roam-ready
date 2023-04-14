@@ -59,7 +59,8 @@ export class TripComponent implements OnInit {
   onEditTrip() {
     if (!this.trip) return;
     const tripNameRoute = this.tripNameRoute(this.trip);
-    this.router.navigate(['/trips/edit', tripNameRoute], {
+    this.router.navigate(['../edit', tripNameRoute], {
+      relativeTo: this.route,
       queryParams: { tripName: this.trip.tripName },
     });
   }
