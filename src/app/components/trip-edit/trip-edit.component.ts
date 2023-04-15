@@ -15,7 +15,7 @@ export class TripEditComponent implements OnInit {
   editMode = false;
   tripForm: FormGroup = new FormGroup({});
   activities: Activity[] | undefined;
-  error: string | null = '';
+  error = '';
   denied = false;
 
   constructor(
@@ -55,14 +55,21 @@ export class TripEditComponent implements OnInit {
       this.tripsService.addTrip(this.tripForm.value);
     }
     await this.firestoreService.updateTrips(this.tripsService.getTrips());
-
-    this.onCancel();
+    this.completeTripEdit();
   }
 
   onCancel() {
-    if (this.editMode)
-      this.router.navigate(['../'], { relativeTo: this.route });
-    else this.router.navigate(['../../'], { relativeTo: this.route });
+    if (this.tripForm.dirty && !this.denied) {
+      this.error = 'Do you want to proceed without saving?';
+      return;
+    }
+    this.denied = false;
+    this.completeTripEdit();
+  }
+
+  onHandleError() {
+    this.error = '';
+    this.denied = true;
   }
 
   // onToActivities() {
@@ -79,9 +86,10 @@ export class TripEditComponent implements OnInit {
   //   }
   // }
 
-  onHandleError() {
-    this.error = null;
-    this.denied = true;
+  private completeTripEdit() {
+    if (this.editMode)
+      this.router.navigate(['../'], { relativeTo: this.route });
+    else this.router.navigate(['../../'], { relativeTo: this.route });
   }
 
   private initForm() {

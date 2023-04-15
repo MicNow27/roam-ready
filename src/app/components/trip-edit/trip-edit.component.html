@@ -1,6 +1,6 @@
 <app-alert
   (close)="onHandleError()"
-  *ngIf="error"
+  *ngIf="error !== ''"
   [message]="error"
 ></app-alert>
 <div class="flex flex-col flex-grow bg-bg py-5 px-5 gap-[1.25rem]">
@@ -31,18 +31,9 @@
           type="text">
       </div>
     </div>
-    <!--    <div class="flex flex-col items-center gap-3 mb-5">-->
-    <!--      <button-->
-    <!--        (click)="onToActivities()"-->
-    <!--        [disabled]="!tripForm.valid"-->
-    <!--        class="cursor-pointer text-bg bg-icon tracking-[0.2em] w-full text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[0.01rem] font-poppins hover:shadow-shadow-focus active:shadow-shadow-focus"-->
-    <!--        type="button"-->
-    <!--      >{{activities ? 'Go to activities' : 'Add an activity'}}-->
-    <!--      </button>-->
-    <!--    </div>-->
     <div class="grid grid-cols-2 gap-4 place-content-stretch">
       <button
-        [disabled]="!tripForm.valid"
+        [disabled]="!tripForm.valid || tripForm.pristine"
         class="cursor-pointer text-bg bg-accent tracking-[0.2em] w-full text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[none] font-poppins hover:bg-accent-shade active:bg-accent-shade hover:shadow-shadow-focus active:shadow-shadow-focus"
         type="submit"
       >Save
@@ -57,20 +48,3 @@
 
   </form>
 </div>
-
-<!-- Activity submission -->
-<!--<div class="flex items-center justify-center gap-4">-->
-<!--  <button-->
-<!--    (click)="onSaveActivity()"-->
-<!--    [disabled]="!tripForm.valid"-->
-<!--    class="cursor-pointer text-bg bg-accent tracking-[0.2em] w-28 text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[none] font-poppins hover:bg-accent-shade active:bg-accent-shade hover:shadow-shadow-focus active:shadow-shadow-focus"-->
-<!--    type="button"-->
-<!--  >Save activity-->
-<!--  </button>-->
-<!--  <button-->
-<!--    (click)="onDeleteActivity()"-->
-<!--    class="cursor-pointer text-accent-shade bg-line-gray tracking-[0.2em] w-28 text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[none] font-poppins hover:bg-line-gray-shade hover:shadow-shadow-focus"-->
-<!--    type="button"-->
-<!--  >Delete activity-->
-<!--  </button>-->
-<!--</div>-->

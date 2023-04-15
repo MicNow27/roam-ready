@@ -5,6 +5,7 @@ import { TripsService } from '../../services/trips/trips.service';
 import { Subscription } from 'rxjs';
 import { ActivitiesService } from '../../services/activities/activities.service';
 import { activityNameRoute, tripNameRoute } from '../../../utils/routeNames';
+import { FirestoreService } from '../../services/firestore/firestore.service';
 
 @Component({
   selector: 'app-trip',
@@ -13,6 +14,8 @@ import { activityNameRoute, tripNameRoute } from '../../../utils/routeNames';
 })
 export class TripComponent implements OnInit {
   trip: Trip | undefined;
+  error = '';
+  denied = false;
   activities: Activity[] = [
     {
       tripName: 'Paris',
@@ -33,7 +36,8 @@ export class TripComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private tripsService: TripsService,
-    private activitiesService: ActivitiesService
+    private activitiesService: ActivitiesService,
+    private firestoreService: FirestoreService
   ) {}
 
   ngOnInit() {
@@ -70,5 +74,21 @@ export class TripComponent implements OnInit {
       relativeTo: this.route,
       queryParams: { tripName: this.trip?.tripName },
     });
+  }
+
+  async onDeleteTrip() {
+    if (!this.denied) {
+      this.error = 'Are you sure you want to delete this trip?';
+      return;
+    }
+    if (!this.trip) return;
+    this.tripsService.deleteTrip(this.trip);
+    await this.firestoreService.updateTrips(this.tripsService.getTrips());
+    this.router.navigate(['../'], { relativeTo: this.route });
+  }
+
+  onHandleError() {
+    this.error = '';
+    this.denied = true;
   }
 }

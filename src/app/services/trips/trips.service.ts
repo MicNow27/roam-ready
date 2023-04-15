@@ -44,4 +44,14 @@ export class TripsService {
       }
     });
   }
+
+  deleteTrip(trip: Trip) {
+    const tripIndex = this.trips.findIndex(
+      (tripItem) => tripItem.tripName === trip.tripName
+    );
+    if (tripIndex >= 0) {
+      this.trips.splice(tripIndex, 1);
+      this.tripsChanged.next(this.trips.slice());
+    }
+  }
 }
