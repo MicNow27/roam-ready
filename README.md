@@ -69,23 +69,29 @@ skiing: [Matthieu Pétiard](https://unsplash.com/@mattpunsplash?utm_source=unspl
   - https://github.com/angular/angularfire/blob/master/docs/auth.md
   - https://firebase.google.com/docs/auth/web/start?hl=en&authuser=0
 
-## Assumptions:
-
-### (for now...)
+## Assumptions (for now...):
 
 - uniqueness of trip names and activity names
 
 ## Still To Do
 
-- [ ] Error handling for empty fields in login / signup form
-- [ ] Sort out routing with home page vs landing page
-- [ ] NG-Zorro drop down items are blue on hover
-- [ ] Add location to activity form
+- [ ] Modules
+- [ ] State management
+- [ ] Error handling for required fields in login / signup form
+- [ ] Routing when back button is clicked
+- [ ] Add location picker to activity form
 - [ ] Add a calendar (https://medium.com/allenhwkim/angular-build-a-calendar-in-50-lines-f813f0a04c3b)
-- [ ] Add resolvers
+- [ ] Add activities resolver
 - [ ] Disable home button when on home / landing page
 - [ ] Remove user feedback for disabled buttons
-- [ ] Move dual button groups to their own components?
+- [ ] Merge trip-item and activity-item components
+- [ ] Merge commonality of trip and activity components
+- [ ] Item components' bg --> forms' bg
+- [ ] Currency selection capabilities
+- [ ] Check: alert methods repeated in multiple components
+- [ ] Put limit lengths on input fields
+- [ ] Add cut-off dates to calendar, start date on calendar
+- [ ] Hacky fix to NG-Zorro components showing through alert background
 
 ## Bugs
 

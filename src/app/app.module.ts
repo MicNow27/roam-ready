@@ -47,6 +47,9 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { ActivityItemComponent } from './components/activity-item/activity-item.component';
 import { ActivityComponent } from './components/activity/activity.component';
+import { ActivityEditComponent } from './components/activity-edit/activity-edit.component';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 registerLocaleData(en);
 
@@ -72,6 +75,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(
     TripComponent,
     ActivityItemComponent,
     ActivityComponent,
+    ActivityEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -95,6 +99,8 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(
     NzCarouselModule,
     NzButtonModule,
     NzPopoverModule,
+    NzRadioModule,
+    NzDatePickerModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },

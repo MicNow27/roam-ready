@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TripsService } from '../../services/trips/trips.service';
-import { Activity, Trip } from '../../models/user.data';
+import { Trip } from '../../models/user.data';
 import { FirestoreService } from '../../services/firestore/firestore.service';
 
 @Component({
@@ -12,11 +12,10 @@ import { FirestoreService } from '../../services/firestore/firestore.service';
 })
 export class TripEditComponent implements OnInit {
   oldTrip: Trip | undefined;
-  routeName = '';
   editMode = false;
+  prompt = 'Add a new trip';
   tripForm: FormGroup = new FormGroup({});
-  activities: Activity[] | undefined;
-  error: string | null = '';
+  error = '';
   denied = false;
 
   constructor(
@@ -30,20 +29,11 @@ export class TripEditComponent implements OnInit {
     const tripName = this.route.snapshot.queryParamMap.get('tripName');
     if (tripName) {
       this.oldTrip = this.tripsService.getTrip(tripName);
-      if (this.oldTrip) this.activities = this.oldTrip.activities;
       this.editMode = true;
+      this.prompt = 'Update your trip';
     }
 
     this.initForm();
-    // this.route.params.subscribe((params: Params) => {
-    //   this.routeName = params['routeName'];
-    //   if (this.routeName != null) {
-    //     // this.oldTrip = this.tripsService.getTrip(this.routeName);
-    //     if (this.oldTrip) this.activities = this.oldTrip.activities;
-    //     this.editMode = true;
-    //   }
-    //   this.initForm();
-    // });
   }
 
   async onSubmit() {
@@ -53,39 +43,27 @@ export class TripEditComponent implements OnInit {
       this.tripsService.addTrip(this.tripForm.value);
     }
     await this.firestoreService.updateTrips(this.tripsService.getTrips());
-
-    this.onCancel();
+    this.completeTripEdit();
   }
 
   onCancel() {
-    if (this.editMode)
-      this.router.navigate(['../'], { relativeTo: this.route });
-    else this.router.navigate(['../../'], { relativeTo: this.route });
-  }
-
-  onAddActivity() {
     if (this.tripForm.dirty && !this.denied) {
       this.error = 'Do you want to proceed without saving?';
+      return;
     }
-    if (this.denied) {
-      // TODO: route to activities new
-      this.denied = false;
-    }
-  }
-
-  onGoToActivities() {
-    if (this.tripForm.dirty && !this.denied) {
-      this.error = 'Do you want to proceed without saving?';
-    }
-    if (this.denied) {
-      // TODO: route to activities
-      this.denied = false;
-    }
+    this.denied = false;
+    this.completeTripEdit();
   }
 
   onHandleError() {
-    this.error = null;
+    this.error = '';
     this.denied = true;
+  }
+
+  private completeTripEdit() {
+    if (this.editMode)
+      this.router.navigate(['../'], { relativeTo: this.route });
+    else this.router.navigate(['../../'], { relativeTo: this.route });
   }
 
   private initForm() {
