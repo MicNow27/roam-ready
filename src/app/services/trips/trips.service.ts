@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Trip } from '../../models/user.data';
+import { Activity, Trip } from '../../models/user.data';
 import { Subject } from 'rxjs';
 import { ActivitiesService } from '../activities/activities.service';
 
@@ -40,7 +40,7 @@ export class TripsService {
     this.tripsChanged.next(this.trips.slice());
     this.trips.forEach((trip) => {
       if (trip.activities) {
-        this.activitiesService.addActivities(trip.activities);
+        this.activitiesService.setActivities(trip.activities);
       }
     });
   }
@@ -52,6 +52,46 @@ export class TripsService {
     if (tripIndex >= 0) {
       this.trips.splice(tripIndex, 1);
       this.tripsChanged.next(this.trips.slice());
+    }
+  }
+
+  getActivitiesByTrip(tripName: string): Activity[] {
+    const tripIndex = this.trips.findIndex(
+      (trip) => trip.tripName === tripName
+    );
+    if (tripIndex >= 0) {
+      return this.trips[tripIndex].activities || [];
+    }
+    return [];
+  }
+
+  getActivityByTripAndActivity(tripName: string, activityName: string) {
+    const activities = this.getActivitiesByTrip(tripName);
+    return activities.find(
+      (activity) => activity.activityName === activityName
+    );
+  }
+
+  addActivityToTrip(activity: Activity) {
+    console.log('addActivityToTrip');
+    const tripIndex = this.trips.findIndex(
+      (trip) => trip.tripName === activity.tripName
+    );
+    if (tripIndex >= 0) {
+      console.log('tripIndex', tripIndex);
+      if (!this.trips[tripIndex].activities) {
+        this.trips[tripIndex].activities = [];
+        console.log(
+          '1 this.trips[tripIndex].activities',
+          this.trips[tripIndex].activities
+        );
+      }
+      this.trips[tripIndex].activities!.push(activity);
+      this.tripsChanged.next(this.trips.slice());
+      console.log(
+        '2 this.trips[tripIndex].activities',
+        this.trips[tripIndex].activities
+      );
     }
   }
 }

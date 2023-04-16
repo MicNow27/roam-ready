@@ -30,7 +30,10 @@ export class ActivityComponent implements OnInit {
     const activityNameRoute = this.activityNameRoute(this.activity);
     this.router.navigate(['../edit', activityNameRoute], {
       relativeTo: this.route,
-      queryParams: { activityName: this.activity.activityName },
+      queryParams: {
+        tripName: this.activity.tripName,
+        activityName: this.activity.activityName,
+      },
     });
   }
 }

@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Activity, Trip } from '../../models/user.data';
 import { TripsService } from '../../services/trips/trips.service';
-import { Subscription } from 'rxjs';
-import { ActivitiesService } from '../../services/activities/activities.service';
 import { activityNameRoute, tripNameRoute } from '../../../utils/routeNames';
 import { FirestoreService } from '../../services/firestore/firestore.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-trip',
@@ -16,19 +15,20 @@ export class TripComponent implements OnInit {
   trip: Trip | undefined;
   error = '';
   denied = false;
-  activities: Activity[] = [
-    {
-      tripName: 'Paris',
-      activityName: 'Louvre',
-      activityDescription: 'Day at the Louvre Museum',
-      tag: 'tourism',
-      notes: `We'll spend the day at the museum and have lunch somewhere nearby.`,
-      price: 5,
-      startDate: new Date('2020-01-01 08:00:00').getTime(),
-      endDate: new Date('2020-01-01 17:00:00').getTime(),
-    },
-  ];
-  activitiesSubscription: Subscription | undefined;
+  // activities: Activity[] = [
+  //   {
+  //     tripName: 'Paris',
+  //     activityName: 'Louvre',
+  //     activityDescription: 'Day at the Louvre Museum',
+  //     tag: 'tourism',
+  //     notes: `We'll spend the day at the museum and have lunch somewhere nearby.`,
+  //     price: 5,
+  //     startDate: new Date('2020-01-01 08:00:00').getTime(),
+  //     endDate: new Date('2020-01-01 17:00:00').getTime(),
+  //   },
+  // ];
+  activities: Activity[] = [];
+  tripsSubscription: Subscription | undefined;
   activityNameRoute = activityNameRoute;
   tripNameRoute = tripNameRoute;
 
@@ -36,7 +36,6 @@ export class TripComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private tripsService: TripsService,
-    private activitiesService: ActivitiesService,
     private firestoreService: FirestoreService
   ) {}
 
@@ -44,17 +43,16 @@ export class TripComponent implements OnInit {
     const tripName = this.route.snapshot.queryParamMap.get('tripName');
     if (tripName) this.trip = this.tripsService.getTrip(tripName);
 
-    // this.activitiesSubscription =
-    //   this.activitiesService.activitiesChanged.subscribe(
-    //     (activities: Activity[]) => {
-    //       this.activities = activities;
-    //     }
-    //   );
+    this.tripsSubscription = this.tripsService.tripsChanged.subscribe(
+      (trips: Trip[]) => {
+        this.activities =
+          trips.find((trip: Trip) => trip.tripName === this.trip?.tripName)
+            ?.activities || [];
+      }
+    );
 
-    // if (!this.trip) return;
-    // this.activities = this.activitiesService.getActivitiesByTrip(
-    //   this.trip.tripName
-    // );
+    if (!this.trip) return;
+    this.activities = this.tripsService.getActivitiesByTrip(this.trip.tripName);
   }
 
   activityName = (index: number, activity: { activityName: string }) =>

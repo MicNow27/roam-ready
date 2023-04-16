@@ -12,7 +12,7 @@ import { ActivitiesService } from '../../services/activities/activities.service'
   styleUrls: ['./activity-edit.component.scss'],
 })
 export class ActivityEditComponent implements OnInit {
-  tripName = '';
+  tripName: string | undefined;
   oldActivity: Activity | undefined;
   editMode = false;
   prompt = 'Add a new activity';
@@ -30,12 +30,20 @@ export class ActivityEditComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    const tripName = this.route.snapshot.queryParamMap.get('tripName');
     const activityName = this.route.snapshot.queryParamMap.get('activityName');
+
+    if (!tripName) return;
+    this.tripName = tripName;
+
     if (activityName) {
-      this.oldActivity = this.activitiesService.getActivity(activityName);
+      this.oldActivity = this.tripsService.getActivityByTripAndActivity(
+        this.tripName,
+        activityName
+      );
       this.editMode = true;
       this.prompt = 'Update your activity';
-      this.tag = this.oldActivity.tag;
+      if (this.oldActivity) this.tag = this.oldActivity.tag;
     }
     this.initForm();
   }
@@ -45,18 +53,22 @@ export class ActivityEditComponent implements OnInit {
     this.denied = true;
   }
 
-  onSubmit() {
-    // const activity: Activity = {
-    //   tripName: '',
-    //   activityName: this.activityForm.value.activityName,
-    //   activityDescription: this.activityForm.value.activityDescription,
-    //   tag: this.activityForm.value.tag,
-    //   notes: this.activityForm.value.notes,
-    //   startDate: this.activityForm.value.startDate.getTime(),
-    //   endDate: this.activityForm.value.endDate.getTime(),
-    // };
-    // console.log(this.activityForm.value);
-    // console.log(activity.startDate);
+  async onSubmit() {
+    if (!this.tripName) return;
+    const activity: Activity = {
+      tripName: this.tripName,
+      activityName: this.activityForm.value.activityName,
+      activityDescription: this.activityForm.value.activityDescription,
+      tag: this.activityForm.value.tag,
+      notes: this.activityForm.value.notes,
+      startDate: this.activityForm.value.startDate.getTime(),
+      endDate: this.activityForm.value.endDate.getTime(),
+      price: this.activityForm.value.price,
+    };
+    this.tripsService.addActivityToTrip(activity);
+    await this.firestoreService.updateTrips(this.tripsService.getTrips());
+    console.log(this.activityForm.value);
+    console.log(activity);
     // console.log(new Date(activity.startDate));
   }
 
