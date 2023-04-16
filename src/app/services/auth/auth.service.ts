@@ -14,13 +14,16 @@ import { AuthResponseData } from '../../models/auth-response.data';
   providedIn: 'root',
 })
 export class AuthService {
+  authUserId: string | undefined;
   private auth: Auth = inject(Auth);
   authState$ = authState(this.auth);
 
-  constructor(private router: Router) {}
-
-  getAuthUserId() {
-    return this.auth.currentUser?.uid;
+  constructor(private router: Router) {
+    this.authState$.subscribe((user) => {
+      if (user) {
+        this.authUserId = user.uid;
+      }
+    });
   }
 
   signUp(email: string, password: string): Observable<AuthResponseData> {

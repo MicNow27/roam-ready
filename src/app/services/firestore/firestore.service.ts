@@ -37,7 +37,7 @@ export class FirestoreService {
 
   async getTrips(): Promise<Trip[]> {
     // Get this user's UID.
-    const authUserId = this.authService.getAuthUserId();
+    const authUserId = this.authService.authUserId;
     if (!authUserId) return []; // Should never be the case.
 
     // Check if the user exists in the Firestore collection.
@@ -60,7 +60,7 @@ export class FirestoreService {
   }
 
   async updateTrips(trips: Trip[]) {
-    const authUserId = this.authService.getAuthUserId();
+    const authUserId = this.authService.authUserId;
     if (!authUserId) return; // Should never be the case.
 
     const userCollId = await this.getUserCollId(authUserId);
