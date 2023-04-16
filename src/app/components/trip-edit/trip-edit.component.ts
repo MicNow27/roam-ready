@@ -13,6 +13,7 @@ import { FirestoreService } from '../../services/firestore/firestore.service';
 export class TripEditComponent implements OnInit {
   oldTrip: Trip | undefined;
   editMode = false;
+  prompt = 'Add a new trip';
   tripForm: FormGroup = new FormGroup({});
   activities: Activity[] | undefined;
   error = '';
@@ -43,6 +44,7 @@ export class TripEditComponent implements OnInit {
         },
       ];
       this.editMode = true;
+      this.prompt = 'Update your trip';
     }
 
     this.initForm();
@@ -71,20 +73,6 @@ export class TripEditComponent implements OnInit {
     this.error = '';
     this.denied = true;
   }
-
-  // onToActivities() {
-  //   if (this.tripForm.dirty && !this.denied) {
-  //     this.error = 'Do you want to proceed without saving?';
-  //   }
-  //   if (!this.tripForm.dirty || this.denied) {
-  //     if (this.activities) {
-  //       this.router.navigate(['../'], { relativeTo: this.route });
-  //     } else {
-  //       // TODO route to activity form
-  //     }
-  //     this.denied = false;
-  //   }
-  // }
 
   private completeTripEdit() {
     if (this.editMode)

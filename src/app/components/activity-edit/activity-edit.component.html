@@ -1,1 +1,6 @@
-<p>activity-edit works!</p>
+<app-alert
+  (close)="onHandleError()"
+  *ngIf="error !== ''"
+  [message]="error"
+></app-alert>
+
