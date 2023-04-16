@@ -37,10 +37,16 @@ export class TripEditComponent implements OnInit {
   }
 
   async onSubmit() {
+    const trip: Trip = {
+      tripName: this.tripForm.value.tripName,
+      tripDescription: this.tripForm.value.tripDescription,
+      activities: this.oldTrip ? this.oldTrip.activities : undefined,
+    };
+
     if (this.editMode && this.oldTrip) {
-      this.tripsService.updateTrip(this.oldTrip, this.tripForm.value);
+      this.tripsService.updateTrip(this.oldTrip, trip);
     } else {
-      this.tripsService.addTrip(this.tripForm.value);
+      this.tripsService.addTrip(trip);
     }
     await this.firestoreService.updateTrips(this.tripsService.getTrips());
     this.completeTripEdit();

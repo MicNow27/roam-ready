@@ -60,7 +60,7 @@ export const loadActivities = createAction(
 
 export const loadActivitiesSuccess = createAction(
   '[Trips] TRIPS Load Activities Success',
-  props<{ activities: Trip[] }>()
+  props<{ activities: Activity[] }>()
 );
 
 export const loadActivitiesFailure = createAction(

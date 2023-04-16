@@ -69,6 +69,9 @@ skiing: [Matthieu Pétiard](https://unsplash.com/@mattpunsplash?utm_source=unspl
   - https://github.com/angular/angularfire/blob/master/docs/auth.md
   - https://firebase.google.com/docs/auth/web/start?hl=en&authuser=0
 
+- **State management:**
+  - https://www.youtube.com/watch?v=kx0VTgTtSBg
+
 ## Assumptions (for now...):
 
 - uniqueness of trip names and activity names
