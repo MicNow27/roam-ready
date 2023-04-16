@@ -60,10 +60,6 @@ export class FirestoreService {
   }
 
   async updateTrips(trips: Trip[]) {
-    console.log('Updating trips in Firestore...');
-    for (const trip of trips) {
-      console.log(trip);
-    }
     const authUserId = this.authService.getAuthUserId();
     if (!authUserId) return; // Should never be the case.
 

@@ -61,10 +61,8 @@ export class ActivityEditComponent implements OnInit {
     };
 
     if (this.editMode && this.oldActivity) {
-      console.log('update');
       this.tripsService.updateActivityInTrip(activity);
     } else {
-      console.log('add');
       this.tripsService.addActivityToTrip(activity);
     }
     await this.firestoreService.updateTrips(this.tripsService.getTrips());

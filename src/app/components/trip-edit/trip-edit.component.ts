@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TripsService } from '../../services/trips/trips.service';
-import { Activity, Trip } from '../../models/user.data';
+import { Trip } from '../../models/user.data';
 import { FirestoreService } from '../../services/firestore/firestore.service';
 
 @Component({
@@ -15,7 +15,6 @@ export class TripEditComponent implements OnInit {
   editMode = false;
   prompt = 'Add a new trip';
   tripForm: FormGroup = new FormGroup({});
-  activities: Activity[] | undefined;
   error = '';
   denied = false;
 
@@ -30,19 +29,6 @@ export class TripEditComponent implements OnInit {
     const tripName = this.route.snapshot.queryParamMap.get('tripName');
     if (tripName) {
       this.oldTrip = this.tripsService.getTrip(tripName);
-      // if (this.oldTrip) this.activities = this.oldTrip.activities;
-      this.activities = [
-        {
-          tripName: 'Paris',
-          activityName: 'Louvre',
-          activityDescription: 'Day at the Louvre Museum',
-          tag: 'tourism',
-          notes: `We'll spend the day at the museum and have lunch somewhere nearby.`,
-          price: 5.0,
-          startDate: new Date('2020-01-01 08:00:00').getTime(),
-          endDate: new Date('2020-01-01 17:00:00').getTime(),
-        },
-      ];
       this.editMode = true;
       this.prompt = 'Update your trip';
     }

@@ -15,18 +15,6 @@ export class TripComponent implements OnInit {
   trip: Trip | undefined;
   error = '';
   denied = false;
-  // activities: Activity[] = [
-  //   {
-  //     tripName: 'Paris',
-  //     activityName: 'Louvre',
-  //     activityDescription: 'Day at the Louvre Museum',
-  //     tag: 'tourism',
-  //     notes: `We'll spend the day at the museum and have lunch somewhere nearby.`,
-  //     price: 5,
-  //     startDate: new Date('2020-01-01 08:00:00').getTime(),
-  //     endDate: new Date('2020-01-01 17:00:00').getTime(),
-  //   },
-  // ];
   activities: Activity[] = [];
   tripsSubscription: Subscription | undefined;
   activityNameRoute = activityNameRoute;

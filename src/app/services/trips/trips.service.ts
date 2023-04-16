@@ -35,11 +35,6 @@ export class TripsService {
   setTrips(trips: Trip[]) {
     this.trips = trips;
     this.tripsChanged.next(this.trips.slice());
-    // this.trips.forEach((trip) => {
-    //   if (trip.activities) {
-    //     this.activitiesService.setActivities(trip.activities);
-    //   }
-    // });
   }
 
   deleteTrip(trip: Trip) {
@@ -66,40 +61,26 @@ export class TripsService {
   }
 
   addActivityToTrip(activity: Activity) {
-    console.log('addActivityToTrip');
     const tripIndex = this.getTripIndex(activity.tripName);
     if (tripIndex < 0) return;
 
-    console.log('tripIndex', tripIndex);
     if (!this.trips[tripIndex].activities) {
       this.trips[tripIndex].activities = [];
-      console.log(
-        '1 this.trips[tripIndex].activities',
-        this.trips[tripIndex].activities
-      );
     }
     this.trips[tripIndex].activities!.push(activity);
     this.tripsChanged.next(this.trips.slice());
-    console.log(
-      '2 this.trips[tripIndex].activities',
-      this.trips[tripIndex].activities
-    );
   }
 
   updateActivityInTrip(newActivity: Activity) {
-    console.log('updateActivityInTrip');
-
     const tripIndex = this.getTripIndex(newActivity.tripName);
-    console.log('tripIndex', tripIndex);
-
     if (tripIndex < 0) return;
+
     const currTrip = this.trips[tripIndex];
     if (!currTrip.activities) return;
     const activityIndex = this.getActivityIndex(
       currTrip.activities,
       newActivity.activityName
     );
-    console.log('activityIndex', activityIndex);
     if (activityIndex < 0) return;
 
     currTrip.activities[activityIndex] = newActivity;
