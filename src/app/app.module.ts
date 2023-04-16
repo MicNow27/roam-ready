@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { isDevMode, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -50,6 +50,11 @@ import { ActivityComponent } from './components/activity/activity.component';
 import { ActivityEditComponent } from './components/activity-edit/activity-edit.component';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import * as fromTrips from './store/trips-store/reducers/trips.reducer';
+import { TripsEffects } from './store/trips-store/effects/trips.effects';
 
 registerLocaleData(en);
 
@@ -101,6 +106,11 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(
     NzPopoverModule,
     NzRadioModule,
     NzDatePickerModule,
+    StoreModule.forRoot({}, {}),
+    EffectsModule.forRoot([]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+    StoreModule.forFeature(fromTrips.tripsFeatureKey, fromTrips.reducer),
+    EffectsModule.forFeature([TripsEffects]),
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
