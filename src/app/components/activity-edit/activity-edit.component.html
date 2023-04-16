@@ -3,4 +3,113 @@
   *ngIf="error !== ''"
   [message]="error"
 ></app-alert>
-
+<div class="flex flex-col flex-grow bg-bg py-1 px-5 gap-[1.25rem]">
+  <div class="flex w-full">
+    <h2
+      class="font-poppins text-icon text-[1.25rem] font-bold tracking-[0.1em] mt-2"
+    >{{prompt}} ...</h2>
+  </div>
+  <form
+    (ngSubmit)="onSubmit()"
+    [formGroup]="activityForm"
+    class="flex flex-col flex-grow justify-center py-6 px-6 shadow-shadow-focus font-poppins tracking-[0.1em] rounded-lg mb-4">
+    <div class="flex flex-col flex-grow gap-6 mb-8">
+      <div class="flex flex-col gap-1 text-icon text-[0.8rem]">
+        <label for="activityName">Activity name</label>
+        <input
+          class="h-[2rem] pl-3 rounded-md shadow-shadow-normal focus:outline-none focus:shadow-shadow-focus"
+          formControlName="activityName"
+          id="activityName"
+          type="text">
+      </div>
+      <div class="flex flex-col gap-1 text-icon text-[0.8rem]">
+        <label for="activityDescription">Activity description</label>
+        <input
+          class="h-[2rem] pl-3 rounded-md shadow-shadow-normal focus:outline-none focus:shadow-shadow-focus"
+          formControlName="activityDescription"
+          id="activityDescription"
+          type="text">
+      </div>
+      <div class="flex flex-col gap-1 text-icon text-[0.8rem]">
+        <label for="notes">Notes</label>
+        <textarea
+          class="min-h-[2rem] px-3 py-2 rounded-md shadow-shadow-normal focus:outline-none focus:shadow-shadow-focus"
+          formControlName="notes"
+          id="notes"
+          type="text"
+        ></textarea>
+      </div>
+      <div class="flex flex-col gap-3 text-icon text-[0.8rem]">
+        <label for="tag">Activity type</label>
+        <nz-radio-group
+          class="flex flex-col gap-[0.2rem] pl-3"
+          formControlName="tag"
+          id="tag">
+          <label nz-radio nzValue="travel">travel</label>
+          <label nz-radio nzValue="accommodation">accommodation</label>
+          <label nz-radio nzValue="tourism">tourism</label>
+          <label nz-radio nzValue="food">food</label>
+        </nz-radio-group>
+      </div>
+      <div class="flex flex-col gap-3">
+        <nz-date-picker
+          [nzPopupStyle]="{
+          borderRadius: '0.5rem',
+          boxShadow: '0 0.5rem 0.5rem rgba(0, 0, 0, 0.125)',
+          margin: '0 0 0 -2.2rem',
+          overflowX: 'auto',
+          fontSize: '0.8rem',
+          }"
+          [nzShowNow]="false"
+          [nzShowTime]="{nzFormat: 'HH:mm'}"
+          [nzShowToday]="false"
+          class="rounded-md shadow-shadow-normal border-none h-[2rem]"
+          formControlName="startDate"
+          id="startDate"
+          nzFormat="dd-MM-yyyy HH:mm"
+          nzShowTime
+        ></nz-date-picker>
+        <nz-date-picker
+          [nzPopupStyle]="{
+          borderRadius: '0.5rem',
+          boxShadow: '0 0.5rem 0.5rem rgba(0, 0, 0, 0.125)',
+          margin: '0 0 0 -2.2rem',
+          overflowX: 'auto',
+          fontSize: '0.8rem',
+          }"
+          [nzShowNow]="false"
+          [nzShowTime]="{nzFormat: 'HH:mm'}"
+          [nzShowToday]="false"
+          class="rounded-md shadow-shadow-normal border-none h-[2rem]"
+          formControlName="endDate"
+          id="endDate"
+          nzFormat="dd-MM-yyyy HH:mm"
+          nzShowTime
+        ></nz-date-picker>
+      </div>
+      <div class="flex flex-col gap-1 text-icon text-[0.8rem]">
+        <label for="price">Price</label>
+        <input
+          class="h-[2rem] px-3 rounded-md shadow-shadow-normal focus:outline-none focus:shadow-shadow-focus"
+          formControlName="price"
+          id="price"
+          type="number"
+        >
+      </div>
+    </div>
+    <div class="grid grid-cols-2 gap-4 place-content-stretch">
+      <button
+        [disabled]="!activityForm.valid || activityForm.pristine"
+        class="cursor-pointer text-bg bg-accent tracking-[0.2em] w-full text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[none] font-poppins hover:bg-accent-shade active:bg-accent-shade hover:shadow-shadow-focus active:shadow-shadow-focus"
+        type="submit"
+      >Save
+      </button>
+      <button
+        (click)="onCancel()"
+        class="cursor-pointer text-accent-shade bg-line-gray tracking-[0.2em] w-full text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[none] font-poppins hover:bg-line-gray-shade hover:shadow-shadow-focus"
+        type="button"
+      >Cancel
+      </button>
+    </div>
+  </form>
+</div>

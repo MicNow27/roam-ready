@@ -76,8 +76,7 @@ skiing: [Matthieu Pétiard](https://unsplash.com/@mattpunsplash?utm_source=unspl
 ## Still To Do
 
 - [ ] Error handling for required fields in login / signup form
-- [x] Sort out routing with home page vs landing page
-- [ ] NG-Zorro drop down items are blue on hover
+- [ ] Routing when back button is clicked
 - [ ] Add location picker to activity form
 - [ ] Add a calendar (https://medium.com/allenhwkim/angular-build-a-calendar-in-50-lines-f813f0a04c3b)
 - [ ] Add activities resolver
@@ -88,6 +87,7 @@ skiing: [Matthieu Pétiard](https://unsplash.com/@mattpunsplash?utm_source=unspl
 - [ ] Item components' bg --> forms' bg
 - [ ] Currency selection capabilities
 - [ ] Check: alert methods repeated in multiple components
+- [ ] Put limit lengths on input fields
 
 ## Bugs
 

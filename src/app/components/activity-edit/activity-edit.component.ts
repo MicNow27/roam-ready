@@ -12,8 +12,11 @@ import { ActivitiesService } from '../../services/activities/activities.service'
   styleUrls: ['./activity-edit.component.scss'],
 })
 export class ActivityEditComponent implements OnInit {
+  tripName = '';
   oldActivity: Activity | undefined;
   editMode = false;
+  prompt = 'Add a new activity';
+  tag = 'travel';
   activityForm: FormGroup = new FormGroup({});
   error = '';
   denied = false;
@@ -31,12 +34,9 @@ export class ActivityEditComponent implements OnInit {
     if (activityName) {
       this.oldActivity = this.activitiesService.getActivity(activityName);
       this.editMode = true;
+      this.prompt = 'Update your activity';
+      this.tag = this.oldActivity.tag;
     }
-
-    console.log('this.oldActivity', this.oldActivity);
-    console.log('this.editMode', this.editMode);
-    console.log('this.activityForm', activityName);
-
     this.initForm();
   }
 
@@ -45,30 +45,50 @@ export class ActivityEditComponent implements OnInit {
     this.denied = true;
   }
 
+  onSubmit() {
+    // const activity: Activity = {
+    //   tripName: '',
+    //   activityName: this.activityForm.value.activityName,
+    //   activityDescription: this.activityForm.value.activityDescription,
+    //   tag: this.activityForm.value.tag,
+    //   notes: this.activityForm.value.notes,
+    //   startDate: this.activityForm.value.startDate.getTime(),
+    //   endDate: this.activityForm.value.endDate.getTime(),
+    // };
+    // console.log(this.activityForm.value);
+    // console.log(activity.startDate);
+    // console.log(new Date(activity.startDate));
+  }
+
+  onCancel() {}
+
   private initForm() {
     let activityName = '';
     let activityDescription = '';
     let notes = '';
-    let tag;
+    let tag = this.tag;
     let startDate;
     let endDate;
+    let price = 0;
 
     if (this.editMode && this.oldActivity) {
       activityName = this.oldActivity.activityName;
       activityDescription = this.oldActivity.activityDescription || '';
       notes = this.oldActivity.notes || '';
       tag = this.oldActivity.tag;
-      startDate = this.oldActivity.startDate;
-      endDate = this.oldActivity.endDate;
+      startDate = new Date(this.oldActivity.startDate);
+      endDate = new Date(this.oldActivity.endDate);
+      price = this.oldActivity.price;
     }
 
     this.activityForm = new FormGroup({
-      tripName: new FormControl(activityName, Validators.required),
-      tripDescription: new FormControl(activityDescription),
+      activityName: new FormControl(activityName, Validators.required),
+      activityDescription: new FormControl(activityDescription),
       notes: new FormControl(notes),
       tag: new FormControl(tag, Validators.required),
       startDate: new FormControl(startDate, Validators.required),
       endDate: new FormControl(endDate, Validators.required),
+      price: new FormControl(price, Validators.required),
     });
   }
 }
