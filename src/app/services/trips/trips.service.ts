@@ -38,11 +38,11 @@ export class TripsService {
   setTrips(trips: Trip[]) {
     this.trips = trips;
     this.tripsChanged.next(this.trips.slice());
-    this.trips.forEach((trip) => {
-      if (trip.activities) {
-        this.activitiesService.setActivities(trip.activities);
-      }
-    });
+    // this.trips.forEach((trip) => {
+    //   if (trip.activities) {
+    //     this.activitiesService.setActivities(trip.activities);
+    //   }
+    // });
   }
 
   deleteTrip(trip: Trip) {

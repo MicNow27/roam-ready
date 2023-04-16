@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Activity } from '../../models/user.data';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ActivitiesService } from '../../services/activities/activities.service';
 import { activityNameRoute } from '../../../utils/routeNames';
+import { TripsService } from '../../services/trips/trips.service';
 
 @Component({
   selector: 'app-activity',
@@ -16,13 +16,19 @@ export class ActivityComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private activitiesService: ActivitiesService
+    private tripsService: TripsService
   ) {}
 
   ngOnInit() {
+    const tripName = this.route.snapshot.queryParamMap.get('tripName');
+    if (!tripName) return;
+
     const activityName = this.route.snapshot.queryParamMap.get('activityName');
     if (activityName)
-      this.activity = this.activitiesService.getActivity(activityName);
+      this.activity = this.tripsService.getActivityByTripAndActivity(
+        tripName,
+        activityName
+      );
   }
 
   onEditActivity() {

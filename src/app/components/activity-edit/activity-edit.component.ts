@@ -31,11 +31,10 @@ export class ActivityEditComponent implements OnInit {
 
   ngOnInit() {
     const tripName = this.route.snapshot.queryParamMap.get('tripName');
-    const activityName = this.route.snapshot.queryParamMap.get('activityName');
-
     if (!tripName) return;
     this.tripName = tripName;
 
+    const activityName = this.route.snapshot.queryParamMap.get('activityName');
     if (activityName) {
       this.oldActivity = this.tripsService.getActivityByTripAndActivity(
         this.tripName,
@@ -45,6 +44,7 @@ export class ActivityEditComponent implements OnInit {
       this.prompt = 'Update your activity';
       if (this.oldActivity) this.tag = this.oldActivity.tag;
     }
+
     this.initForm();
   }
 

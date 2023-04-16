@@ -17,7 +17,10 @@ export class ActivityItemComponent {
     if (!this.activity) return;
     this.router.navigate([this.activityNameRoute], {
       relativeTo: this.route,
-      queryParams: { activityName: this.activity.activityName },
+      queryParams: {
+        tripName: this.activity.tripName,
+        activityName: this.activity.activityName,
+      },
     });
   }
 }
