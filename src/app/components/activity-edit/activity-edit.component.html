@@ -39,7 +39,8 @@
           type="text"
         ></textarea>
       </div>
-      <div class="flex flex-col gap-3 text-icon text-[0.8rem]">
+      <div *ngIf="error === ''"
+           class="flex flex-col gap-3 text-icon text-[0.8rem]">
         <label for="tag">Activity type</label>
         <nz-radio-group
           class="flex flex-col gap-[0.2rem] pl-3"
@@ -51,7 +52,9 @@
           <label nz-radio nzValue="food">food</label>
         </nz-radio-group>
       </div>
-      <div class="flex flex-col gap-3">
+      <div *ngIf="error === ''"
+           class="flex flex-col gap-3"
+      >
         <nz-date-picker
           [nzPopupStyle]="{
           borderRadius: '0.5rem',
@@ -80,7 +83,7 @@
           [nzShowNow]="false"
           [nzShowTime]="{nzFormat: 'HH:mm'}"
           [nzShowToday]="false"
-          class="rounded-md shadow-shadow-normal border-none h-[2rem]"
+          class="rounded-md shadow-shadow-normal border-none h-[2rem] z-0"
           formControlName="endDate"
           id="endDate"
           nzFormat="dd-MM-yyyy HH:mm"
@@ -88,7 +91,7 @@
         ></nz-date-picker>
       </div>
       <div class="flex flex-col gap-1 text-icon text-[0.8rem]">
-        <label for="price">Price</label>
+        <label for="price">Price ({{currencySymbol}})</label>
         <input
           class="h-[2rem] px-3 rounded-md shadow-shadow-normal focus:outline-none focus:shadow-shadow-focus"
           formControlName="price"

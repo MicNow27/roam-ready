@@ -4,7 +4,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TripsService } from '../../services/trips/trips.service';
 import { FirestoreService } from '../../services/firestore/firestore.service';
-import { ActivitiesService } from '../../services/activities/activities.service';
 
 @Component({
   selector: 'app-activity-edit',
@@ -16,15 +15,15 @@ export class ActivityEditComponent implements OnInit {
   oldActivity: Activity | undefined;
   editMode = false;
   prompt = 'Add a new activity';
-  tag = 'travel';
   activityForm: FormGroup = new FormGroup({});
   error = '';
   denied = false;
+  tag = 'travel';
+  currencySymbol = 'R';
 
   constructor(
     private route: ActivatedRoute,
     private tripsService: TripsService,
-    private activitiesService: ActivitiesService,
     private router: Router,
     private firestoreService: FirestoreService
   ) {}
@@ -48,11 +47,6 @@ export class ActivityEditComponent implements OnInit {
     this.initForm();
   }
 
-  onHandleError() {
-    this.error = '';
-    this.denied = true;
-  }
-
   async onSubmit() {
     if (!this.tripName) return;
     const activity: Activity = {
@@ -65,14 +59,37 @@ export class ActivityEditComponent implements OnInit {
       endDate: this.activityForm.value.endDate.getTime(),
       price: this.activityForm.value.price,
     };
-    this.tripsService.addActivityToTrip(activity);
+
+    if (this.editMode && this.oldActivity) {
+      console.log('update');
+      this.tripsService.updateActivityInTrip(activity);
+    } else {
+      console.log('add');
+      this.tripsService.addActivityToTrip(activity);
+    }
     await this.firestoreService.updateTrips(this.tripsService.getTrips());
-    console.log(this.activityForm.value);
-    console.log(activity);
-    // console.log(new Date(activity.startDate));
+    this.completeActivityEdit();
   }
 
-  onCancel() {}
+  onHandleError() {
+    this.error = '';
+    this.denied = true;
+  }
+
+  onCancel() {
+    if (this.activityForm.dirty && !this.denied) {
+      this.error = 'Do you want to proceed without saving?';
+      return;
+    }
+    this.denied = false;
+    this.completeActivityEdit();
+  }
+
+  private completeActivityEdit() {
+    if (this.editMode)
+      this.router.navigate(['../'], { relativeTo: this.route });
+    else this.router.navigate(['../../'], { relativeTo: this.route });
+  }
 
   private initForm() {
     let activityName = '';

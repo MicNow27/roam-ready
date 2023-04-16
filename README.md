@@ -75,6 +75,8 @@ skiing: [Matthieu Pétiard](https://unsplash.com/@mattpunsplash?utm_source=unspl
 
 ## Still To Do
 
+- [ ] Modules
+- [ ] State management
 - [ ] Error handling for required fields in login / signup form
 - [ ] Routing when back button is clicked
 - [ ] Add location picker to activity form
@@ -88,6 +90,8 @@ skiing: [Matthieu Pétiard](https://unsplash.com/@mattpunsplash?utm_source=unspl
 - [ ] Currency selection capabilities
 - [ ] Check: alert methods repeated in multiple components
 - [ ] Put limit lengths on input fields
+- [ ] Add cut-off dates to calendar, start date on calendar
+- [ ] Hacky fix to NG-Zorro components showing through alert background
 
 ## Bugs
 
