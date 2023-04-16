@@ -87,6 +87,22 @@ export class TripsService {
     this.tripsChanged.next(this.trips.slice());
   }
 
+  deleteActivity(activity: Activity) {
+    const tripIndex = this.getTripIndex(activity.tripName);
+    if (tripIndex < 0) return;
+
+    const currTrip = this.trips[tripIndex];
+    if (!currTrip.activities) return;
+    const activityIndex = this.getActivityIndex(
+      currTrip.activities,
+      activity.activityName
+    );
+    if (activityIndex < 0) return;
+
+    currTrip.activities.splice(activityIndex, 1);
+    this.tripsChanged.next(this.trips.slice());
+  }
+
   private getTripIndex(tripName: string) {
     return this.trips.findIndex((trip) => trip.tripName === tripName);
   }
