@@ -1,15 +1,29 @@
 import { createAction, props } from '@ngrx/store';
+import { Trip } from '../../../models/user.data';
 
-export const tRIPSTripss = createAction(
-  '[Trips] TRIPS Tripss'
+export const addTrip = createAction(
+  '[Trips] TRIPS Add Trip',
+  props<{ trip: Trip }>()
 );
 
-export const tRIPSTripssSuccess = createAction(
-  '[Trips] TRIPS Tripss Success',
-  props<{ data: any }>()
+export const updateTrip = createAction(
+  '[Trips] TRIPS Update Trip',
+  props<{ oldTrip: Trip; newTrip: Trip }>()
 );
 
-export const tRIPSTripssFailure = createAction(
-  '[Trips] TRIPS Tripss Failure',
-  props<{ error: any }>()
+export const deleteTrip = createAction(
+  '[Trips] TRIPS Delete Trip',
+  props<{ trip: Trip }>()
+);
+
+export const loadTrips = createAction('[Trips] TRIPS Load Trips');
+
+export const loadTripsSuccess = createAction(
+  '[Trips] TRIPS Load Trips Success',
+  props<{ trips: Trip[] }>()
+);
+
+export const loadTripsFailure = createAction(
+  '[Trips] TRIPS Load Trips Failure',
+  props<{ error: string }>()
 );

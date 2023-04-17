@@ -55,6 +55,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import * as fromTrips from './store/trips-store/reducers/trips.reducer';
 import { TripsEffects } from './store/trips-store/effects/trips.effects';
+import * as fromActivities from './store/activities-store/reducers/activities.reducer';
+import { ActivitiesEffects } from './store/activities-store/effects/activities.effects';
 
 registerLocaleData(en);
 
@@ -110,7 +112,11 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     StoreModule.forFeature(fromTrips.tripsFeatureKey, fromTrips.reducer),
-    EffectsModule.forFeature([TripsEffects]),
+    EffectsModule.forFeature([TripsEffects, ActivitiesEffects]),
+    StoreModule.forFeature(
+      fromActivities.activitiesFeatureKey,
+      fromActivities.reducer
+    ),
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
