@@ -1,9 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TripsService } from '../../services/trips/trips.service';
 import { Trip } from '../../models/user.data';
-import { FirestoreService } from '../../services/firestore/firestore.service';
+import { map, switchMap, tap } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectTrip } from '../../store/trips-store/selectors/trips.selectors';
+import { AuthService } from '../../services/auth/auth.service';
+import {
+  addTrip,
+  loadTrip,
+  updateTrip,
+} from '../../store/trips-store/actions/trips.actions';
 
 @Component({
   selector: 'app-trip-item-edit',
@@ -12,6 +19,7 @@ import { FirestoreService } from '../../services/firestore/firestore.service';
 })
 export class TripEditComponent implements OnInit {
   oldTrip: Trip | undefined;
+  oldTrip$ = this.store.select(selectTrip);
   editMode = false;
   prompt = 'Add a new trip';
   tripForm: FormGroup = new FormGroup({});
@@ -20,30 +28,54 @@ export class TripEditComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private tripsService: TripsService,
     private router: Router,
-    private firestoreService: FirestoreService
+    private authService: AuthService,
+    private store: Store
   ) {}
 
   ngOnInit() {
-    const tripName = this.route.snapshot.queryParamMap.get('tripName');
-    if (tripName) {
-      this.oldTrip = this.tripsService.getTrip(tripName);
-      this.editMode = true;
-      this.prompt = 'Update your trip';
-    }
-
-    this.initForm();
+    this.route.params
+      .pipe(
+        map((params) => params['tripName']),
+        tap((tripName) => {
+          if (tripName) {
+            this.editMode = true;
+            this.store.dispatch(loadTrip({ tripName }));
+          }
+        }),
+        switchMap(() => this.store.select(selectTrip))
+      )
+      .subscribe((trip) => {
+        this.oldTrip = trip;
+        this.initForm();
+      });
   }
 
-  async onSubmit() {
-    if (this.editMode && this.oldTrip) {
-      this.tripsService.updateTrip(this.oldTrip, this.tripForm.value);
-    } else {
-      this.tripsService.addTrip(this.tripForm.value);
-    }
-    await this.firestoreService.updateTrips(this.tripsService.getTrips());
-    this.completeTripEdit();
+  onSubmit() {
+    this.authService.authState$
+      .pipe(
+        map((user) => user?.uid),
+        map((authUserId) => {
+          if (!authUserId) return null;
+          const trip: Trip = {
+            authUserId: authUserId,
+            tripName: this.tripForm.value.tripName,
+            tripDescription: this.tripForm.value.tripDescription,
+          };
+          return trip;
+        })
+      )
+      .subscribe((trip) => {
+        if (!trip) return;
+        if (this.editMode && this.oldTrip) {
+          this.store.dispatch(
+            updateTrip({ oldTrip: this.oldTrip, newTrip: trip })
+          );
+        } else {
+          this.store.dispatch(addTrip({ trip: trip }));
+        }
+        this.completeTripEdit();
+      });
   }
 
   onCancel() {
@@ -61,9 +93,12 @@ export class TripEditComponent implements OnInit {
   }
 
   private completeTripEdit() {
-    if (this.editMode)
-      this.router.navigate(['../'], { relativeTo: this.route });
-    else this.router.navigate(['../../'], { relativeTo: this.route });
+    if (this.editMode) {
+      this.route.paramMap.subscribe((params) => {
+        const tripName = params.get('tripName');
+        this.router.navigate(['/trips', tripName]);
+      });
+    } else this.router.navigate(['../../'], { relativeTo: this.route });
   }
 
   private initForm() {

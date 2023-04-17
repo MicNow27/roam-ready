@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Activity, Trip } from '../../models/user.data';
-import { TripsService } from '../../services/trips/trips.service';
-import { activityNameRoute, tripNameRoute } from '../../../utils/routeNames';
-import { FirestoreService } from '../../services/firestore/firestore.service';
-import { Subscription } from 'rxjs';
+import { Trip } from '../../models/user.data';
+import { map, switchMap, tap } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectActivities } from '../../store/activities-store/selectors/activities.selectors';
+import { loadActivities } from '../../store/activities-store/actions/activities.actions';
+import { selectTrip } from '../../store/trips-store/selectors/trips.selectors';
+import {
+  deleteTrip,
+  loadTrip,
+} from '../../store/trips-store/actions/trips.actions';
 
 @Component({
   selector: 'app-trip',
@@ -13,34 +18,32 @@ import { Subscription } from 'rxjs';
 })
 export class TripComponent implements OnInit {
   trip: Trip | undefined;
+  trip$ = this.store.select(selectTrip);
   error = '';
   denied = false;
-  activities: Activity[] = [];
-  tripsSubscription: Subscription | undefined;
-  activityNameRoute = activityNameRoute;
-  tripNameRoute = tripNameRoute;
+  activities$ = this.store.select(selectActivities);
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private tripsService: TripsService,
-    private firestoreService: FirestoreService
+    private store: Store
   ) {}
 
   ngOnInit() {
-    const tripName = this.route.snapshot.queryParamMap.get('tripName');
-    if (tripName) this.trip = this.tripsService.getTrip(tripName);
-
-    this.tripsSubscription = this.tripsService.tripsChanged.subscribe(
-      (trips: Trip[]) => {
-        this.activities =
-          trips.find((trip: Trip) => trip.tripName === this.trip?.tripName)
-            ?.activities || [];
-      }
-    );
-
-    if (!this.trip) return;
-    this.activities = this.tripsService.getActivitiesByTrip(this.trip.tripName);
+    this.route.params
+      .pipe(
+        map((params) => params['tripName']),
+        tap((tripName) => {
+          if (tripName) {
+            this.store.dispatch(loadActivities({ tripName }));
+            this.store.dispatch(loadTrip({ tripName }));
+          }
+        }),
+        switchMap(() => this.store.select(selectTrip))
+      )
+      .subscribe((trip) => {
+        this.trip = trip;
+      });
   }
 
   activityName = (index: number, activity: { activityName: string }) =>
@@ -48,28 +51,23 @@ export class TripComponent implements OnInit {
 
   onEditTrip() {
     if (!this.trip) return;
-    const tripNameRoute = this.tripNameRoute(this.trip);
-    this.router.navigate(['../edit', tripNameRoute], {
+    this.router.navigate(['../edit', this.trip.tripName], {
       relativeTo: this.route,
-      queryParams: { tripName: this.trip.tripName },
     });
   }
 
   onAddActivity() {
     this.router.navigate(['edit/new'], {
       relativeTo: this.route,
-      queryParams: { tripName: this.trip?.tripName },
     });
   }
 
-  async onDeleteTrip() {
+  onDeleteTrip() {
     if (!this.denied) {
       this.error = 'Are you sure you want to delete this trip?';
       return;
     }
-    if (!this.trip) return;
-    this.tripsService.deleteTrip(this.trip);
-    await this.firestoreService.updateTrips(this.tripsService.getTrips());
+    if (this.trip) this.store.dispatch(deleteTrip({ trip: this.trip }));
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 

@@ -3,7 +3,6 @@ import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { AuthResponseData } from '../../models/auth-response.data';
 
 @Component({
   selector: 'app-auth',
@@ -30,7 +29,7 @@ export class AuthComponent {
 
     this.isLoading = true;
 
-    let auth$: Observable<AuthResponseData>;
+    let auth$: Observable<string>;
     if (this.isLoginMode) {
       auth$ = this.authService.signIn(
         authForm.value.email,
