@@ -49,6 +49,7 @@ export class FirestoreService {
   }
 
   async updateTrips(trips: Trip[]) {
+    console.log('updateTrips() called.');
     const authUserId = this.authService.authUserId;
     if (!authUserId) return; // Should never be the case.
 

@@ -19,17 +19,21 @@ import {
   updateActivity,
   updateTrip,
 } from '../actions/trips.actions';
-import { Trip } from '../../../models/user.data';
+import { Activity, Trip } from '../../../models/user.data';
 
 export const tripsFeatureKey = 'trips';
 
 export interface State {
+  activities: Activity[];
+  selectedTrip: Trip | null;
   trips: Trip[];
   error: string | null;
   status: 'pending' | 'loading' | 'error' | 'success';
 }
 
 export const initialState: State = {
+  activities: [],
+  selectedTrip: null,
   trips: [],
   error: null,
   status: 'pending',

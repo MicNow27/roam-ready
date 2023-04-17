@@ -1,17 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Activity } from '../../models/user.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { activityNameRoute } from '../../../utils/routeNames';
-import { TripsService } from '../../services/trips/trips.service';
-import { FirestoreService } from '../../services/firestore/firestore.service';
+import { selectTrips } from '../../store/trips-store/selectors/trips.selectors';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { deleteActivity } from '../../store/trips-store/actions/trips.actions';
 
 @Component({
   selector: 'app-activity',
   templateUrl: './activity.component.html',
   styleUrls: ['./activity.component.scss'],
 })
-export class ActivityComponent implements OnInit {
+export class ActivityComponent implements OnInit, OnDestroy {
   activity: Activity | undefined;
+  trips$ = this.store.select(selectTrips);
+  tripsSub: Subscription | undefined;
   error = '';
   denied = false;
   currencyCode = 'R';
@@ -20,20 +24,29 @@ export class ActivityComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private tripsService: TripsService,
-    private firestoreService: FirestoreService
+    private store: Store // private tripsService: TripsService, // private firestoreService: FirestoreService
   ) {}
 
   ngOnInit() {
     const tripName = this.route.snapshot.queryParamMap.get('tripName');
+    const activityName = this.route.snapshot.queryParamMap.get('activityName');
     if (!tripName) return;
 
-    const activityName = this.route.snapshot.queryParamMap.get('activityName');
-    if (activityName)
-      this.activity = this.tripsService.getActivityByTripAndActivity(
-        tripName,
-        activityName
+    this.tripsSub = this.trips$.subscribe((trips) => {
+      const trip = trips.find((trip) => trip.tripName === tripName);
+      this.activity = trip?.activities?.find(
+        (activity) => activity.activityName === activityName
       );
+    });
+    // if (activityName)
+    //   this.activity = this.tripsService.getActivityByTripAndActivity(
+    //     tripName,
+    //     activityName
+    //   );
+  }
+
+  ngOnDestroy() {
+    this.tripsSub?.unsubscribe();
   }
 
   startDate() {
@@ -64,8 +77,15 @@ export class ActivityComponent implements OnInit {
       return;
     }
     if (!this.activity) return;
-    this.tripsService.deleteActivity(this.activity);
-    await this.firestoreService.updateTrips(this.tripsService.getTrips());
+
+    this.tripsSub = this.trips$.subscribe((trips) => {
+      this.store.dispatch(
+        deleteActivity({ activity: this.activity!, trips: trips })
+      );
+    });
+
+    // this.tripsService.deleteActivity(this.activity);
+    // await this.firestoreService.updateTrips(this.tripsService.getTrips());
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 

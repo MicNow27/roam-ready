@@ -1,16 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { Activity } from '../../models/user.data';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Activity, Trip } from '../../models/user.data';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TripsService } from '../../services/trips/trips.service';
-import { FirestoreService } from '../../services/firestore/firestore.service';
+import { selectTrips } from '../../store/trips-store/selectors/trips.selectors';
+import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import {
+  addActivity,
+  updateActivity,
+} from '../../store/trips-store/actions/trips.actions';
 
 @Component({
   selector: 'app-activity-edit',
   templateUrl: './activity-edit.component.html',
   styleUrls: ['./activity-edit.component.scss'],
 })
-export class ActivityEditComponent implements OnInit {
+export class ActivityEditComponent implements OnInit, OnDestroy {
   tripName: string | undefined;
   oldActivity: Activity | undefined;
   editMode = false;
@@ -20,34 +25,54 @@ export class ActivityEditComponent implements OnInit {
   denied = false;
   tag = 'travel';
   currencySymbol = 'R';
+  trips$ = this.store.select(selectTrips);
+  tripsSub: Subscription | undefined;
 
   constructor(
     private route: ActivatedRoute,
-    private tripsService: TripsService,
+    // private tripsService: TripsService,
     private router: Router,
-    private firestoreService: FirestoreService
+    private store: Store // private firestoreService: FirestoreService
   ) {}
 
   ngOnInit() {
     const tripName = this.route.snapshot.queryParamMap.get('tripName');
-    if (!tripName) return;
-    this.tripName = tripName;
-
     const activityName = this.route.snapshot.queryParamMap.get('activityName');
-    if (activityName) {
-      this.oldActivity = this.tripsService.getActivityByTripAndActivity(
-        this.tripName,
-        activityName
-      );
+    if (tripName) {
       this.editMode = true;
       this.prompt = 'Update your activity';
-      if (this.oldActivity) this.tag = this.oldActivity.tag;
     }
 
-    this.initForm();
+    this.tripsSub = this.trips$.subscribe((trips) => {
+      const trip = trips.find((trip: Trip) => trip.tripName === tripName);
+      this.oldActivity = trip?.activities?.find(
+        (activity: Activity) => activity.activityName === activityName
+      );
+      this.initForm();
+    });
+
+    // if (!tripName) return;
+    // this.tripName = tripName;
+    //
+    // const activityName = this.route.snapshot.queryParamMap.get('activityName');
+    // if (activityName) {
+    //   this.oldActivity = this.tripsService.getActivityByTripAndActivity(
+    //     this.tripName,
+    //     activityName
+    //   );
+    //   this.editMode = true;
+    //   this.prompt = 'Update your activity';
+    //   if (this.oldActivity) this.tag = this.oldActivity.tag;
+    // }
+    //
+    // this.initForm();
   }
 
-  async onSubmit() {
+  ngOnDestroy() {
+    this.tripsSub?.unsubscribe();
+  }
+
+  onSubmit() {
     if (!this.tripName) return;
     const activity: Activity = {
       tripName: this.tripName,
@@ -60,13 +85,25 @@ export class ActivityEditComponent implements OnInit {
       price: this.activityForm.value.price,
     };
 
-    if (this.editMode && this.oldActivity) {
-      this.tripsService.updateActivityInTrip(activity);
-    } else {
-      this.tripsService.addActivityToTrip(activity);
-    }
-    await this.firestoreService.updateTrips(this.tripsService.getTrips());
-    this.completeActivityEdit();
+    this.tripsSub = this.trips$.subscribe((trips) => {
+      if (this.editMode && this.oldActivity) {
+        this.store.dispatch(
+          updateActivity({ newActivity: activity, trips: trips })
+        );
+      } else {
+        this.store.dispatch(addActivity({ activity: activity, trips: trips }));
+      }
+      this.completeActivityEdit();
+    });
+
+    // if (this.editMode && this.oldActivity) {
+    //   this.store.dispatch(updateActivity({ activity: activity }));
+    //   this.tripsService.updateActivityInTrip(activity);
+    // } else {
+    //   this.tripsService.addActivityToTrip(activity);
+    // }
+    // await this.firestoreService.updateTrips(this.tripsService.getTrips());
+    // this.completeActivityEdit();
   }
 
   onHandleError() {

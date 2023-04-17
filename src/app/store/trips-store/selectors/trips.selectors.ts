@@ -9,3 +9,13 @@ export const selectTrips = createSelector(
   selectTripsState,
   (state) => state.trips
 );
+
+export const selectSelectedTrip = createSelector(
+  selectTripsState,
+  (state) => state.selectedTrip
+);
+
+export const selectActivities = createSelector(
+  selectTripsState,
+  (state) => state.activities
+);
