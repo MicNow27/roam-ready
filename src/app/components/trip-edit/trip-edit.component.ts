@@ -76,13 +76,6 @@ export class TripEditComponent implements OnInit {
         }
         this.completeTripEdit();
       });
-
-    // if (this.editMode && this.oldTrip) {
-    //   this.store.dispatch(updateTrip({oldTrip: this.oldTrip, newTrip: trip}));
-    // } else {
-    //   this.store.dispatch(addTrip({trip: trip}));
-    // }
-    // this.completeTripEdit();
   }
 
   onCancel() {

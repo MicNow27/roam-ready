@@ -39,7 +39,6 @@ const routes: Routes = [
     path: 'trips',
     component: TripsComponent,
     canActivate: [AuthGuard],
-    // resolve: [TripsResolver],
   },
   {
     path: 'auth',

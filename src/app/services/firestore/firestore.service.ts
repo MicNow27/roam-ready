@@ -102,7 +102,6 @@ export class FirestoreService {
   }
 
   addTrip(trip: Trip) {
-    console.log('firestore addTrip');
     return from(addDoc(this.tripsCollection, trip).then((docRef) => docRef.id));
   }
 
@@ -167,10 +166,6 @@ export class FirestoreService {
     for (const docElement of querySnapshot.docs) {
       await deleteDoc(doc(this.firestore, 'activities', docElement.id));
     }
-    // querySnapshot.forEach(
-    //   async (docElement: any) =>
-    //     await deleteDoc(doc(this.firestore, 'activities', docElement.id))
-    // );
   }
 
   private async getTripId(trip: Trip): Promise<string> {
@@ -182,9 +177,6 @@ export class FirestoreService {
     const [firstDoc] = querySnapshot.docs;
     if (firstDoc) tripId = firstDoc.id;
     return tripId;
-    // querySnapshot.forEach((docElement: any) => {
-    //   tripId = docElement.id;
-    // });
   }
 
   private async getActivityId(activity: Activity): Promise<string> {
@@ -199,72 +191,5 @@ export class FirestoreService {
     const [firstDoc] = querySnapshot.docs;
     if (firstDoc) activityId = firstDoc.id;
     return activityId;
-
-    // querySnapshot.forEach((docElement: any) => {
-    //   activityId = docElement.id;
-    // });
   }
-
-  // async updateTrips(trips: Trip[]) {
-  //   const authUserId = this.authService.authUserId;
-  //   if (!authUserId) return; // Should never be the case.
-  //
-  //   const userCollId = await this.getUserCollId(authUserId);
-  //   if (userCollId === '') return; // Should never be the case.
-  //
-  //   await updateDoc(doc(this.firestore, 'users', userCollId), {
-  //     authUserId: authUserId,
-  //     trips: trips,
-  //   });
-  // }
-
-  // async getTrips(): Promise<Trip[]> {
-  //   // Get this user's UID.
-  //   const authUserId = this.authService.authUserId;
-  //   if (!authUserId) return []; // Should never be the case.
-  //
-  //   // Check if the user exists in the Firestore collection.
-  //   // If not, create a new user document.
-  //   if ((await this.getUserCollId(authUserId)) === '')
-  //     await this.addUser(authUserId);
-  //
-  //   // Get the document in the users Firestore collection containing authUserId.
-  //   const querySnapshot = await this.getQuerySnapshot(authUserId);
-  //
-  //   // Get the trips array from the document.
-  //   let trips: Trip[] = [];
-  //   querySnapshot.forEach((docElement: any) => {
-  //     trips = docElement.data().trips;
-  //   });
-  //
-  //   this.tripsService.setTrips(trips);
-  //
-  //   return trips;
-  // }
-
-  // private async getUserCollId(authUserId: string) {
-  //   const querySnapshot = await this.getQuerySnapshot(authUserId);
-  //
-  //   let userCollId = '';
-  //   querySnapshot.forEach((docElement: any) => {
-  //     userCollId = docElement.id;
-  //   });
-  //
-  //   return userCollId;
-  // }
-
-  // private async getQuerySnapshot(authUserId: string) {
-  //   return await getDocs(
-  //     query(this.usersCollection, where('authUserId', '==', authUserId))
-  //   );
-  // }
-
-  // private async addUser(authUserId: string) {
-  //   const userData: UserData = {
-  //     authUserId: authUserId,
-  //     trips: [],
-  //   };
-  //   const docRef = await addDoc(this.usersCollection, userData);
-  //   return docRef.id;
-  // }
 }

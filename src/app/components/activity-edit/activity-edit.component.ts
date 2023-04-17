@@ -30,10 +30,9 @@ export class ActivityEditComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    // private tripsService: TripsService,
     private router: Router,
     private store: Store,
-    private authService: AuthService // private firestoreService: FirestoreService
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -56,21 +55,6 @@ export class ActivityEditComponent implements OnInit {
         this.oldActivity = activity;
         this.initForm();
       });
-
-    // const tripName = this.route.snapshot.queryParamMap.get('tripName');
-    // if (!tripName) return;
-    // this.tripName = tripName;
-    // const activityName = this.route.snapshot.queryParamMap.get('activityName');
-    // if (activityName) {
-    //   this.oldActivity = this.tripsService.getActivityByTripAndActivity(
-    //     this.tripName,
-    //     activityName
-    //   );
-    //   this.editMode = true;
-    //   this.prompt = 'Update your activity';
-    //   if (this.oldActivity) this.tag = this.oldActivity.tag;
-    // }
-    // this.initForm();
   }
 
   onSubmit() {
@@ -97,24 +81,6 @@ export class ActivityEditComponent implements OnInit {
       this.store.dispatch(addActivity({ activity: activity }));
     }
     this.completeActivityEdit();
-    // const activity: Activity = {
-    //   tripName: this.tripName,
-    //   activityName: this.activityForm.value.activityName,
-    //   activityDescription: this.activityForm.value.activityDescription,
-    //   tag: this.activityForm.value.tag,
-    //   notes: this.activityForm.value.notes,
-    //   startDate: this.activityForm.value.startDate.getTime(),
-    //   endDate: this.activityForm.value.endDate.getTime(),
-    //   price: this.activityForm.value.price,
-    // };
-    //
-    // if (this.editMode && this.oldActivity) {
-    //   this.tripsService.updateActivityInTrip(activity);
-    // } else {
-    //   this.tripsService.addActivityToTrip(activity);
-    // }
-    // await this.firestoreService.updateTrips(this.tripsService.getTrips());
-    // this.completeActivityEdit();
   }
 
   onHandleError() {
@@ -138,9 +104,7 @@ export class ActivityEditComponent implements OnInit {
         const activityName = params.get('activityName');
         this.router.navigate(['/trips', tripName, activityName]);
       });
-    }
-    // this.router.navigate(['../'], { relativeTo: this.route });
-    else this.router.navigate(['../../'], { relativeTo: this.route });
+    } else this.router.navigate(['../../'], { relativeTo: this.route });
   }
 
   private initForm() {
