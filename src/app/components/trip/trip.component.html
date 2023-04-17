@@ -7,9 +7,9 @@
   <div class="flex flex-col w-full mb-6">
     <h2
       class="font-poppins text-icon text-[1.75rem] font-semibold tracking-[0.15em] leading-8 mb-[-0.1rem]"
-    >{{trip?.tripName}}</h2>
+    >{{(trip$ | async)?.tripName}}</h2>
     <p class="text-text-gray text-[1rem] tracking-[0.2em] italic"
-    >{{trip?.tripDescription}}</p>
+    >{{(trip$ | async)?.tripDescription}}</p>
   </div>
   <div class="grid grid-rows-3 gap-2 place-content-stretch w-full mb-7">
     <button
@@ -31,15 +31,19 @@
     >Delete trip
     </button>
   </div>
-  <h3 *ngIf="activities.length > 0"
-      class="text-icon font-semibold italic text-[1.25rem] tracking-[0.1em] mb-4"
-  >{{trip?.tripName}} activities</h3>
+  <ng-container *ngIf="(activities$ | async)?.length === 0; else hasActivities">
+  </ng-container>
+</div>
+
+<ng-template #hasActivities>
+  <h3 class="text-icon font-semibold italic text-[1.25rem] tracking-[0.1em] mb-4 mx-4"
+  >{{(trip$ | async)?.tripName}} activities</h3>
   <div class="flex flex-col flex-grow w-full gap-4">
     <app-activity-item
-      *ngFor="let activity of activities; trackBy: activityName"
-      [activityNameRoute]="activityNameRoute(activity)"
+      *ngFor="let activity of (activities$ | async); trackBy: activityName"
+      [activityName]="activity.activityName"
       [activity]="activity"
       class="w-full"
     ></app-activity-item>
   </div>
-</div>
+</ng-template>

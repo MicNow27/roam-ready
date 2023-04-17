@@ -2,8 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Activity } from '../../models/user.data';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TripsService } from '../../services/trips/trips.service';
-import { FirestoreService } from '../../services/firestore/firestore.service';
+import { Store } from '@ngrx/store';
+import { map, switchMap } from 'rxjs';
+import { selectActivitiesState } from '../../store/activities-store/selectors/activities.selectors';
+import { AuthService } from '../../services/auth/auth.service';
+import {
+  addActivity,
+  updateActivity,
+} from '../../store/activities-store/actions/activities.actions';
 
 @Component({
   selector: 'app-activity-edit',
@@ -11,7 +17,8 @@ import { FirestoreService } from '../../services/firestore/firestore.service';
   styleUrls: ['./activity-edit.component.scss'],
 })
 export class ActivityEditComponent implements OnInit {
-  tripName: string | undefined;
+  tripName = '';
+  oldActivityName = '';
   oldActivity: Activity | undefined;
   editMode = false;
   prompt = 'Add a new activity';
@@ -23,33 +30,55 @@ export class ActivityEditComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private tripsService: TripsService,
+    // private tripsService: TripsService,
     private router: Router,
-    private firestoreService: FirestoreService
+    private store: Store,
+    private authService: AuthService // private firestoreService: FirestoreService
   ) {}
 
   ngOnInit() {
-    const tripName = this.route.snapshot.queryParamMap.get('tripName');
-    if (!tripName) return;
-    this.tripName = tripName;
+    this.route.params
+      .pipe(
+        map((params) => [params['tripName'], params['activityName']]),
+        switchMap(([tripName, activityName]) => {
+          this.tripName = tripName;
+          this.oldActivityName = activityName;
+          this.editMode = activityName != null;
+          return this.store.select(selectActivitiesState);
+        }),
+        map((activitiesState) =>
+          activitiesState.activities.find(
+            (activity) => activity.activityName === this.oldActivityName
+          )
+        )
+      )
+      .subscribe((activity) => {
+        this.oldActivity = activity;
+        this.initForm();
+      });
 
-    const activityName = this.route.snapshot.queryParamMap.get('activityName');
-    if (activityName) {
-      this.oldActivity = this.tripsService.getActivityByTripAndActivity(
-        this.tripName,
-        activityName
-      );
-      this.editMode = true;
-      this.prompt = 'Update your activity';
-      if (this.oldActivity) this.tag = this.oldActivity.tag;
-    }
-
-    this.initForm();
+    // const tripName = this.route.snapshot.queryParamMap.get('tripName');
+    // if (!tripName) return;
+    // this.tripName = tripName;
+    // const activityName = this.route.snapshot.queryParamMap.get('activityName');
+    // if (activityName) {
+    //   this.oldActivity = this.tripsService.getActivityByTripAndActivity(
+    //     this.tripName,
+    //     activityName
+    //   );
+    //   this.editMode = true;
+    //   this.prompt = 'Update your activity';
+    //   if (this.oldActivity) this.tag = this.oldActivity.tag;
+    // }
+    // this.initForm();
   }
 
-  async onSubmit() {
-    if (!this.tripName) return;
+  onSubmit() {
+    const authUserId = this.authService.authUserId;
+    if (!authUserId) return;
+
     const activity: Activity = {
+      authUserId: authUserId,
       tripName: this.tripName,
       activityName: this.activityForm.value.activityName,
       activityDescription: this.activityForm.value.activityDescription,
@@ -61,12 +90,31 @@ export class ActivityEditComponent implements OnInit {
     };
 
     if (this.editMode && this.oldActivity) {
-      this.tripsService.updateActivityInTrip(activity);
+      this.store.dispatch(
+        updateActivity({ oldActivity: this.oldActivity, newActivity: activity })
+      );
     } else {
-      this.tripsService.addActivityToTrip(activity);
+      this.store.dispatch(addActivity({ activity: activity }));
     }
-    await this.firestoreService.updateTrips(this.tripsService.getTrips());
     this.completeActivityEdit();
+    // const activity: Activity = {
+    //   tripName: this.tripName,
+    //   activityName: this.activityForm.value.activityName,
+    //   activityDescription: this.activityForm.value.activityDescription,
+    //   tag: this.activityForm.value.tag,
+    //   notes: this.activityForm.value.notes,
+    //   startDate: this.activityForm.value.startDate.getTime(),
+    //   endDate: this.activityForm.value.endDate.getTime(),
+    //   price: this.activityForm.value.price,
+    // };
+    //
+    // if (this.editMode && this.oldActivity) {
+    //   this.tripsService.updateActivityInTrip(activity);
+    // } else {
+    //   this.tripsService.addActivityToTrip(activity);
+    // }
+    // await this.firestoreService.updateTrips(this.tripsService.getTrips());
+    // this.completeActivityEdit();
   }
 
   onHandleError() {
@@ -84,8 +132,14 @@ export class ActivityEditComponent implements OnInit {
   }
 
   private completeActivityEdit() {
-    if (this.editMode)
-      this.router.navigate(['../'], { relativeTo: this.route });
+    if (this.editMode) {
+      this.route.paramMap.subscribe((params) => {
+        const tripName = params.get('tripName');
+        const activityName = params.get('activityName');
+        this.router.navigate(['/trips', tripName, activityName]);
+      });
+    }
+    // this.router.navigate(['../'], { relativeTo: this.route });
     else this.router.navigate(['../../'], { relativeTo: this.route });
   }
 

@@ -2,8 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Activity } from '../../models/user.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { activityNameRoute } from '../../../utils/routeNames';
-import { TripsService } from '../../services/trips/trips.service';
-import { FirestoreService } from '../../services/firestore/firestore.service';
+import { Store } from '@ngrx/store';
+import { map, switchMap, tap } from 'rxjs';
+import { selectActivity } from '../../store/activities-store/selectors/activities.selectors';
+import {
+  deleteActivity,
+  loadActivity,
+} from '../../store/activities-store/actions/activities.actions';
 
 @Component({
   selector: 'app-activity',
@@ -12,6 +17,9 @@ import { FirestoreService } from '../../services/firestore/firestore.service';
 })
 export class ActivityComponent implements OnInit {
   activity: Activity | undefined;
+  activity$ = this.store.select(selectActivity);
+  // tripName = '';
+  // activityName = '';
   error = '';
   denied = false;
   currencyCode = 'R';
@@ -20,20 +28,38 @@ export class ActivityComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private tripsService: TripsService,
-    private firestoreService: FirestoreService
+    private store: Store // private authService: AuthService // private tripsService: TripsService, // private firestoreService: FirestoreService
   ) {}
 
   ngOnInit() {
-    const tripName = this.route.snapshot.queryParamMap.get('tripName');
-    if (!tripName) return;
+    console.log('ActivityComponent.ngOnInit()');
+    this.route.params
+      .pipe(
+        map((params) => [params['tripName'], params['activityName']]),
+        tap(([tripName, activityName]) => {
+          if (tripName && activityName) {
+            console.log('component: ' + tripName + ' ' + activityName);
+            this.store.dispatch(loadActivity({ tripName, activityName }));
+            // this.tripName = tripName;
+            // this.activityName = activityName;
+          }
+        }),
+        switchMap(() => this.store.select(selectActivity))
+      )
+      .subscribe((activity) => {
+        this.activity = activity;
+        console.log('ActivityComponent.ngOnInit() activity: ' + activity);
+      });
 
-    const activityName = this.route.snapshot.queryParamMap.get('activityName');
-    if (activityName)
-      this.activity = this.tripsService.getActivityByTripAndActivity(
-        tripName,
-        activityName
-      );
+    // const tripName = this.route.snapshot.queryParamMap.get('tripName');
+    // if (!tripName) return;
+    //
+    // const activityName = this.route.snapshot.queryParamMap.get('activityName');
+    // if (activityName)
+    //   this.activity = this.tripsService.getActivityByTripAndActivity(
+    //     tripName,
+    //     activityName
+    //   );
   }
 
   startDate() {
@@ -48,24 +74,22 @@ export class ActivityComponent implements OnInit {
 
   onEditActivity() {
     if (!this.activity) return;
-    const activityNameRoute = this.activityNameRoute(this.activity);
-    this.router.navigate(['../edit', activityNameRoute], {
+    // const activityNameRoute = this.activityNameRoute(this.activity);
+    this.router.navigate(['../edit', this.activity.activityName], {
       relativeTo: this.route,
-      queryParams: {
-        tripName: this.activity.tripName,
-        activityName: this.activity.activityName,
-      },
     });
   }
 
-  async onDeleteActivity() {
+  onDeleteActivity() {
     if (!this.denied) {
       this.error = 'Are you sure you want to delete this trip?';
       return;
     }
-    if (!this.activity) return;
-    this.tripsService.deleteActivity(this.activity);
-    await this.firestoreService.updateTrips(this.tripsService.getTrips());
+    if (this.activity)
+      this.store.dispatch(deleteActivity({ activity: this.activity }));
+    // if (!this.activity) return;
+    // this.tripsService.deleteActivity(this.activity);
+    // await this.firestoreService.updateTrips(this.tripsService.getTrips());
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 

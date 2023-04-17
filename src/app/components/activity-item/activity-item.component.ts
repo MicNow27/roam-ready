@@ -9,18 +9,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ActivityItemComponent {
   @Input() activity: Activity | undefined;
-  @Input() activityNameRoute = '';
+  @Input() activityName = '';
 
   constructor(private router: Router, private route: ActivatedRoute) {}
 
   onActivityClick() {
     if (!this.activity) return;
-    this.router.navigate([this.activityNameRoute], {
+    this.router.navigate([this.activityName], {
       relativeTo: this.route,
-      queryParams: {
-        tripName: this.activity.tripName,
-        activityName: this.activity.activityName,
-      },
     });
   }
 }

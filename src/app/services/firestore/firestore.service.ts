@@ -45,7 +45,13 @@ export class FirestoreService {
     );
   }
 
-  getTrip(authUserId: string, tripName: string): Observable<Trip | undefined> {
+  getTrip(tripName: string): Observable<Trip | undefined> {
+    let authUserId = '';
+    this.authService.authState$.subscribe((user) => {
+      if (user) {
+        authUserId = user.uid;
+      }
+    });
     return this.trips$.pipe(
       map((response: Trip[]) => {
         return response.find(
@@ -57,7 +63,12 @@ export class FirestoreService {
   }
 
   getActivities(tripName: string): Observable<Activity[]> {
-    const authUserId = this.authService.authUserId;
+    let authUserId = '';
+    this.authService.authState$.subscribe((user) => {
+      if (user) {
+        authUserId = user.uid;
+      }
+    });
     return this.activities$.pipe(
       map((response: Activity[]) => {
         return response.filter(
@@ -69,10 +80,15 @@ export class FirestoreService {
   }
 
   getActivity(
-    authUserId: string,
     tripName: string,
     activityName: string
   ): Observable<Activity | undefined> {
+    let authUserId = '';
+    this.authService.authState$.subscribe((user) => {
+      if (user) {
+        authUserId = user.uid;
+      }
+    });
     return this.activities$.pipe(
       map((response: Activity[]) => {
         return response.find(
@@ -86,6 +102,7 @@ export class FirestoreService {
   }
 
   addTrip(trip: Trip) {
+    console.log('firestore addTrip');
     return from(addDoc(this.tripsCollection, trip).then((docRef) => docRef.id));
   }
 
@@ -147,10 +164,13 @@ export class FirestoreService {
       query(this.activitiesCollection, where('tripName', '==', trip.tripName))
     );
 
-    querySnapshot.forEach(
-      async (docElement: any) =>
-        await deleteDoc(doc(this.firestore, 'activities', docElement.id))
-    );
+    for (const docElement of querySnapshot.docs) {
+      await deleteDoc(doc(this.firestore, 'activities', docElement.id));
+    }
+    // querySnapshot.forEach(
+    //   async (docElement: any) =>
+    //     await deleteDoc(doc(this.firestore, 'activities', docElement.id))
+    // );
   }
 
   private async getTripId(trip: Trip): Promise<string> {
@@ -159,11 +179,12 @@ export class FirestoreService {
     );
 
     let tripId = '';
-    querySnapshot.forEach((docElement: any) => {
-      tripId = docElement.id;
-    });
-
+    const [firstDoc] = querySnapshot.docs;
+    if (firstDoc) tripId = firstDoc.id;
     return tripId;
+    // querySnapshot.forEach((docElement: any) => {
+    //   tripId = docElement.id;
+    // });
   }
 
   private async getActivityId(activity: Activity): Promise<string> {
@@ -175,11 +196,13 @@ export class FirestoreService {
     );
 
     let activityId = '';
-    querySnapshot.forEach((docElement: any) => {
-      activityId = docElement.id;
-    });
-
+    const [firstDoc] = querySnapshot.docs;
+    if (firstDoc) activityId = firstDoc.id;
     return activityId;
+
+    // querySnapshot.forEach((docElement: any) => {
+    //   activityId = docElement.id;
+    // });
   }
 
   // async updateTrips(trips: Trip[]) {

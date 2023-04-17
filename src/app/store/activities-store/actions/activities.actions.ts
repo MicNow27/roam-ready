@@ -16,6 +16,21 @@ export const deleteActivity = createAction(
   props<{ activity: Activity }>()
 );
 
+export const loadActivity = createAction(
+  '[Activities] ACTS Load Activity',
+  props<{ tripName: string; activityName: string }>()
+);
+
+export const loadActivitySuccess = createAction(
+  '[Activities] ACTS Load Activity Success',
+  props<{ activity: Activity | undefined }>()
+);
+
+export const loadActivityFailure = createAction(
+  '[Activities] ACTS Load Activity Failure',
+  props<{ error: string }>()
+);
+
 export const loadActivities = createAction(
   '[Activities] ACTS Load Activities',
   props<{ tripName: string }>()

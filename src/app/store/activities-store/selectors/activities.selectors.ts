@@ -10,3 +10,13 @@ export const selectActivities = createSelector(
   selectActivitiesState,
   (state) => state.activities
 );
+
+export const selectActivity = createSelector(
+  selectActivitiesState,
+  (state) => state.activity
+);
+
+export const selectTripStatus = createSelector(
+  selectActivitiesState,
+  (state) => state.status
+);

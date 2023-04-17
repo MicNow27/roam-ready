@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Trip } from '../../models/user.data';
-import { Subscription } from 'rxjs';
-import { TripsService } from '../../services/trips/trips.service';
 import { tripNameRoute } from '../../../utils/routeNames';
+import { Store } from '@ngrx/store';
+import {
+  selectTrips,
+  selectTripStatus,
+} from '../../store/trips-store/selectors/trips.selectors';
+import { loadTrips } from '../../store/trips-store/actions/trips.actions';
 
 @Component({
   selector: 'app-trips',
@@ -11,23 +14,26 @@ import { tripNameRoute } from '../../../utils/routeNames';
   styleUrls: ['./trips.component.scss'],
 })
 export class TripsComponent implements OnInit {
-  trips: Trip[] = [];
-  tripsSubscription: Subscription | undefined;
+  // trips: Trip[] = [];
+  // tripsSubscription: Subscription | undefined;
+  trips$ = this.store.select(selectTrips);
+  tripStatus$ = this.store.select(selectTripStatus);
   tripNameRoute = tripNameRoute;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private tripsService: TripsService
+    private store: Store
   ) {}
 
   ngOnInit() {
-    this.tripsSubscription = this.tripsService.tripsChanged.subscribe(
-      (trips: Trip[]) => {
-        this.trips = trips;
-      }
-    );
-    this.trips = this.tripsService.getTrips();
+    this.store.dispatch(loadTrips());
+    // this.tripsSubscription = this.tripsService.tripsChanged.subscribe(
+    //   (trips: Trip[]) => {
+    //     this.trips = trips;
+    //   }
+    // );
+    // this.trips = this.tripsService.getTrips();
   }
 
   tripName = (index: number, trip: { tripName: string }) => trip.tripName;

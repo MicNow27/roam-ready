@@ -16,6 +16,21 @@ export const deleteTrip = createAction(
   props<{ trip: Trip }>()
 );
 
+export const loadTrip = createAction(
+  '[Trips] TRIPS Load Trip',
+  props<{ tripName: string }>()
+);
+
+export const loadTripSuccess = createAction(
+  '[Trips] TRIPS Load Trip Success',
+  props<{ trip: Trip | undefined }>()
+);
+
+export const loadTripFailure = createAction(
+  '[Trips] TRIPS Load Trip Failure',
+  props<{ error: string }>()
+);
+
 export const loadTrips = createAction('[Trips] TRIPS Load Trips');
 
 export const loadTripsSuccess = createAction(

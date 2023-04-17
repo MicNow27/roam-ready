@@ -8,7 +8,6 @@ import {
   UserCredential,
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { AuthResponseData } from '../../models/auth-response.data';
 
 @Injectable({
   providedIn: 'root',
@@ -26,23 +25,23 @@ export class AuthService {
     });
   }
 
-  signUp(email: string, password: string): Observable<AuthResponseData> {
+  signUp(email: string, password: string): Observable<string> {
     return from(
       createUserWithEmailAndPassword(this.auth, email, password)
     ).pipe(
-      switchMap(
-        async (userCredential) => await this.setAuthResponseData(userCredential)
+      switchMap((userCredential: UserCredential) =>
+        from(userCredential.user?.uid)
       ),
       catchError((error) => {
-        throw this.handleError(error);
+        return this.handleError(error);
       })
     );
   }
 
-  signIn(email: string, password: string): Observable<AuthResponseData> {
+  signIn(email: string, password: string): Observable<string> {
     return from(signInWithEmailAndPassword(this.auth, email, password)).pipe(
-      switchMap(
-        async (userCredential) => await this.setAuthResponseData(userCredential)
+      switchMap((userCredential: UserCredential) =>
+        from(userCredential.user?.uid)
       ),
       catchError((error) => {
         throw this.handleError(error);
@@ -54,20 +53,6 @@ export class AuthService {
     this.auth.signOut().then(() => {
       this.router.navigate(['/home']);
     });
-  }
-
-  private async setAuthResponseData(userCredential: UserCredential) {
-    const user = userCredential.user;
-    const authData: AuthResponseData = {
-      providerId: user.providerId,
-      idToken: await user.getIdToken(),
-      email: user.email,
-      refreshToken: user.refreshToken,
-      expiresIn: (await user.getIdTokenResult()).expirationTime,
-      localId: user.uid,
-      registered: true,
-    };
-    return authData;
   }
 
   private handleError(error: any) {
