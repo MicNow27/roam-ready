@@ -39,32 +39,29 @@ export const reducer = createReducer(
   initialState,
 
   // Trip CUD
-  on(addTrip, (state, {trip}) => ({
+  on(addTrip, (state, { trip, trips }) => ({
     ...state,
-    trips: [...state.trips, trip],
+    trips: [...trips, trip],
   })),
-  on(updateTrip, (state, {oldTrip, newTrip}) => ({
+  on(updateTrip, (state, { newTrip, trips }) => ({
     ...state,
-    trips: state.trips.map((trip) => {
-      return trip === oldTrip ? newTrip : trip;
-    }),
+    trips: trips.map((t) => (t.tripName === newTrip.tripName ? newTrip : t)),
   })),
-  on(deleteTrip, (state, {trip}) => ({
+  on(deleteTrip, (state, { trip, trips }) => ({
     ...state,
-    trips: state.trips.filter((t) => t !== trip),
+    trips: trips.filter((t) => t !== trip),
   })),
-
   // R - 1 trip
-  on(loadTrip, (state, {tripName}) => ({
+  on(loadTrip, (state, { tripName }) => ({
     ...state,
     status: 'loading',
   })),
-  on(loadTripSuccess, (state, {trip}) => ({
+  on(loadTripSuccess, (state, { trip }) => ({
     ...state,
     trips: [...state.trips, trip],
     status: 'success',
   })),
-  on(loadTripFailure, (state, {error}) => ({
+  on(loadTripFailure, (state, { error }) => ({
     ...state,
     error: error,
     status: 'error',
@@ -75,21 +72,21 @@ export const reducer = createReducer(
     ...state,
     status: 'loading',
   })),
-  on(loadTripsSuccess, (state, {trips}) => ({
+  on(loadTripsSuccess, (state, { trips }) => ({
     ...state,
     trips: trips,
     status: 'success',
   })),
-  on(loadTripsFailure, (state, {error}) => ({
+  on(loadTripsFailure, (state, { error }) => ({
     ...state,
     error: error,
     status: 'error',
   })),
 
   // Activity CUD
-  on(addActivity, (state, {activity}) => ({
+  on(addActivity, (state, { activity, trips }) => ({
     ...state,
-    trips: state.trips.map((trip) => {
+    trips: trips.map((trip) => {
       if (trip.tripName === activity.tripName) {
         return {
           ...trip,
@@ -101,25 +98,25 @@ export const reducer = createReducer(
       return trip;
     }),
   })),
-  on(updateActivity, (state, {newActivity}) => ({
+  on(updateActivity, (state, { newActivity, trips }) => ({
     ...state,
-    trips: state.trips.map((trip) => {
+    trips: trips.map((trip) => {
       if (trip.tripName === newActivity.tripName) {
         return {
           ...trip,
           activities: trip.activities
-            ? trip.activities.map((activity) => {
-              return activity === newActivity ? newActivity : activity;
-            })
+            ? trip.activities.map((a) =>
+                a.activityName === newActivity.activityName ? newActivity : a
+              )
             : [newActivity],
         };
       }
       return trip;
     }),
   })),
-  on(deleteActivity, (state, {activity}) => ({
+  on(deleteActivity, (state, { activity, trips }) => ({
     ...state,
-    trips: state.trips.map((trip) => {
+    trips: trips.map((trip) => {
       if (trip.tripName === activity.tripName) {
         return {
           ...trip,
@@ -133,11 +130,11 @@ export const reducer = createReducer(
   })),
 
   // R - 1 activity
-  on(loadActivity, (state, {tripName, activityName}) => ({
+  on(loadActivity, (state, { tripName, activityName }) => ({
     ...state,
     status: 'loading',
   })),
-  on(loadActivitySuccess, (state, {activity}) => ({
+  on(loadActivitySuccess, (state, { activity }) => ({
     ...state,
     trips: state.trips.map((trip) => {
       if (trip.tripName === activity.tripName) {
@@ -152,18 +149,18 @@ export const reducer = createReducer(
     }),
     status: 'success',
   })),
-  on(loadActivityFailure, (state, {error}) => ({
+  on(loadActivityFailure, (state, { error }) => ({
     ...state,
     error: error,
     status: 'error',
   })),
 
   // R - all activities
-  on(loadActivities, (state, {tripName}) => ({
+  on(loadActivities, (state, { tripName }) => ({
     ...state,
     status: 'loading',
   })),
-  on(loadActivitiesSuccess, (state, {activities}) => ({
+  on(loadActivitiesSuccess, (state, { activities }) => ({
     ...state,
     trips: state.trips.map((trip) => {
       return {
@@ -175,7 +172,7 @@ export const reducer = createReducer(
     }),
     status: 'success',
   })),
-  on(loadActivitiesFailure, (state, {error}) => ({
+  on(loadActivitiesFailure, (state, { error }) => ({
     ...state,
     error: error,
     status: 'error',

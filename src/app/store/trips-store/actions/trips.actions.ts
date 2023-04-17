@@ -4,17 +4,17 @@ import {Activity, Trip} from '../../../models/user.data';
 // Trip CUD
 export const addTrip = createAction(
   '[Trips] TRIPS Add Trip',
-  props<{ trip: Trip }>()
+  props<{ trip: Trip; trips: Trip[] }>()
 );
 
 export const updateTrip = createAction(
   '[Trips] TRIPS Update Trip',
-  props<{ oldTrip: Trip; newTrip: Trip }>()
+  props<{ oldTrip: Trip; newTrip: Trip; trips: Trip[] }>()
 );
 
 export const deleteTrip = createAction(
   '[Trips] TRIPS Delete Trip',
-  props<{ trip: Trip }>()
+  props<{ trip: Trip; trips: Trip[] }>()
 );
 
 // R - 1 trip
@@ -49,17 +49,17 @@ export const loadTripsFailure = createAction(
 // Activity CUD
 export const addActivity = createAction(
   '[Trips] TRIPS Add Activity',
-  props<{ activity: Activity }>()
+  props<{ activity: Activity; trips: Trip[] }>()
 );
 
 export const updateActivity = createAction(
   '[Trips] TRIPS Update Activity',
-  props<{ newActivity: Activity }>()
+  props<{ newActivity: Activity; trips: Trip[] }>()
 );
 
 export const deleteActivity = createAction(
   '[Trips] TRIPS Delete Activity',
-  props<{ activity: Activity }>()
+  props<{ activity: Activity; trips: Trip[] }>()
 );
 
 // R - 1 activity

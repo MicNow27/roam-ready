@@ -13,7 +13,6 @@ import {
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Trip, UserData } from '../../models/user.data';
-import { TripsService } from '../trips/trips.service';
 import { AuthService } from '../auth/auth.service';
 
 @Injectable({
@@ -25,10 +24,7 @@ export class FirestoreService {
 
   private firestore: Firestore = inject(Firestore);
 
-  constructor(
-    private authService: AuthService,
-    private tripsService: TripsService
-  ) {
+  constructor(private authService: AuthService) {
     this.usersCollection = collection(this.firestore, 'users');
     this.users$ = collectionData(this.usersCollection) as Observable<
       UserData[]
@@ -36,25 +32,18 @@ export class FirestoreService {
   }
 
   async getTrips(): Promise<Trip[]> {
-    // Get this user's UID.
     const authUserId = this.authService.authUserId;
-    if (!authUserId) return []; // Should never be the case.
+    if (!authUserId) return [];
 
-    // Check if the user exists in the Firestore collection.
-    // If not, create a new user document.
     if ((await this.getUserCollId(authUserId)) === '')
       await this.addUser(authUserId);
 
-    // Get the document in the users Firestore collection containing authUserId.
     const querySnapshot = await this.getQuerySnapshot(authUserId);
 
-    // Get the trips array from the document.
     let trips: Trip[] = [];
     querySnapshot.forEach((docElement: any) => {
       trips = docElement.data().trips;
     });
-
-    this.tripsService.setTrips(trips);
 
     return trips;
   }
