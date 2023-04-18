@@ -4,14 +4,8 @@
     *ngIf="error"
     [message]="error"
   ></app-alert>
-  <div *ngIf="isLoading"
-       class="text-center w-full flex items-center justify-center h-full pt-[6rem]">
-    <app-loading-spinner></app-loading-spinner>
-  </div>
   <div
-    *ngIf="!isLoading"
-    class="w-full flex items-center justify-center h-full pt-[3rem] px-[3rem]"
-  >
+    class="w-full flex items-center justify-center h-full pt-[3rem] px-[3rem]">
     <form
       #authForm="ngForm"
       (ngSubmit)="onSubmit(authForm)"

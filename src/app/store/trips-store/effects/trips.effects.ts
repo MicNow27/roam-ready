@@ -6,6 +6,7 @@ import {
   addTrip,
   deleteTrip,
   loadTrip,
+  loadTripFailure,
   loadTrips,
   loadTripsFailure,
   loadTripsSuccess,
@@ -34,7 +35,7 @@ export class TripsEffects {
       switchMap((action) =>
         this.firestoreService.getTrip(action.tripName).pipe(
           map((result) => loadTripSuccess({ trip: result })),
-          catchError((error) => of(loadTripsFailure({ error })))
+          catchError((error) => of(loadTripFailure({ error })))
         )
       )
     )

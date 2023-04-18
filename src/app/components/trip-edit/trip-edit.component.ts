@@ -19,7 +19,7 @@ import {
 })
 export class TripEditComponent implements OnInit {
   oldTrip: Trip | undefined;
-  oldTrip$ = this.store.select(selectTrip);
+  oldTrip$ = this.store.select(selectTrip); // Keep.
   editMode = false;
   prompt = 'Add a new trip';
   tripForm: FormGroup = new FormGroup({});

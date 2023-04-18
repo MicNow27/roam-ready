@@ -3,49 +3,58 @@
   *ngIf="error !== ''"
   [message]="error"
 ></app-alert>
-<div class="flex flex-col w-full items-center justify-center flex-grow bg-bg px-7 pt-3 pb-7">
-  <h4 class="uppercase text-text-gray text-[0.8rem] mb-3">– {{activity?.tag}} –</h4>
-  <div class="flex flex-col w-full mb-6">
-    <h2
-      class="font-poppins text-icon text-[1.75rem] font-semibold tracking-[0.15em] leading-8 mb-[-0.1rem]"
-    >{{activity?.activityName}}</h2>
-    <p class="text-text-gray text-[1rem] tracking-[0.2em] italic"
-    >{{activity?.activityDescription}}</p>
-  </div>
-  <div class="flex flex-col w-full items-center justify-center px-3 mb-8 gap-6">
-    <div *ngIf="activity?.notes && activity?.notes !== ''"
-         class="flex flex-col w-full">
-      <label class="uppercase text-text-gray text-[0.8rem] mb-1 tracking-[0.15em]">Notes</label>
-      <p class="text-icon tracking-[0.1em]">{{activity?.notes}}</p>
-    </div>
 
-    <div class="flex flex-col w-full">
-      <label class="uppercase text-text-gray text-[0.8rem] mb-1 tracking-[0.15em]">Price</label>
-      <p class="text-icon tracking-[0.1em]">{{currencyCode}} {{activity?.price}}</p>
-    </div>
+<ng-container *ngIf="(activityStatus$ | async) === 'loading'">
+  <div class="w-full h-full flex flex-col flex-grow items-center justify-center">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+</ng-container>
 
-    <div class="flex flex-col w-full">
-      <label class="uppercase text-text-gray text-[0.8rem] mb-1 tracking-[0.15em]">Start</label>
-      <p class="text-icon tracking-[0.1em]">{{startDate() | date : 'EEEE, dd MM yyyy, h:mm a'}}</p>
+<ng-container *ngIf="(activityStatus$ | async) === 'success'">
+  <div class="flex flex-col w-full items-center justify-center flex-grow bg-bg px-7 pt-3 pb-7">
+    <h4 class="uppercase text-text-gray text-[0.8rem] mb-3">– {{activity?.tag}} –</h4>
+    <div class="flex flex-col w-full mb-6">
+      <h2
+        class="font-poppins text-icon text-[1.75rem] font-semibold tracking-[0.15em] leading-8 mb-[-0.1rem]"
+      >{{activity?.activityName}}</h2>
+      <p class="text-text-gray text-[1rem] tracking-[0.2em] italic"
+      >{{activity?.activityDescription}}</p>
     </div>
+    <div class="flex flex-col w-full items-center justify-center px-3 mb-8 gap-6">
+      <div *ngIf="activity?.notes && activity?.notes !== ''"
+           class="flex flex-col w-full">
+        <label class="uppercase text-text-gray text-[0.8rem] mb-1 tracking-[0.15em]">Notes</label>
+        <p class="text-icon tracking-[0.1em]">{{activity?.notes}}</p>
+      </div>
 
-    <div class="flex flex-col w-full">
-      <label class="uppercase text-text-gray text-[0.8rem] mb-1 tracking-[0.15em]">Finish</label>
-      <p class="text-icon tracking-[0.1em]">{{endDate() | date : 'EEEE, dd MM yyyy, h:mm a'}}</p>
+      <div class="flex flex-col w-full">
+        <label class="uppercase text-text-gray text-[0.8rem] mb-1 tracking-[0.15em]">Price</label>
+        <p class="text-icon tracking-[0.1em]">{{currencyCode}} {{activity?.price}}</p>
+      </div>
+
+      <div class="flex flex-col w-full">
+        <label class="uppercase text-text-gray text-[0.8rem] mb-1 tracking-[0.15em]">Start</label>
+        <p class="text-icon tracking-[0.1em]">{{startDate() | date : 'EEEE, dd MM yyyy, h:mm a'}}</p>
+      </div>
+
+      <div class="flex flex-col w-full">
+        <label class="uppercase text-text-gray text-[0.8rem] mb-1 tracking-[0.15em]">Finish</label>
+        <p class="text-icon tracking-[0.1em]">{{endDate() | date : 'EEEE, dd MM yyyy, h:mm a'}}</p>
+      </div>
+    </div>
+    <div class="grid grid-rows-2 gap-2 place-content-stretch w-full">
+      <button
+        (click)="onEditActivity()"
+        class="cursor-pointer text-bg bg-accent tracking-[0.2em] w-full text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] py-[0.6rem] rounded-lg border-[0.01rem] font-poppins hover:bg-accent-shade active:bg-accent-shade hover:shadow-shadow-focus active:shadow-shadow-focus"
+        type="button"
+      >Edit activity
+      </button>
+      <button
+        (click)="onDeleteActivity()"
+        class="cursor-pointer text-accent-shade bg-line-gray tracking-[0.2em] w-full text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] py-[0.6rem] rounded-lg border-[none] font-poppins hover:bg-line-gray-shade hover:shadow-shadow-focus active:shadow-shadow-focus"
+        type="button"
+      >Delete activity
+      </button>
     </div>
   </div>
-  <div class="grid grid-rows-2 gap-2 place-content-stretch w-full">
-    <button
-      (click)="onEditActivity()"
-      class="cursor-pointer text-bg bg-accent tracking-[0.2em] w-full text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] py-[0.6rem] rounded-lg border-[0.01rem] font-poppins hover:bg-accent-shade active:bg-accent-shade hover:shadow-shadow-focus active:shadow-shadow-focus"
-      type="button"
-    >Edit activity
-    </button>
-    <button
-      (click)="onDeleteActivity()"
-      class="cursor-pointer text-accent-shade bg-line-gray tracking-[0.2em] w-full text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] py-[0.6rem] rounded-lg border-[none] font-poppins hover:bg-line-gray-shade hover:shadow-shadow-focus active:shadow-shadow-focus"
-      type="button"
-    >Delete activity
-    </button>
-  </div>
-</div>
+</ng-container>

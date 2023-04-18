@@ -3,11 +3,12 @@ import { Activity } from '../../models/user.data';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map, switchMap } from 'rxjs';
-import { selectActivitiesState } from '../../store/activities-store/selectors/activities.selectors';
+import { map, switchMap, tap } from 'rxjs';
+import { selectActivity } from '../../store/activities-store/selectors/activities.selectors';
 import { AuthService } from '../../services/auth/auth.service';
 import {
   addActivity,
+  loadActivity,
   updateActivity,
 } from '../../store/activities-store/actions/activities.actions';
 
@@ -18,8 +19,8 @@ import {
 })
 export class ActivityEditComponent implements OnInit {
   tripName = '';
-  oldActivityName = '';
   oldActivity: Activity | undefined;
+  oldActivity$ = this.store.select(selectActivity);
   editMode = false;
   prompt = 'Add a new activity';
   activityForm: FormGroup = new FormGroup({});
@@ -39,17 +40,14 @@ export class ActivityEditComponent implements OnInit {
     this.route.params
       .pipe(
         map((params) => [params['tripName'], params['activityName']]),
-        switchMap(([tripName, activityName]) => {
+        tap(([tripName, activityName]) => {
           this.tripName = tripName;
-          this.oldActivityName = activityName;
-          this.editMode = activityName != null;
-          return this.store.select(selectActivitiesState);
+          if (activityName) {
+            this.editMode = true;
+            this.store.dispatch(loadActivity({ tripName, activityName }));
+          }
         }),
-        map((activitiesState) =>
-          activitiesState.activities.find(
-            (activity) => activity.activityName === this.oldActivityName
-          )
-        )
+        switchMap(() => this.store.select(selectActivity))
       )
       .subscribe((activity) => {
         this.oldActivity = activity;
@@ -58,29 +56,39 @@ export class ActivityEditComponent implements OnInit {
   }
 
   onSubmit() {
-    const authUserId = this.authService.authUserId;
-    if (!authUserId) return;
-
-    const activity: Activity = {
-      authUserId: authUserId,
-      tripName: this.tripName,
-      activityName: this.activityForm.value.activityName,
-      activityDescription: this.activityForm.value.activityDescription,
-      tag: this.activityForm.value.tag,
-      notes: this.activityForm.value.notes,
-      startDate: this.activityForm.value.startDate.getTime(),
-      endDate: this.activityForm.value.endDate.getTime(),
-      price: this.activityForm.value.price,
-    };
-
-    if (this.editMode && this.oldActivity) {
-      this.store.dispatch(
-        updateActivity({ oldActivity: this.oldActivity, newActivity: activity })
-      );
-    } else {
-      this.store.dispatch(addActivity({ activity: activity }));
-    }
-    this.completeActivityEdit();
+    this.authService.authState$
+      .pipe(
+        map((user) => user?.uid),
+        map((authUserId) => {
+          if (!authUserId) return null;
+          const activity: Activity = {
+            authUserId: authUserId,
+            tripName: this.tripName,
+            activityName: this.activityForm.value.activityName,
+            activityDescription: this.activityForm.value.activityDescription,
+            tag: this.activityForm.value.tag,
+            notes: this.activityForm.value.notes,
+            startDate: this.activityForm.value.startDate.getTime(),
+            endDate: this.activityForm.value.endDate.getTime(),
+            price: this.activityForm.value.price,
+          };
+          return activity;
+        })
+      )
+      .subscribe((activity) => {
+        if (!activity) return;
+        if (this.editMode && this.oldActivity) {
+          this.store.dispatch(
+            updateActivity({
+              oldActivity: this.oldActivity,
+              newActivity: activity,
+            })
+          );
+        } else {
+          this.store.dispatch(addActivity({ activity: activity }));
+        }
+        this.completeActivityEdit();
+      });
   }
 
   onHandleError() {

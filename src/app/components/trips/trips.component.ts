@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
   selectTrips,
-  selectTripStatus,
+  selectTripsStatus,
 } from '../../store/trips-store/selectors/trips.selectors';
 import { loadTrips } from '../../store/trips-store/actions/trips.actions';
 
@@ -14,7 +14,7 @@ import { loadTrips } from '../../store/trips-store/actions/trips.actions';
 })
 export class TripsComponent implements OnInit {
   trips$ = this.store.select(selectTrips);
-  tripStatus$ = this.store.select(selectTripStatus);
+  tripsStatus$ = this.store.select(selectTripsStatus);
 
   constructor(
     private router: Router,
