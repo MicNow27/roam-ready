@@ -1,6 +1,8 @@
 <app-alert
-  (close)="onHandleError()"
+  (affirm)="onAffirmError()"
+  (close)="onCloseError()"
   *ngIf="error !== ''"
+  [destructive]="true"
   [message]="error"
 ></app-alert>
 <div class="flex flex-col flex-grow bg-bg py-[1.25rem] px-5 gap-[1.25rem]">

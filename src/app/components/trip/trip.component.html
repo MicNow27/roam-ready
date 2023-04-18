@@ -1,6 +1,8 @@
 <app-alert
-  (close)="onHandleError()"
+  (affirm)="onAffirmError()"
+  (close)="onCloseError()"
   *ngIf="error !== ''"
+  [destructive]="true"
   [message]="error"
 ></app-alert>
 

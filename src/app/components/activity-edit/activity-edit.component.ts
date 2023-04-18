@@ -25,7 +25,6 @@ export class ActivityEditComponent implements OnInit {
   prompt = 'Add a new activity';
   activityForm: FormGroup = new FormGroup({});
   error = '';
-  denied = false;
   tag = 'travel';
   currencySymbol = 'R';
 
@@ -92,18 +91,20 @@ export class ActivityEditComponent implements OnInit {
       });
   }
 
-  onHandleError() {
+  onCloseError() {
     this.error = '';
-    this.denied = true;
+  }
+
+  onAffirmError() {
+    this.completeActivityEdit();
   }
 
   onCancel() {
-    if (this.activityForm.dirty && !this.denied) {
+    if (this.activityForm.dirty) {
       this.error = 'Do you want to proceed without saving?';
-      return;
+    } else {
+      this.completeActivityEdit();
     }
-    this.denied = false;
-    this.completeActivityEdit();
   }
 
   private completeActivityEdit() {

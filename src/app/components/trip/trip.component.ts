@@ -29,7 +29,6 @@ export class TripComponent implements OnInit {
   activities$ = this.store.select(selectActivities);
   activitiesStatus$ = this.store.select(selectActivitiesStatus);
   error = '';
-  denied = false;
 
   constructor(
     private router: Router,
@@ -71,16 +70,15 @@ export class TripComponent implements OnInit {
   }
 
   onDeleteTrip() {
-    if (!this.denied) {
-      this.error = 'Are you sure you want to delete this trip?';
-      return;
-    }
-    if (this.trip) this.store.dispatch(deleteTrip({ trip: this.trip }));
-    this.router.navigate(['../'], { relativeTo: this.route });
+    this.error = 'Are you sure you want to delete this trip?';
   }
 
-  onHandleError() {
+  onCloseError() {
     this.error = '';
-    this.denied = true;
+  }
+
+  onAffirmError() {
+    if (this.trip) this.store.dispatch(deleteTrip({ trip: this.trip }));
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 }

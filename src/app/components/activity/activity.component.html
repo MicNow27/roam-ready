@@ -1,6 +1,8 @@
 <app-alert
-  (close)="onHandleError()"
+  (affirm)="onAffirmError()"
+  (close)="onCloseError()"
   *ngIf="error !== ''"
+  [destructive]="true"
   [message]="error"
 ></app-alert>
 
@@ -14,6 +16,7 @@
   <div class="flex flex-col w-full items-center justify-center flex-grow bg-bg px-10 py-[1.5rem] pb-7">
     <button
       (click)="onBack()"
+      *ngIf="error === ''"
       class="absolute z-50 fixed left-4 top-[5.5rem] flex justify-center items-center cursor-pointer bg-accent shadow-shadow-normal transition-all duration-[0.3s] p-3 rounded-full border-[none] font-poppins hover:bg-accent-shade active:bg-accent-shade hover:shadow-shadow-focus active:shadow-shadow-focus"
       nz-popover
       nzPopoverContent="Go back to trip"

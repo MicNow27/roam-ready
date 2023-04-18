@@ -5,9 +5,9 @@
 </ng-container>
 
 <ng-container *ngIf="(trips$ | async)?.length === 0 && (tripsStatus$ | async) === 'success'">
-  <div class="flex flex-col items-center justify-center flex-grow bg-bg py-10 gap-[6rem]">
+  <div class="flex flex-col items-center justify-center content-center flex-grow bg-bg py-10 px-5 gap-[6rem]">
     <h2
-      class="ml-10 font-poppins text-icon text-[2rem] font-bold tracking-[0.1em]"
+      class="font-poppins text-icon text-[2rem] font-bold tracking-[0.1em]"
     >Plan your first trip ...</h2>
     <button
       (click)="onBeginClick()"

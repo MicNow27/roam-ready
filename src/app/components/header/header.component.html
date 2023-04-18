@@ -2,6 +2,7 @@
   <nav class="flex items-center justify-between w-screen py-2 bg-bg border-b-[0.1rem] border-b-line-gray">
     <a [routerLink]="(authenticated$ | async) ? '/trips' : '/home'">
       <button
+        [nzPopoverTrigger]="router.url !== '/home' && router.url !== '/trips' ? 'hover' : null"
         aria-label="Return to home page"
         class="flex"
         nz-popover
