@@ -3,7 +3,10 @@
     <a [routerLink]="(authenticated$ | async) ? '/trips' : '/home'">
       <button
         aria-label="Return to home page"
-        class="flex">
+        class="flex"
+        nz-popover
+        nzPopoverContent="{{(authenticated$ | async) ? 'Go to trips' : 'Go to home page'}}"
+      >
         <img
           alt="Roam Ready logo"
           class="m-2 h-9 pointer-events:auto transition-transform duration-200 transform-gpu hover:scale-105 active:scale-105"

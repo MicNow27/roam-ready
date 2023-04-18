@@ -44,6 +44,7 @@ export class ActivityEditComponent implements OnInit {
           this.tripName = tripName;
           if (activityName) {
             this.editMode = true;
+            this.prompt = 'Update your activity';
             this.store.dispatch(loadActivity({ tripName, activityName }));
           }
         }),
