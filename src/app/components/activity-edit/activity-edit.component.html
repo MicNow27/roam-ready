@@ -17,7 +17,7 @@
       <div class="flex flex-col gap-1 text-icon text-[0.8rem]">
         <label for="activityName">Activity name</label>
         <input
-          class="h-[2rem] pl-3 rounded-md shadow-shadow-normal focus:outline-none focus:shadow-shadow-focus"
+          class="h-[2rem] pl-3 rounded-md border border-1 border-line-gray outline-banner-gray outline-1"
           formControlName="activityName"
           id="activityName"
           type="text">
@@ -25,7 +25,7 @@
       <div class="flex flex-col gap-1 text-icon text-[0.8rem]">
         <label for="activityDescription">Activity description</label>
         <input
-          class="h-[2rem] pl-3 rounded-md shadow-shadow-normal focus:outline-none focus:shadow-shadow-focus"
+          class="h-[2rem] pl-3 rounded-md border border-1 border-line-gray outline-banner-gray outline-1"
           formControlName="activityDescription"
           id="activityDescription"
           type="text">
@@ -33,7 +33,7 @@
       <div class="flex flex-col gap-1 text-icon text-[0.8rem]">
         <label for="notes">Notes</label>
         <textarea
-          class="min-h-[2rem] px-3 py-2 rounded-md shadow-shadow-normal focus:outline-none focus:shadow-shadow-focus"
+          class="min-h-[2rem] px-3 py-2 rounded-md border border-1 border-line-gray outline-banner-gray outline-1"
           formControlName="notes"
           id="notes"
           type="text"
@@ -66,7 +66,7 @@
           [nzShowNow]="false"
           [nzShowTime]="{nzFormat: 'HH:mm'}"
           [nzShowToday]="false"
-          class="rounded-md shadow-shadow-normal border-none h-[2rem]"
+          class="rounded-md h-[2rem] outline outline-1 outline-line-gray shadow-none border-none active:border-none active:outline-none focus:outline none hover:border-none"
           formControlName="startDate"
           id="startDate"
           nzFormat="dd-MM-yyyy HH:mm"
@@ -83,7 +83,7 @@
           [nzShowNow]="false"
           [nzShowTime]="{nzFormat: 'HH:mm'}"
           [nzShowToday]="false"
-          class="rounded-md shadow-shadow-normal border-none h-[2rem] z-0"
+          class="rounded-md h-[2rem] outline outline-1 outline-line-gray shadow-none border-none active:border-none active:outline-none focus:outline none hover:border-none"
           formControlName="endDate"
           id="endDate"
           nzFormat="dd-MM-yyyy HH:mm"
@@ -93,7 +93,7 @@
       <div class="flex flex-col gap-1 text-icon text-[0.8rem]">
         <label for="price">Price ({{currencySymbol}})</label>
         <input
-          class="h-[2rem] px-3 rounded-md shadow-shadow-normal focus:outline-none focus:shadow-shadow-focus"
+          class="h-[2rem] px-3 rounded-md border border-1 border-line-gray outline-banner-gray outline-1"
           formControlName="price"
           id="price"
           type="number"
@@ -103,13 +103,13 @@
     <div class="grid grid-cols-2 gap-4 place-content-stretch">
       <button
         [disabled]="!activityForm.valid || activityForm.pristine"
-        class="cursor-pointer text-bg bg-accent tracking-[0.2em] w-full text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[none] font-poppins hover:bg-accent-shade active:bg-accent-shade hover:shadow-shadow-focus active:shadow-shadow-focus"
+        class="cursor-pointer text-bg bg-accent tracking-[0.2em] w-full text-[0.75rem] transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[none] font-poppins hover:bg-accent-shade active:bg-accent-shade"
         type="submit"
       >Save
       </button>
       <button
         (click)="onCancel()"
-        class="cursor-pointer text-accent-shade bg-line-gray tracking-[0.2em] w-full text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[none] font-poppins hover:bg-line-gray-shade hover:shadow-shadow-focus"
+        class="cursor-pointer text-accent-shade bg-line-gray tracking-[0.2em] w-full text-[0.75rem] transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[none] font-poppins hover:bg-line-gray-shade"
         type="button"
       >Cancel
       </button>
