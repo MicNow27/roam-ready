@@ -18,14 +18,16 @@ export interface State {
   activity: Activity | undefined;
   activities: Activity[];
   error: string | null;
-  status: 'pending' | 'loading' | 'error' | 'success';
+  activityStatus: 'pending' | 'loading' | 'error' | 'success';
+  activitiesStatus: 'pending' | 'loading' | 'error' | 'success';
 }
 
 export const initialState: State = {
   activity: undefined,
   activities: [],
   error: null,
-  status: 'pending',
+  activityStatus: 'pending',
+  activitiesStatus: 'pending',
 };
 
 export const reducer = createReducer(
@@ -46,31 +48,31 @@ export const reducer = createReducer(
   })),
   on(loadActivity, (state, { tripName, activityName }) => ({
     ...state,
-    status: 'loading',
+    activityStatus: 'loading',
   })),
   on(loadActivitySuccess, (state, { activity }) => ({
     ...state,
     activity: activity,
-    status: 'success',
+    activityStatus: 'success',
   })),
   on(loadActivityFailure, (state, { error }) => ({
     ...state,
     error: error,
-    status: 'error',
+    activityStatus: 'error',
   })),
   on(loadActivities, (state, { tripName }) => ({
     ...state,
-    status: 'loading',
+    activitiesStatus: 'loading',
   })),
   on(loadActivitiesSuccess, (state, { activities }) => ({
     ...state,
     activities: activities,
-    status: 'success',
+    activitiesStatus: 'success',
   })),
   on(loadActivitiesFailure, (state, { error }) => ({
     ...state,
     error: error,
-    status: 'error',
+    activitiesStatus: 'error',
   }))
 );
 

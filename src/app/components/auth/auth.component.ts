@@ -11,7 +11,6 @@ import { Observable } from 'rxjs';
 })
 export class AuthComponent {
   isLoginMode = true;
-  isLoading = false;
   error: string | null = '';
 
   constructor(private authService: AuthService, private router: Router) {}
@@ -26,8 +25,6 @@ export class AuthComponent {
 
   onSubmit(authForm: NgForm) {
     if (authForm.invalid) return;
-
-    this.isLoading = true;
 
     let auth$: Observable<string>;
     if (this.isLoginMode) {
@@ -44,11 +41,9 @@ export class AuthComponent {
     auth$.subscribe(
       (result) => {
         this.router.navigate(['/trips']);
-        this.isLoading = false;
       },
       (errorMessage) => {
         this.error = errorMessage;
-        this.isLoading = false;
       }
     );
 

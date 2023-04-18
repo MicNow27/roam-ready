@@ -3,7 +3,10 @@ import { Activity } from '../../models/user.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map, switchMap, tap } from 'rxjs';
-import { selectActivity } from '../../store/activities-store/selectors/activities.selectors';
+import {
+  selectActivity,
+  selectActivityStatus,
+} from '../../store/activities-store/selectors/activities.selectors';
 import {
   deleteActivity,
   loadActivity,
@@ -17,6 +20,7 @@ import {
 export class ActivityComponent implements OnInit {
   activity: Activity | undefined;
   activity$ = this.store.select(selectActivity);
+  activityStatus$ = this.store.select(selectActivityStatus);
   error = '';
   denied = false;
   currencyCode = 'R';
@@ -62,7 +66,7 @@ export class ActivityComponent implements OnInit {
 
   onDeleteActivity() {
     if (!this.denied) {
-      this.error = 'Are you sure you want to delete this trip?';
+      this.error = 'Are you sure you want to delete this activity?';
       return;
     }
     if (this.activity)

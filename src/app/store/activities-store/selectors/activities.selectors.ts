@@ -6,17 +6,22 @@ export const selectActivitiesState =
     fromActivities.activitiesFeatureKey
   );
 
-export const selectActivities = createSelector(
-  selectActivitiesState,
-  (state) => state.activities
-);
-
 export const selectActivity = createSelector(
   selectActivitiesState,
   (state) => state.activity
 );
 
-export const selectTripStatus = createSelector(
+export const selectActivityStatus = createSelector(
   selectActivitiesState,
-  (state) => state.status
+  (state) => state.activityStatus
+);
+
+export const selectActivities = createSelector(
+  selectActivitiesState,
+  (state) => state.activities
+);
+
+export const selectActivitiesStatus = createSelector(
+  selectActivitiesState,
+  (state) => state.activitiesStatus
 );

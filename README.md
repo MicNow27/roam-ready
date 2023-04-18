@@ -92,6 +92,7 @@ skiing: [Matthieu Pétiard](https://unsplash.com/@mattpunsplash?utm_source=unspl
 - [ ] Put limit lengths on input fields
 - [ ] Add cut-off dates to calendar, start date on calendar
 - [ ] Hacky fix to NG-Zorro components showing through alert background
+- [ ] More icons... maybe?
 
 ## Bugs
 

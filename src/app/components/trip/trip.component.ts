@@ -3,9 +3,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Trip } from '../../models/user.data';
 import { map, switchMap, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { selectActivities } from '../../store/activities-store/selectors/activities.selectors';
+import {
+  selectActivities,
+  selectActivitiesStatus,
+} from '../../store/activities-store/selectors/activities.selectors';
 import { loadActivities } from '../../store/activities-store/actions/activities.actions';
-import { selectTrip } from '../../store/trips-store/selectors/trips.selectors';
+import {
+  selectTrip,
+  selectTripStatus,
+} from '../../store/trips-store/selectors/trips.selectors';
 import {
   deleteTrip,
   loadTrip,
@@ -19,9 +25,11 @@ import {
 export class TripComponent implements OnInit {
   trip: Trip | undefined;
   trip$ = this.store.select(selectTrip);
+  tripStatus$ = this.store.select(selectTripStatus);
+  activities$ = this.store.select(selectActivities);
+  activitiesStatus$ = this.store.select(selectActivitiesStatus);
   error = '';
   denied = false;
-  activities$ = this.store.select(selectActivities);
 
   constructor(
     private router: Router,
