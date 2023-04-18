@@ -40,6 +40,7 @@ export class TripEditComponent implements OnInit {
         tap((tripName) => {
           if (tripName) {
             this.editMode = true;
+            this.prompt = 'Update your trip';
             this.store.dispatch(loadTrip({ tripName }));
           }
         }),

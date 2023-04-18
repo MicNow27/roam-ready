@@ -78,4 +78,8 @@ export class ActivityComponent implements OnInit {
     this.error = '';
     this.denied = true;
   }
+
+  onBack() {
+    this.router.navigate(['../'], { relativeTo: this.route });
+  }
 }

@@ -11,16 +11,26 @@
 </ng-container>
 
 <ng-container *ngIf="(activityStatus$ | async) === 'success'">
-  <div class="flex flex-col w-full items-center justify-center flex-grow bg-bg px-7 pt-3 pb-7">
-    <h4 class="uppercase text-text-gray text-[0.8rem] mb-3">– {{activity?.tag}} –</h4>
+  <div class="flex flex-col w-full items-center justify-center flex-grow bg-bg px-10 py-[1.5rem] pb-7">
+    <button
+      (click)="onBack()"
+      class="absolute z-50 fixed left-4 top-[5.5rem] flex justify-center items-center cursor-pointer bg-accent shadow-shadow-normal transition-all duration-[0.3s] p-3 rounded-full border-[none] font-poppins hover:bg-accent-shade active:bg-accent-shade hover:shadow-shadow-focus active:shadow-shadow-focus"
+      nz-popover
+      nzPopoverContent="Go back to trip"
+      type="button"
+    ><span class="text-bg text-[1.5rem]" nz-icon nzTheme="outline" nzType="left"></span>
+    </button>
+
+    <h4 class="uppercase text-text-gray text-[0.8rem] mt-2 mb-6">– {{activity?.tag}} –</h4>
+
     <div class="flex flex-col w-full mb-6">
       <h2
-        class="font-poppins text-icon text-[1.75rem] font-semibold tracking-[0.15em] leading-8 mb-[-0.1rem]"
+        class="font-poppins text-icon text-[1.75rem] font-semibold tracking-[0.15em] leading-8 mb-1"
       >{{activity?.activityName}}</h2>
       <p class="text-text-gray text-[1rem] tracking-[0.2em] italic"
       >{{activity?.activityDescription}}</p>
     </div>
-    <div class="flex flex-col w-full items-center justify-center px-3 mb-8 gap-6">
+    <div class="flex flex-col w-full items-center justify-center mb-8 gap-6">
       <div *ngIf="activity?.notes && activity?.notes !== ''"
            class="flex flex-col w-full">
         <label class="uppercase text-text-gray text-[0.8rem] mb-1 tracking-[0.15em]">Notes</label>
