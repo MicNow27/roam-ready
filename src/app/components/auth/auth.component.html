@@ -2,6 +2,7 @@
   <app-alert
     (close)="onHandleError()"
     *ngIf="error"
+    [destructive]="false"
     [message]="error"
   ></app-alert>
   <div

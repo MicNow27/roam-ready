@@ -22,7 +22,6 @@ export class ActivityComponent implements OnInit {
   activity$ = this.store.select(selectActivity);
   activityStatus$ = this.store.select(selectActivityStatus);
   error = '';
-  denied = false;
   currencyCode = 'R';
 
   constructor(
@@ -65,18 +64,17 @@ export class ActivityComponent implements OnInit {
   }
 
   onDeleteActivity() {
-    if (!this.denied) {
-      this.error = 'Are you sure you want to delete this activity?';
-      return;
-    }
+    this.error = 'Are you sure you want to delete this activity?';
+  }
+
+  onCloseError() {
+    this.error = '';
+  }
+
+  onAffirmError() {
     if (this.activity)
       this.store.dispatch(deleteActivity({ activity: this.activity }));
     this.router.navigate(['../'], { relativeTo: this.route });
-  }
-
-  onHandleError() {
-    this.error = '';
-    this.denied = true;
   }
 
   onBack() {

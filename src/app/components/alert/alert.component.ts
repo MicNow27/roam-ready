@@ -7,9 +7,15 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class AlertComponent {
   @Input() message: string = '';
+  @Input() destructive: boolean = false;
   @Output() close = new EventEmitter<void>();
+  @Output() affirm = new EventEmitter<void>();
 
-  onClose() {
+  onAffirm() {
+    this.affirm.emit();
+  }
+
+  onCancel() {
     this.close.emit();
   }
 }

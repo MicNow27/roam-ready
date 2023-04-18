@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -9,7 +10,7 @@ import { AuthService } from '../../services/auth/auth.service';
 export class HeaderComponent {
   authenticated$;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, protected router: Router) {
     this.authenticated$ = this.authService.authState$;
   }
 

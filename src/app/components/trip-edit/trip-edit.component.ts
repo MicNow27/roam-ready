@@ -24,7 +24,6 @@ export class TripEditComponent implements OnInit {
   prompt = 'Add a new trip';
   tripForm: FormGroup = new FormGroup({});
   error = '';
-  denied = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -79,18 +78,21 @@ export class TripEditComponent implements OnInit {
       });
   }
 
-  onCancel() {
-    if (this.tripForm.dirty && !this.denied) {
-      this.error = 'Do you want to proceed without saving?';
-      return;
-    }
-    this.denied = false;
+  onCloseError() {
+    this.error = '';
+  }
+
+  onAffirmError() {
     this.completeTripEdit();
   }
 
-  onHandleError() {
-    this.error = '';
-    this.denied = true;
+  onCancel() {
+    if (this.tripForm.dirty) {
+      this.error = 'Do you want to proceed without saving?';
+      return;
+    } else {
+      this.completeTripEdit();
+    }
   }
 
   private completeTripEdit() {
