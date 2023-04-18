@@ -6,6 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-  array = ['assets/images/castle.jpg', 'assets/images/skiing.jpg'];
+  array = [
+    'assets/images/castle.jpg',
+    'assets/images/louvre.jpg',
+    'assets/images/elephant.jpg',
+  ];
   effect = 'scrollx';
 }

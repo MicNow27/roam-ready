@@ -1,12 +1,13 @@
 <header>
   <nav class="flex items-center justify-between w-screen py-2 bg-bg border-b-[0.1rem] border-b-line-gray">
     <a [routerLink]="(authenticated$ | async) ? '/trips' : '/home'">
+      <!--        [nzPopoverTrigger]="router.url !== '/home' && router.url !== '/trips' ? 'hover' : null"-->
+      <!--        nz-popover-->
+      <!--        nzPopoverContent="{{(authenticated$ | async) ? 'Go to trips' : 'Go to home page'}}"-->
       <button
-        [nzPopoverTrigger]="router.url !== '/home' && router.url !== '/trips' ? 'hover' : null"
+        [disabled]="router.url === '/home' || router.url === '/trips'"
         aria-label="Return to home page"
         class="flex"
-        nz-popover
-        nzPopoverContent="{{(authenticated$ | async) ? 'Go to trips' : 'Go to home page'}}"
       >
         <img
           alt="Roam Ready logo"
