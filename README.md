@@ -49,7 +49,9 @@ the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
 castle: [Tim Rebkavets](https://unsplash.com/pt-br/@timreb9?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
 
-skiing: [Matthieu Pétiard](https://unsplash.com/@mattpunsplash?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+elephant: [AJ Robbie](https://unsplash.com/@ajrobbie?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+
+louvre: [Patrick Langwallner](https://unsplash.com/de/@patresinger?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
 
 ## References
 
@@ -76,19 +78,14 @@ skiing: [Matthieu Pétiard](https://unsplash.com/@mattpunsplash?utm_source=unspl
 ## Still To Do
 
 - [ ] Modules
-- [ ] State management
 - [ ] Error handling for required fields in login / signup form
-- [ ] Routing when back button is clicked
 - [ ] Add location picker to activity form
 - [ ] Add a calendar (https://medium.com/allenhwkim/angular-build-a-calendar-in-50-lines-f813f0a04c3b)
 - [ ] Add activities resolver
-- [ ] Disable home button when on home / landing page
 - [ ] Remove user feedback for disabled buttons
-- [ ] Merge trip-item and activity-item components
 - [ ] Merge commonality of trip and activity components
 - [ ] Item components' bg --> forms' bg
 - [ ] Currency selection capabilities
-- [ ] Check: alert methods repeated in multiple components
 - [ ] Put limit lengths on input fields
 - [ ] Add cut-off dates to calendar, start date on calendar
 - [ ] Hacky fix to NG-Zorro components showing through alert background
@@ -96,8 +93,6 @@ skiing: [Matthieu Pétiard](https://unsplash.com/@mattpunsplash?utm_source=unspl
 
 ## Bugs
 
-- when logging in: loading spinner -> login form -> home page
-  - ~~if still present after implementing state, try move loading spinner to trips component~~
-    - can't cos, resolver...
+- date picker doesn't work on screens less than 400px wide
 
 
