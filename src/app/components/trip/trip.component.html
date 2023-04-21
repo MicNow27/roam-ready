@@ -1,0 +1,62 @@
+<app-alert
+  (affirm)="onAffirmError()"
+  (close)="onCloseError()"
+  *ngIf="error !== ''"
+  [destructive]="true"
+  [message]="error"
+></app-alert>
+
+<ng-container *ngIf="(tripStatus$ | async) === 'loading'">
+  <div class="w-full h-full flex flex-col flex-grow items-center justify-center">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="(tripStatus$ | async) === 'success'">
+  <div class="flex flex-col w-full h-full items-center flex-grow bg-bg px-7 py-[1.25rem]">
+    <div class="flex flex-col w-full mb-6">
+      <h2
+        class="font-poppins text-icon text-[1.75rem] font-semibold tracking-[0.15em] leading-8 mb-1"
+      >{{(trip$ | async)?.tripName}}</h2>
+      <p class="text-text-gray text-[1rem] tracking-[0.2em] italic"
+      >{{(trip$ | async)?.tripDescription}}</p>
+    </div>
+    <div class="grid grid-rows-3 gap-2 place-content-stretch w-full mb-7">
+      <button
+        (click)="onEditTrip()"
+        class="cursor-pointer text-bg bg-accent tracking-[0.2em] w-full text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] py-[0.6rem] rounded-lg border-[0.01rem] font-poppins hover:bg-accent-shade active:bg-accent-shade hover:shadow-shadow-focus active:shadow-shadow-focus"
+        type="button"
+      >Edit trip
+      </button>
+      <button
+        (click)="onAddActivity()"
+        class="cursor-pointer text-bg bg-icon tracking-[0.2em] w-full text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] py-[0.6rem] rounded-lg border-[0.01rem] font-poppins hover:shadow-shadow-focus active:shadow-shadow-focus"
+        type="button"
+      >Add an activity
+      </button>
+      <button
+        (click)="onDeleteTrip()"
+        class="cursor-pointer text-accent-shade-2 bg-line-gray tracking-[0.2em] w-full text-[0.75rem] shadow-shadow-normal transition-all duration-[0.3s] py-[0.6rem] rounded-lg border-[none] font-poppins hover:bg-line-gray-shade hover:shadow-shadow-focus active:shadow-shadow-focus"
+        type="button"
+      >Delete trip
+      </button>
+    </div>
+    <ng-container *ngIf="(activitiesStatus$ | async) === 'loading'">
+      <div class="w-full h-full flex flex-col flex-grow items-center justify-center">
+        <app-loading-spinner></app-loading-spinner>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="(activities$ | async)?.length !==0 && (activitiesStatus$ | async) === 'success'">
+      <h3 class="text-icon font-semibold italic text-[1.25rem] tracking-[0.1em] mb-4 mx-4"
+      >– Activities –</h3>
+      <div class="flex flex-col flex-grow w-full gap-4 mb-4">
+        <app-activity-item
+          *ngFor="let activity of (activities$ | async); trackBy: activityName"
+          [activityName]="activity.activityName"
+          [activity]="activity"
+          class="w-full"
+        ></app-activity-item>
+      </div>
+    </ng-container>
+  </div>
+</ng-container>

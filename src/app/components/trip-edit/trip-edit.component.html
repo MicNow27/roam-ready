@@ -1,0 +1,51 @@
+<app-alert
+  (affirm)="onAffirmError()"
+  (close)="onCloseError()"
+  *ngIf="error !== ''"
+  [destructive]="true"
+  [message]="error"
+></app-alert>
+<div class="flex flex-col flex-grow bg-bg py-[1.25rem] px-5 gap-[1.25rem]">
+  <div class="flex w-full justify-items-center gap-4">
+    <h2
+      class="font-poppins text-icon text-[1.25rem] font-bold tracking-[0.1em] mt-2"
+    >{{prompt}} ...</h2>
+  </div>
+  <form
+    (ngSubmit)="onSubmit()"
+    [formGroup]="tripForm"
+    class="flex flex-col flex-grow justify-center py-6 px-6 shadow-shadow-focus font-poppins tracking-[0.1em] rounded-lg">
+    <div class="flex flex-col flex-grow gap-6 mb-8">
+      <div class="flex flex-col gap-1 text-icon text-[0.8rem]">
+        <label for="tripName">Trip name</label>
+        <input
+          class="h-[2rem] pl-3 rounded-md border border-1 border-line-gray outline-banner-gray outline-1"
+          formControlName="tripName"
+          id="tripName"
+          type="text">
+      </div>
+      <div class="flex flex-col gap-1 text-icon text-[0.8rem]">
+        <label for="tripDescription">Trip description</label>
+        <input
+          class="h-[2rem] pl-3 rounded-md border border-1 border-line-gray outline-banner-gray outline-1"
+          formControlName="tripDescription"
+          id="tripDescription"
+          type="text">
+      </div>
+    </div>
+    <div class="grid grid-cols-2 gap-4 place-content-stretch">
+      <button
+        [disabled]="!tripForm.valid || tripForm.pristine"
+        class="cursor-pointer text-bg bg-accent tracking-[0.2em] w-full text-[0.75rem] transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[none] font-poppins hover:bg-accent-shade active:bg-accent-shade"
+        type="submit"
+      >Save
+      </button>
+      <button
+        (click)="onCancel()"
+        class="cursor-pointer text-accent-shade bg-line-gray tracking-[0.2em] w-full text-[0.75rem] transition-all duration-[0.3s] px-0 py-[0.6rem] rounded-lg border-[none] font-poppins hover:bg-line-gray-shade"
+        type="button"
+      >Cancel
+      </button>
+    </div>
+  </form>
+</div>
